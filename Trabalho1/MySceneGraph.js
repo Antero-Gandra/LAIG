@@ -416,11 +416,28 @@ class MySceneGraph {
      * @param {textures block element} texturesNode
      */
     parseTextures(texturesNode) {
-        // TODO: Parse block
+        
+        var children = texturesNode.children;
 
-        console.log("Parsed textures");
+        var nodeNames = [];
+
+        
+        for (var i = 0; i < children.length; i++) {
+            
+            if (children[i].nodeName != "TEXTURE") {
+                this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
+                continue;
+            }
+
+        }
+
+        //TODO Parse Textures
+        this.log(nodeNames[0]);
+
+        this.log("Parsed textures");
 
         return null;
+
     }
 
     /**
