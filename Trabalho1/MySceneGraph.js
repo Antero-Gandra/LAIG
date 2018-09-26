@@ -419,8 +419,10 @@ class MySceneGraph {
         
         var children = texturesNode.children;
 
-        var nodeNames = [];
+        this.textures = [];
 
+        var grandChildren = [];
+        var nodeNames = [];
         
         for (var i = 0; i < children.length; i++) {
             
@@ -429,6 +431,43 @@ class MySceneGraph {
                 continue;
             }
 
+            var textureId = this.reader.getString(children[i], 'id');
+            if (textureId == null)
+                return "no ID defined for texture";
+
+             // Checks for repeated IDs.
+             if (this.textures[textureId] != null)
+                return "ID must be unique for each texture (conflict: ID = " + textureId + ")";
+
+             grandChildren = children[i].children;
+
+            for (let i = 0; i < grandChildren.length; i++) {
+                //Texture File exists
+                if (grandChildren[i].nodeName != "file") {
+                    this.onXMLMinorError("unknown tag <" + grandChildren[i].nodeName + ">");
+                    continue;
+                }
+                //Texture File element check
+                var texturePath = this.reader.getString(grandChildren[i], 'path');
+                if (texturePath == null)
+                    return "no path defined for texture";
+            
+                //Texture Amplif Factor exists
+                if (grandChildren[i].nodeName != "amplif_factor") {
+                    this.onXMLMinorError("unknown tag <" + grandChildren[i].nodeName + ">");
+                    continue;
+                }
+                
+                //Texture Amplif Factor element check
+                var textureAmplif_factor = {s: 0, t: 0};
+                textureAmplif_factor.s = this.reader.getString(grandChildren[i], 's');
+                if (textureAmplif_factor.s == null)
+                    return "no amplif_factor s defined for texture";
+                textureAmplif_factor.t = this.reader.getString(grandChildren[i], 't');
+                if (textureAmplif_factor.s == null)
+                    return "no amplif_factor t defined for texture";
+            }
+        
         }
 
         //TODO Parse Textures
