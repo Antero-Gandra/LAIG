@@ -375,7 +375,7 @@ class MySceneGraph {
 
         //Read default ID
         var defaultViewId = this.reader.getString(viewsNode, 'id');
-        if(defaultViewId == null)
+        if (defaultViewId == null)
             return "no default view ID defined";
 
         //Children
@@ -422,10 +422,10 @@ class MySceneGraph {
 
                 for (let j = 0; j < grandChildren.length; j++) {
 
-                    var x,y,z
-                    
+                    var x, y, z
+
                     //From
-                    if(grandChildren[j].nodeName == "from"){
+                    if (grandChildren[j].nodeName == "from") {
                         //x
                         x = this.reader.getFloat(grandChildren[j], 'x');
                         if (x < 0 || x == null || x > 1 || isNaN(x))
@@ -443,7 +443,7 @@ class MySceneGraph {
                         perspective.far.z = z;
                     }
                     //To
-                    else if(grandChildren[j].nodeName == "to"){
+                    else if (grandChildren[j].nodeName == "to") {
                         //x
                         x = this.reader.getFloat(grandChildren[j], 'x');
                         if (x < 0 || x == null || x > 1 || isNaN(x))
@@ -461,7 +461,7 @@ class MySceneGraph {
                         perspective.near.z = z;
                     }
                     //Unknown
-                    else{
+                    else {
                         this.onXMLMinorError("unknown tag <" + grandChildren[j].nodeName + "> in perspective view");
                         continue;
                     }
@@ -470,7 +470,7 @@ class MySceneGraph {
 
             }
             //Orthographic
-            else if(children[i].nodeName == "ortho"){
+            else if (children[i].nodeName == "ortho") {
 
                 var orthographic = {
                     id: "",
@@ -501,25 +501,25 @@ class MySceneGraph {
                 orthographic.left = this.reader.getFloat(children[i], 'left');
                 if (orthographic.left == null || orthographic.left < 0 || isNaN(orthographic.left))
                     return "no left defined for orthographic view";
-                    
+
                 //Right
                 orthographic.right = this.reader.getFloat(children[i], 'right');
                 if (orthographic.right == null || orthographic.right < 0 || isNaN(orthographic.right))
-                    return "no right defined for orthographic view";  
+                    return "no right defined for orthographic view";
 
                 //Top
                 orthographic.top = this.reader.getFloat(children[i], 'top');
                 if (orthographic.top == null || orthographic.top < 0 || isNaN(orthographic.top))
-                    return "no top defined for orthographic view";  
+                    return "no top defined for orthographic view";
 
                 //Bottom
                 orthographic.bottom = this.reader.getFloat(children[i], 'bottom');
                 if (orthographic.bottom == null || orthographic.bottom < 0 || isNaN(orthographic.bottom))
-                    return "no bottom defined for orthographic view";  
+                    return "no bottom defined for orthographic view";
 
             }
             //Unknown tag
-            else{
+            else {
                 this.onXMLMinorError("unknown tag <" + children[i].nodeName + "> in views");
                 continue;
             }
@@ -547,68 +547,68 @@ class MySceneGraph {
             //Ambient
             if (children[i].nodeName == "ambient") {
 
-                var ambient={
-                    r:0,
-                    g:0,
-                    b:0,
-                    a:0
+                var ambient = {
+                    r: 0,
+                    g: 0,
+                    b: 0,
+                    a: 0
                 }
 
                 //r
                 ambient.r = this.reader.getFloat(children[i], 'r');
-                if (ambient.r<0||ambient.r==null||isNaN(ambient.r)||ambient.r>1) {
+                if (ambient.r < 0 || ambient.r == null || isNaN(ambient.r) || ambient.r > 1) {
                     return "Invalid R value";
                 }
 
                 //g
                 ambient.g = this.reader.getFloat(children[i], 'g');
-                if (ambient.g<0||ambient.g==null||isNaN(ambient.g)||ambient.g>1) {
+                if (ambient.g < 0 || ambient.g == null || isNaN(ambient.g) || ambient.g > 1) {
                     return "Invalid G value";
                 }
 
                 //b
                 ambient.b = this.reader.getFloat(children[i], 'b');
-                if(ambient.b<0||ambient.b==null||isNan(ambient.b)||ambient.b>1){
+                if (ambient.b < 0 || ambient.b == null || isNan(ambient.b) || ambient.b > 1) {
                     return "Invalid B value";
                 }
 
                 //a
                 ambient.a = this.reader.getFloat(children[i], 'a');
-                if (ambient.a<0||ambient.a==null||isNan(ambient.a)||ambient.a>1) {
+                if (ambient.a < 0 || ambient.a == null || isNan(ambient.a) || ambient.a > 1) {
                     return "Invalid A value";
                 }
 
-            //Background
+                //Background
             } else if (children[i].nodeName == "background") {
 
-                var background={
-                    r:0,
-                    g:0,
-                    b:0,
-                    a:0
+                var background = {
+                    r: 0,
+                    g: 0,
+                    b: 0,
+                    a: 0
                 }
 
                 //r
                 background.r = this.reader.getFloat(children[i], 'r');
-                if (background.r<0||background.r==null||isNaN(backgroudn.r)||background.r>1) {
+                if (background.r < 0 || background.r == null || isNaN(backgroudn.r) || background.r > 1) {
                     return "Invalid R value";
                 }
 
                 //g
                 background.g = this.reader.getFloat(children[i], 'g');
-                if (background.g<0||background.g==null||isNaN(background.g)||background.g>1) {
+                if (background.g < 0 || background.g == null || isNaN(background.g) || background.g > 1) {
                     return "Invalid G value";
                 }
 
                 //b
                 background.b = this.reader.getFloat(children[i], 'b');
-                if (background.b<0||background.b==null||isNaN(background.b)||background.b>1) {
+                if (background.b < 0 || background.b == null || isNaN(background.b) || background.b > 1) {
                     return "Invalid B value";
                 }
 
                 //a
                 background.a = this.reader.getFloat(children[i], 'a');
-                if (background.a<0||background.a==null||isNaN(background.a)||background.a>1) {
+                if (background.a < 0 || background.a == null || isNaN(background.a) || background.a > 1) {
                     return "Invalid A value";
                 }
             }
@@ -776,9 +776,9 @@ class MySceneGraph {
         var children = texturesNode.children;
 
         for (let i = 0; i < children.length; i++) {
-            
+
             //Texture
-            if(children[i].nodeName == "texture"){
+            if (children[i].nodeName == "texture") {
                 var texture = {
                     id: "",
                     path: ""
@@ -796,11 +796,11 @@ class MySceneGraph {
 
             }
             //Unknown
-            else{
+            else {
                 this.onXMLMinorError("unknown tag <" + children[i].nodeName + "> in textures");
                 continue;
             }
-            
+
         }
 
         this.log("Parsed textures");
