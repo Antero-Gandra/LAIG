@@ -426,44 +426,44 @@ class MySceneGraph {
                     var x,y,z
                     
                     //From
-                    if(grandChildren[i].nodeName == "from"){
+                    if(grandChildren[j].nodeName == "from"){
                         //x
-                        x = this.reader.getFloat(grandChildren[i], 'x');
+                        x = this.reader.getFloat(grandChildren[j], 'x');
                         if (x < 0 || x == null || x > 1 || isNaN(x))
                             return "invalid x value for perspective view from";
                         perspective.far.x = x;
                         //y
-                        y = this.reader.getFloat(grandChildren[i], 'y');
+                        y = this.reader.getFloat(grandChildren[j], 'y');
                         if (y < 0 || y == null || y > 1 || isNaN(y))
                             return "invalid y value for perspective view from";
                         perspective.far.y = y;
                         //z
-                        z = this.reader.getFloat(grandChildren[i], 'z');
+                        z = this.reader.getFloat(grandChildren[j], 'z');
                         if (z < 0 || z == null || z > 1 || isNaN(z))
                             return "invalid z value for perspective view from";
                         perspective.far.z = z;
                     }
                     //To
-                    else if(grandChildren[i].nodeName == "to"){
+                    else if(grandChildren[j].nodeName == "to"){
                         //x
-                        x = this.reader.getFloat(grandChildren[i], 'x');
+                        x = this.reader.getFloat(grandChildren[j], 'x');
                         if (x < 0 || x == null || x > 1 || isNaN(x))
                             return "invalid x value for perspective view to";
                         perspective.near.x = x;
                         //y
-                        y = this.reader.getFloat(grandChildren[i], 'y');
+                        y = this.reader.getFloat(grandChildren[j], 'y');
                         if (y < 0 || y == null || y > 1 || isNaN(y))
                             return "invalid y value for perspective view to";
                         perspective.near.y = y;
                         //z
-                        z = this.reader.getFloat(grandChildren[i], 'z');
+                        z = this.reader.getFloat(grandChildren[j], 'z');
                         if (z < 0 || z == null || z > 1 || isNaN(z))
                             return "invalid z value for perspective view to";
                         perspective.near.z = z;
                     }
                     //Unknown
                     else{
-                        this.onXMLMinorError("unknown tag <" + grandChildren[i].nodeName + "> in perspective view");
+                        this.onXMLMinorError("unknown tag <" + grandChildren[j].nodeName + "> in perspective view");
                         continue;
                     }
 
@@ -685,6 +685,7 @@ class MySceneGraph {
 
         for (let i = 0; i < children.length; i++) {
 
+            //Material
             var material = {
                 id: "",
                 shininess: 0,
