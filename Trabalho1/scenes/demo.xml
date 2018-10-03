@@ -7,30 +7,30 @@
     <views default="perspective">
         <!-- tem de existir, pelo menos, uma vista de -->
         <!-- entre as seguintes (perspective ou ortho) -->
-        <perspective id="perspective" near="ff" far="ff" angle="ff">
-            <from x="ff" y="ff" z="ff" />
-            <to x="ff" y="ff" z="ff" />
+        <perspective id="perspective" near="1" far="100" angle="0">
+            <from x="20" y="20" z="20" />
+            <to x="0" y="0" z="0" />
         </perspective>
 
-        <ortho id="ortho" near="ff" far="ff" left="ff" right="ff" top="ff" bottom="ff" />
+        <ortho id="ortho" near="1" far="100" left="ff" right="ff" top="ff" bottom="ff" />
     </views>
 
     <ambient>
-        <ambient r="ff" g="ff" b="ff" a="ff" />
-        <background r="ff" g="ff" b="ff" a="ff" />
+        <ambient r="1" g="1" b="1" a="0" />
+        <background r="0" g="0" b="0" a="0" />
     </ambient>
 
     <lights>
         <!-- Deve existir um ou mais blocos "omni" ou "spot" -->
         <!-- Os identificadores "id" nao podem ser repetidos -->
         <omni id="omni" enabled="true">
-            <location x="ff" y="ff" z="ff" w="ff" />
-            <ambient r="ff" g="ff" b="ff" a="ff" />
-            <diffuse r="ff" g="ff" b="ff" a="ff" />
-            <specular r="ff" g="ff" b="ff" a="ff" />
+            <location x="10" y="10" z="80" w="ff" />
+            <ambient r="1" g="1" b="1" a="0" />
+            <diffuse r="0.2" g="0.2" b="0.2" a="0" />
+            <specular r="0" g="0" b="0" a="0" />
         </omni>
 
-        <spot id="spot" enabled="false" angle="ff" exponent="ff">
+        <spot id="spot" enabled="false" angle="30" exponent="1">
             <!-- atencao, "target" e' diferente de "direction" -->
             <location x="ff" y="ff" z="ff" w="ff" />
             <target x="ff" y="ff" z="ff" />
@@ -43,17 +43,17 @@
     <textures>
         <!-- Deve existir um ou mais blocos "texture" -->
         <!-- Os identificadores "id" nao podem ser repetidos -->
-        <texture id="texture" file="ss" />
+        <texture id="texture" file="images/vidral.jpg" />
     </textures>
 
     <materials>
         <!-- Deve existir um ou mais blocos "material" -->
         <!-- Os identificadores "id" nao podem ser repetidos -->
-        <material id="material" shininess = "ff">
-            <emission r="ff" g="ff" b="ff" a="ff" />
-            <ambient r="ff" g="ff" b="ff" a="ff" />
-            <diffuse r="ff" g="ff" b="ff" a="ff" />
-            <specular r="ff" g="ff" b="ff" a="ff" />
+        <material id="material" shininess = "1">
+            <emission r="0" g="0" b="0" a="0" />
+            <ambient r="1" g="1" b="1" a="0" />
+            <diffuse r="1" g="1" b="1" a="0" />
+            <specular r="1" g="1" b="1" a="0" />
         </material>
     </materials>
 

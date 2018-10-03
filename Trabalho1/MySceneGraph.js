@@ -361,10 +361,166 @@ class MySceneGraph {
     }
 
     /**
-     * TODO Parses the <views> node.
      * @param {views block element} viewsNode
      */
     parseViews(viewsNode) {
+
+        //Read default ID
+        var defaultViewId = this.reader.getString(viewsNode, 'id');
+
+        if(defaultViewId == null)
+            return "no default view ID defined";
+
+        //Children
+        var children = viewsNode.children;
+        var perspectiveViews = [];
+        var orthoViews = [];
+
+        for (let i = 0; i < children.length; i++) {
+            //Perspective
+            if (children[i].nodeName == "perspective") {
+
+                var perspective = {
+                    id: "",
+                    near: 0,
+                    far: 0,
+                    angle: 0,
+                    from: {
+                        x: 0,
+                        y: 0,
+                        z: 0
+                    },
+                    to: {
+                        x: 0,
+                        y: 0,
+                        z: 0
+                    }
+                };
+
+                //Id
+                perspective.id = this.reader.getString(children[i], 'id');
+                if (perspective.id == null)
+                    return "no ID defined for perspective view";
+
+                //Near
+                perspective.near = this.reader.getFloat(children[i], 'near');
+                if (perspective.near < 0 || perspective.near == null)
+                    return "invalid near plane for perspective view";
+
+                //Far
+                perspective.far = this.reader.getFloat(children[i], 'far');
+                if (perspective.far < 0 || perspective.far == null)
+                    return "invalid far plane for perspective view";
+
+                //Children of Perspective
+                var grandChildren = children[i].children;
+
+                for (let j = 0; j < grandChildren.length; j++) {
+
+                    var x,y,z
+                    
+                    //From
+                    if(grandChildren[i].nodeName == "from"){
+                        //x
+                        x = this.reader.getFloat(grandChildren[i], 'x');
+                        if (x < 0 || x == null || x > 1 || isNaN(x))
+                            return "invalid x value for perspective view from";
+                        perspective.far.x = x;
+                        //y
+                        y = this.reader.getFloat(grandChildren[i], 'y');
+                        if (y < 0 || y == null || y > 1 || isNaN(y))
+                            return "invalid y value for perspective view from";
+                        perspective.far.y = y;
+                        //z
+                        z = this.reader.getFloat(grandChildren[i], 'z');
+                        if (z < 0 || z == null || z > 1 || isNaN(z))
+                            return "invalid z value for perspective view from";
+                        perspective.far.z = z;
+                    }
+                    //To
+                    else if(grandChildren[i].nodeName == "to"){
+                        //x
+                        x = this.reader.getFloat(grandChildren[i], 'x');
+                        if (x < 0 || x == null || x > 1 || isNaN(x))
+                            return "invalid x value for perspective view to";
+                        perspective.near.x = x;
+                        //y
+                        y = this.reader.getFloat(grandChildren[i], 'y');
+                        if (y < 0 || y == null || y > 1 || isNaN(y))
+                            return "invalid y value for perspective view to";
+                        perspective.near.y = y;
+                        //z
+                        z = this.reader.getFloat(grandChildren[i], 'z');
+                        if (z < 0 || z == null || z > 1 || isNaN(z))
+                            return "invalid z value for perspective view to";
+                        perspective.near.z = z;
+                    }
+                    //Unknown
+                    else{
+                        this.onXMLMinorError("unknown tag <" + grandChildren[i].nodeName + ">");
+                        continue;
+                    }
+
+                }
+
+            }
+            //Orthographic
+            else if(children[i].nodeName == "ortho"){
+
+                var orthographic = {
+                    id: "",
+                    near: 0,
+                    far: 0,
+                    left: 0,
+                    right: 0,
+                    top: 0,
+                    bottom: 0
+                };
+
+                //Id
+                orthographic.id = this.reader.getString(children[i], 'id');
+                if (orthographic.id == null)
+                    return "no ID defined for orthographic view";
+
+                //Near
+                orthographic.near = this.reader.getFloat(children[i], 'near');
+                if (orthographic.near == null || orthographic.near < 0 || isNaN(orthographic.near))
+                    return "no near defined for orthographic view";
+
+                //Far
+                orthographic.far = this.reader.getFloat(children[i], 'far');
+                if (orthographic.far == null || orthographic.far < 0 || isNaN(orthographic.far))
+                    return "no far defined for orthographic view";
+
+                //Left
+                orthographic.left = this.reader.getFloat(children[i], 'left');
+                if (orthographic.left == null || orthographic.left < 0 || isNaN(orthographic.left))
+                    return "no left defined for orthographic view";
+                    
+                //Right
+                orthographic.right = this.reader.getFloat(children[i], 'right');
+                if (orthographic.right == null || orthographic.right < 0 || isNaN(orthographic.right))
+                    return "no right defined for orthographic view";  
+
+                //Top
+                orthographic.top = this.reader.getFloat(children[i], 'top');
+                if (orthographic.top == null || orthographic.top < 0 || isNaN(orthographic.top))
+                    return "no top defined for orthographic view";  
+
+                //Bottom
+                orthographic.bottom = this.reader.getFloat(children[i], 'bottom');
+                if (orthographic.bottom == null || orthographic.bottom < 0 || isNaN(orthographic.bottom))
+                    return "no bottom defined for orthographic view";  
+
+            }
+            //Unknown tag
+            else{
+                this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
+                continue;
+            }
+
+
+        }
 
         this.log("Parsed views");
 
