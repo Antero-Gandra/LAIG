@@ -628,43 +628,46 @@ class MySceneGraph {
     }
 
     /**
-     * TODO Parses the <lights> node.
+     * TODO Missing error checking
      * @param {lights block element} lightsNode
      */
     parseLights(lightsNode) {
-        this.lights =[];
-        var children= lightsNode.children;
-        var grandChildren;
 
+        //TODO push to here
+        this.lights = [];
+
+        //Children
+        var children = lightsNode.children;
         for (let i = 0; i < children.length; i++) {
-            if (children.nodeName=="omni") {
-                grandChildren=children[i].children;
-                var omni={
-                    id:"",
-                    enabled:"",
-                    location:{
-                        x:0,
-                        y:0,
-                        z:0,
-                        w:0
+            //Omni
+            if (children.nodeName == "omni") {
+                let grandChildren = children[i].children;
+                var omni = {
+                    id: "",
+                    enabled: "",
+                    location: {
+                        x: 0,
+                        y: 0,
+                        z: 0,
+                        w: 0
                     },
-                    ambient:{
-                        r:0,
-                        g:0,
-                        b:0,
-                        a:0
+                    ambient: {
+                        r: 0,
+                        g: 0,
+                        b: 0,
+                        a: 0
                     },
-                    diffuse:{
-                        r:0,
-                        g:0,
-                        b:0,
-                        a:0
+                    diffuse: {
+                        r: 0,
+                        g: 0,
+                        b: 0,
+                        a: 0
                     },
-                    specular:{
-                        r:0,
-                        g:0,
-                        b:0,
-                        a:0
+                    specular: {
+                        r: 0,
+                        g: 0,
+                        b: 0,
+                        a: 0
 
                     }
                 }
@@ -672,53 +675,55 @@ class MySceneGraph {
                 omni.enabled = this.reader.getString(children[i], 'enabled');
 
                 for (let j = 0; j < grandChildren.length; j++) {
-                omni.location.x=this.reader.getFloat(grandchildren[j], 'x');
-                omni.location.y=this.reader.getFloat(grandchildren[j], 'y');                
-                omni.location.z=this.reader.getFloat(grandchildren[j], 'z');
-                omni.location.w=this.reader.getFloat(grandchildren[j], 'w');
-                omni.ambient.r=this.reader.getFloat(grandchildren[j], 'r');
-                omni.ambient.g=this.reader.getFloat(grandchildren[j], 'g');
-                omni.ambient.b=this.reader.getFloat(grandchildren[j], 'b');
-                omni.ambient.a=this.reader.getFloat(grandchildren[j], 'a');
-                omni.diffuse.r=this.reader.getFloat(grandchildren[j], 'r');
-                omni.diffuse.g=this.reader.getFloat(grandchildren[j], 'g');
-                omni.diffuse.b=this.reader.getFloat(grandchildren[j], 'b');
-                omni.diffuse.a=this.reader.getFloat(grandchildren[j], 'a');
-                omni.specular.r=this.reader.getFloat(grandchildren[j], 'r');
-                omni.specular.g=this.reader.getFloat(grandchildren[j], 'g');
-                omni.specular.b=this.reader.getFloat(grandchildren[j], 'b');
-                omni.specular.a=this.reader.getFloat(grandchildren[j], 'a');
+                    omni.location.x = this.reader.getFloat(grandchildren[j], 'x');
+                    omni.location.y = this.reader.getFloat(grandchildren[j], 'y');
+                    omni.location.z = this.reader.getFloat(grandchildren[j], 'z');
+                    omni.location.w = this.reader.getFloat(grandchildren[j], 'w');
+                    omni.ambient.r = this.reader.getFloat(grandchildren[j], 'r');
+                    omni.ambient.g = this.reader.getFloat(grandchildren[j], 'g');
+                    omni.ambient.b = this.reader.getFloat(grandchildren[j], 'b');
+                    omni.ambient.a = this.reader.getFloat(grandchildren[j], 'a');
+                    omni.diffuse.r = this.reader.getFloat(grandchildren[j], 'r');
+                    omni.diffuse.g = this.reader.getFloat(grandchildren[j], 'g');
+                    omni.diffuse.b = this.reader.getFloat(grandchildren[j], 'b');
+                    omni.diffuse.a = this.reader.getFloat(grandchildren[j], 'a');
+                    omni.specular.r = this.reader.getFloat(grandchildren[j], 'r');
+                    omni.specular.g = this.reader.getFloat(grandchildren[j], 'g');
+                    omni.specular.b = this.reader.getFloat(grandchildren[j], 'b');
+                    omni.specular.a = this.reader.getFloat(grandchildren[j], 'a');
                 }
-            } else if (children.nodeName="spot") {
-                grandChildren=children[i].children;
-                var spot={
-                    id:"",
-                    enabled:"",
-                    angle:0,
-                    exponents:0,
-                    location:{
-                        x:0,
-                        y:0,
-                        z:0,
-                        w:0
+            }
+            //Spot
+            else if (children.nodeName = "spot") {
+                let grandChildren = children[i].children;
+                var spot = {
+                    id: "",
+                    enabled: "",
+                    angle: 0,
+                    exponents: 0,
+                    location: {
+                        x: 0,
+                        y: 0,
+                        z: 0,
+                        w: 0
                     },
-                    ambient:{
-                        r:0,
-                        g:0,
-                        b:0,
-                        a:0
+                    ambient: {
+                        r: 0,
+                        g: 0,
+                        b: 0,
+                        a: 0
                     },
-                    diffuse:{
-                        r:0,
-                        g:0,
-                        b:0,
-                        a:0
+                    diffuse: {
+                        r: 0,
+                        g: 0,
+                        b: 0,
+                        a: 0
                     },
-                    specular:{
-                        r:0,
-                        g:0,
-                        b:0,
-                        a:0
+                    specular: {
+                        r: 0,
+                        g: 0,
+                        b: 0,
+                        a: 0
                     }
                 }
                 spot.id = this.reader.getString(children[i], 'id');
@@ -726,31 +731,33 @@ class MySceneGraph {
                 spot.angle = this.reader.getString(children[i], 'angle');
                 spot.exponent = this.reader.getString(children[i], 'exponent');
                 for (let j = 0; j < grandChildren.length; j++) {
-                    spot.location.x=this.reader.getFloat(grandchildren[j], 'x');
-                    spot.location.y=this.reader.getFloat(grandchildren[j], 'y');                
-                    spot.location.z=this.reader.getFloat(grandchildren[j], 'z');
-                    spot.location.w=this.reader.getFloat(grandchildren[j], 'w');
-                    spot.ambient.r=this.reader.getFloat(grandchildren[j], 'r');
-                    spot.ambient.g=this.reader.getFloat(grandchildren[j], 'g');
-                    spot.ambient.b=this.reader.getFloat(grandchildren[j], 'b');
-                    spot.ambient.a=this.reader.getFloat(grandchildren[j], 'a');
-                    spot.diffuse.r=this.reader.getFloat(grandchildren[j], 'r');
-                    spot.diffuse.g=this.reader.getFloat(grandchildren[j], 'g');
-                    spot.diffuse.b=this.reader.getFloat(grandchildren[j], 'b');
-                    spot.diffuse.a=this.reader.getFloat(grandchildren[j], 'a');
-                    spot.specular.r=this.reader.getFloat(grandchildren[j], 'r');
-                    spot.specular.g=this.reader.getFloat(grandchildren[j], 'g');
-                    spot.specular.b=this.reader.getFloat(grandchildren[j], 'b');
-                    spot.specular.a=this.reader.getFloat(grandchildren[j], 'a');
-                    }
+                    spot.location.x = this.reader.getFloat(grandchildren[j], 'x');
+                    spot.location.y = this.reader.getFloat(grandchildren[j], 'y');
+                    spot.location.z = this.reader.getFloat(grandchildren[j], 'z');
+                    spot.location.w = this.reader.getFloat(grandchildren[j], 'w');
+                    spot.ambient.r = this.reader.getFloat(grandchildren[j], 'r');
+                    spot.ambient.g = this.reader.getFloat(grandchildren[j], 'g');
+                    spot.ambient.b = this.reader.getFloat(grandchildren[j], 'b');
+                    spot.ambient.a = this.reader.getFloat(grandchildren[j], 'a');
+                    spot.diffuse.r = this.reader.getFloat(grandchildren[j], 'r');
+                    spot.diffuse.g = this.reader.getFloat(grandchildren[j], 'g');
+                    spot.diffuse.b = this.reader.getFloat(grandchildren[j], 'b');
+                    spot.diffuse.a = this.reader.getFloat(grandchildren[j], 'a');
+                    spot.specular.r = this.reader.getFloat(grandchildren[j], 'r');
+                    spot.specular.g = this.reader.getFloat(grandchildren[j], 'g');
+                    spot.specular.b = this.reader.getFloat(grandchildren[j], 'b');
+                    spot.specular.a = this.reader.getFloat(grandchildren[j], 'a');
+                }
 
-            } else {
-            this.onXMLMinorError("unknown tag <" + children[i].nodeName + "> in lights");
-            continue;
+            }
+            //Unknown 
+            else {
+                this.onXMLMinorError("unknown tag <" + children[i].nodeName + "> in lights");
+                continue;
             }
 
         }
-   
+
         this.log("Parsed lights");
 
         return null;
