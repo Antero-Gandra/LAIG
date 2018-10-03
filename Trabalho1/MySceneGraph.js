@@ -374,7 +374,7 @@ class MySceneGraph {
         this.orthoViews = [];
 
         //Read default ID
-        var defaultViewId = this.reader.getString(viewsNode, 'id');
+        var defaultViewId = this.reader.getString(viewsNode, 'default');
         if (defaultViewId == null)
             return "no default view ID defined";
 
@@ -422,43 +422,43 @@ class MySceneGraph {
 
                 for (let j = 0; j < grandChildren.length; j++) {
 
-                    var x, y, z
+                    var x, y, z;
 
                     //From
                     if (grandChildren[j].nodeName == "from") {
                         //x
                         x = this.reader.getFloat(grandChildren[j], 'x');
-                        if (x < 0 || x == null || x > 1 || isNaN(x))
+                        if (x == null || isNaN(x))
                             return "invalid x value for perspective view from";
-                        perspective.far.x = x;
+                        perspective.from.x = x;
                         //y
                         y = this.reader.getFloat(grandChildren[j], 'y');
-                        if (y < 0 || y == null || y > 1 || isNaN(y))
+                        if (y == null || isNaN(y))
                             return "invalid y value for perspective view from";
-                        perspective.far.y = y;
+                        perspective.from.y = y;
                         //z
                         z = this.reader.getFloat(grandChildren[j], 'z');
-                        if (z < 0 || z == null || z > 1 || isNaN(z))
+                        if (z == null || isNaN(z))
                             return "invalid z value for perspective view from";
-                        perspective.far.z = z;
+                        perspective.from.z = z;
                     }
                     //To
                     else if (grandChildren[j].nodeName == "to") {
                         //x
                         x = this.reader.getFloat(grandChildren[j], 'x');
-                        if (x < 0 || x == null || x > 1 || isNaN(x))
+                        if (x == null || isNaN(x))
                             return "invalid x value for perspective view to";
-                        perspective.near.x = x;
+                        perspective.to.x = x;
                         //y
                         y = this.reader.getFloat(grandChildren[j], 'y');
-                        if (y < 0 || y == null || y > 1 || isNaN(y))
+                        if (y == null || isNaN(y))
                             return "invalid y value for perspective view to";
-                        perspective.near.y = y;
+                        perspective.to.y = y;
                         //z
                         z = this.reader.getFloat(grandChildren[j], 'z');
-                        if (z < 0 || z == null || z > 1 || isNaN(z))
+                        if (z == null || isNaN(z))
                             return "invalid z value for perspective view to";
-                        perspective.near.z = z;
+                        perspective.to.z = z;
                     }
                     //Unknown
                     else {
@@ -499,22 +499,22 @@ class MySceneGraph {
 
                 //Left
                 orthographic.left = this.reader.getFloat(children[i], 'left');
-                if (orthographic.left == null || orthographic.left < 0 || isNaN(orthographic.left))
+                if (orthographic.left == null || isNaN(orthographic.left))
                     return "no left defined for orthographic view";
 
                 //Right
                 orthographic.right = this.reader.getFloat(children[i], 'right');
-                if (orthographic.right == null || orthographic.right < 0 || isNaN(orthographic.right))
+                if (orthographic.right == null || isNaN(orthographic.right))
                     return "no right defined for orthographic view";
 
                 //Top
                 orthographic.top = this.reader.getFloat(children[i], 'top');
-                if (orthographic.top == null || orthographic.top < 0 || isNaN(orthographic.top))
+                if (orthographic.top == null || isNaN(orthographic.top))
                     return "no top defined for orthographic view";
 
                 //Bottom
                 orthographic.bottom = this.reader.getFloat(children[i], 'bottom');
-                if (orthographic.bottom == null || orthographic.bottom < 0 || isNaN(orthographic.bottom))
+                if (orthographic.bottom == null || isNaN(orthographic.bottom))
                     return "no bottom defined for orthographic view";
 
             }
@@ -568,13 +568,13 @@ class MySceneGraph {
 
                 //b
                 ambient.b = this.reader.getFloat(children[i], 'b');
-                if (ambient.b < 0 || ambient.b == null || isNan(ambient.b) || ambient.b > 1) {
+                if (ambient.b < 0 || ambient.b == null || isNaN(ambient.b) || ambient.b > 1) {
                     return "Invalid B value";
                 }
 
                 //a
                 ambient.a = this.reader.getFloat(children[i], 'a');
-                if (ambient.a < 0 || ambient.a == null || isNan(ambient.a) || ambient.a > 1) {
+                if (ambient.a < 0 || ambient.a == null || isNaN(ambient.a) || ambient.a > 1) {
                     return "Invalid A value";
                 }
 
@@ -590,7 +590,7 @@ class MySceneGraph {
 
                 //r
                 background.r = this.reader.getFloat(children[i], 'r');
-                if (background.r < 0 || background.r == null || isNaN(backgroudn.r) || background.r > 1) {
+                if (background.r < 0 || background.r == null || isNaN(background.r) || background.r > 1) {
                     return "Invalid R value";
                 }
 
@@ -694,7 +694,7 @@ class MySceneGraph {
             }
             //Spot
             else if (children.nodeName = "spot") {
-                let grandChildren = children[i].children;
+                var grandChildren = children[i].children;
                 var spot = {
                     id: "",
                     enabled: "",

@@ -12,7 +12,7 @@
             <to x="0" y="0" z="0" />
         </perspective>
 
-        <ortho id="ortho" near="1" far="100" left="ff" right="ff" top="ff" bottom="ff" />
+        <ortho id="ortho" near="1" far="100" left="-10" right="10" top="-10" bottom="10" />
     </views>
 
     <ambient>
