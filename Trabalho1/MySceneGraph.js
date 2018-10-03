@@ -549,24 +549,31 @@ class MySceneGraph {
             if (children[i].nodeName == "ambient") {
 
                 var ambient={
-                    r:ambientR,
-                    g:ambientG,
-                    b:ambientB,
-                    a:ambientA
+                    r:0,
+                    g:0,
+                    b:0,
+                    a:0
                 }
 
+                //r
                 ambient.r = this.reader.getFloat(children[i], 'r');
                 if (ambient.r<0||ambient.r==null||isNaN(ambient.r)||ambient.r>1) {
                     return "Invalid R value";
                 }
+
+                //g
                 ambient.g = this.reader.getFloat(children[i], 'g');
                 if (ambient.g<0||ambient.g==null||isNaN(ambient.g)||ambient.g>1) {
                     return "Invalid G value";
                 }
+
+                //b
                 ambient.b = this.reader.getFloat(children[i], 'b');
                 if(ambient.b<0||ambient.b==null||isNan(ambient.b)||ambient.b>1){
                     return "Invalid B value";
                 }
+
+                //a
                 ambient.a = this.reader.getFloat(children[i], 'a');
                 if (ambient.a<0||ambient.a==null||isNan(ambient.a)||ambient.a>1) {
                     return "Invalid A value";
@@ -576,24 +583,31 @@ class MySceneGraph {
             } else if (children[i].nodeName == "background") {
 
                 var background={
-                    r:backgroundR,
-                    g:backgroundG,
-                    b:backgroundB,
-                    a:backgroundA
+                    r:0,
+                    g:0,
+                    b:0,
+                    a:0
                 }
 
+                //r
                 background.r = this.reader.getFloat(children[i], 'r');
                 if (background.r<0||background.r==null||isNaN(backgroudn.r)||background.r>1) {
                     return "Invalid R value";
                 }
+
+                //g
                 background.g = this.reader.getFloat(children[i], 'g');
                 if (background.g<0||background.g==null||isNaN(background.g)||background.g>1) {
                     return "Invalid G value";
                 }
+
+                //b
                 background.b = this.reader.getFloat(children[i], 'b');
                 if (background.b<0||background.b==null||isNaN(background.b)||background.b>1) {
                     return "Invalid B value";
                 }
+
+                //a
                 background.a = this.reader.getFloat(children[i], 'a');
                 if (background.a<0||background.a==null||isNaN(background.a)||background.a>1) {
                     return "Invalid A value";
@@ -729,7 +743,7 @@ class MySceneGraph {
             var grandChildren = children[i].children;
 
             for (let j = 0; j < grandChildren.length; j++) {
-                //TODO here
+                //TODO from here
             }
 
         }
