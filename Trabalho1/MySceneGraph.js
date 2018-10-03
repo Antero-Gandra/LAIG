@@ -349,7 +349,7 @@ class MySceneGraph {
 
         //Root
         var sceneRoot = this.reader.getString(sceneNode, 'root');
-        if (sceneRoot == NULL) {
+        if (sceneRoot == null) {
             return "No root defined"
         }
 
@@ -375,7 +375,6 @@ class MySceneGraph {
 
         //Read default ID
         var defaultViewId = this.reader.getString(viewsNode, 'id');
-
         if(defaultViewId == null)
             return "no default view ID defined";
 
