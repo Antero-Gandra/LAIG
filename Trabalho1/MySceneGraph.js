@@ -1,4 +1,3 @@
-
 // Order of the groups in the XML document.
 const SCENE_INDEX = 0;
 const VIEWS_INDEX = 1;
@@ -26,7 +25,7 @@ class MySceneGraph {
 
         this.nodes = [];
 
-        this.idRoot = null;                    // The id of the root element.
+        this.idRoot = null; // The id of the root element.
 
         this.axisCoords = [];
         this.axisCoords['x'] = [1, 0, 0];
@@ -247,8 +246,7 @@ class MySceneGraph {
             var enableLight = true;
             if (enableIndex == -1) {
                 this.onXMLMinorError("enable value missing for ID = " + lightId + "; assuming 'value = 1'");
-            }
-            else {
+            } else {
                 var aux = this.reader.getFloat(grandChildren[enableIndex], 'value');
                 if (!(aux != null && !isNaN(aux) && (aux == 0 || aux == 1)))
                     this.onXMLMinorError("unable to parse value component of the 'enable light' field for ID = " + lightId + "; assuming 'value = 1'");
@@ -286,8 +284,7 @@ class MySceneGraph {
                     return "unable to parse x-coordinate of the light position for ID = " + lightId;
                 else
                     positionLight.push(w);
-            }
-            else
+            } else
                 return "light position undefined for ID = " + lightId;
 
             // Retrieves the ambient component.
@@ -320,8 +317,7 @@ class MySceneGraph {
                     return "unable to parse A component of the ambient illumination for ID = " + lightId;
                 else
                     ambientIllumination.push(a);
-            }
-            else
+            } else
                 return "ambient component undefined for ID = " + lightId;
 
             // TODO: Retrieve the diffuse component
@@ -348,6 +344,16 @@ class MySceneGraph {
      * @param {scene block element} sceneNode
      */
     parseScene(sceneNode) {
+        this.scene = [];
+
+        var sceneRoot = this.reader.getString(sceneNode, 'root');
+        if (sceneRoot == NULL) {
+            return "No root defined"
+        }
+        var sceneAxisLength = this.reader.getFloat(sceneNode, 'axis_length');
+        if (sceneAxisLength <= 0) {
+            return "Scene axis length should be bigger then 0"
+        }
 
         this.log("Parsed scene");
 
@@ -370,7 +376,67 @@ class MySceneGraph {
      * @param {ambient block element} ambientNode
      */
     parseAmbient(ambientNode) {
-    
+        this.ambient = [];
+        var children = ambientNode.children;
+
+        for (let i = 0; i < children.length; i++) {
+
+            var ambient={
+                r:ambientR,
+                g:ambientG,
+                b:ambientB,
+                a:ambientA
+            }
+            if (children.nodeName == "ambient") {
+                 ambient.r = this.reader.getFloat(children[i], 'r');
+                if (ambient.r<0||ambient.r==null||isNaN(ambient.r)||ambient.r>1) {
+                    return "Invalid R value";
+                }
+                ambient.g = this.reader.getFloat(children[i], 'g');
+                if (ambient.g<0||ambient.g==null||isNaN(ambient.g)||ambient.g>1) {
+                    return "Invalid G value";
+                }
+                ambient.b = this.reader.getFloat(children[i], 'b');
+                if(ambient.b<0||ambient.b==null||isNan(ambient.b)||ambient.b>1){
+                    return "Invalid B value";
+                }
+                ambient.a = this.reader.getFloat(children[i], 'a');
+                if (ambient.a<0||ambient.a==null||isNan(ambient.a)||ambient.a>1) {
+                    return "Invalid A value";
+                }
+
+
+            } else if (children.nodeName == "background") {
+
+                var background={
+                    r:backgroundR,
+                    g:backgroundG,
+                    b:backgroundB,
+                    a:backgroundA
+                }
+
+                background.r = this.reader.getFloat(children[i], 'r');
+                if (background.r<0||background.r==null||isNaN(backgroudn.r)||background.r>1) {
+                    return "Invalid R value";
+                }
+                background.g = this.reader.getFloat(children[i], 'g');
+                if (background.g<0||background.g==null||isNaN(background.g)||background.g>1) {
+                    return "Invalid G value";
+                }
+                background.b = this.reader.getFloat(children[i], 'b');
+                if (background.b<0||background.b==null||isNaN(background.b)||background.b>1) {
+                    return "Invalid B value";
+                }
+                background.a = this.reader.getFloat(children[i], 'a');
+                if (background.a<0||background.a==null||isNaN(background.a)||background.a>1) {
+                    return "Invalid A value";
+                }
+            } else {
+                return "No more nodes";
+            }
+
+        }
+
         this.log("Parsed ambient");
 
         return null;
