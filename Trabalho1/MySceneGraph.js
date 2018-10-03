@@ -340,16 +340,20 @@ class MySceneGraph {
     }
 
     /**
-     * TODO Parses the <scene> block.
      * @param {scene block element} sceneNode
      */
     parseScene(sceneNode) {
-        this.scene = [];
 
+        //TODO push to this
+        this.scene;
+
+        //Root
         var sceneRoot = this.reader.getString(sceneNode, 'root');
         if (sceneRoot == NULL) {
             return "No root defined"
         }
+
+        //Axis
         var sceneAxisLength = this.reader.getFloat(sceneNode, 'axis_length');
         if (sceneAxisLength <= 0) {
             return "Scene axis length should be bigger then 0"
@@ -365,6 +369,10 @@ class MySceneGraph {
      */
     parseViews(viewsNode) {
 
+        //TODO push to these
+        this.perspectiveViews = [];
+        this.orthoViews = [];
+
         //Read default ID
         var defaultViewId = this.reader.getString(viewsNode, 'id');
 
@@ -373,8 +381,6 @@ class MySceneGraph {
 
         //Children
         var children = viewsNode.children;
-        var perspectiveViews = [];
-        var orthoViews = [];
 
         for (let i = 0; i < children.length; i++) {
             //Perspective
@@ -457,7 +463,7 @@ class MySceneGraph {
                     }
                     //Unknown
                     else{
-                        this.onXMLMinorError("unknown tag <" + grandChildren[i].nodeName + ">");
+                        this.onXMLMinorError("unknown tag <" + grandChildren[i].nodeName + "> in perspective view");
                         continue;
                     }
 
@@ -515,7 +521,7 @@ class MySceneGraph {
             }
             //Unknown tag
             else{
-                this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
+                this.onXMLMinorError("unknown tag <" + children[i].nodeName + "> in views");
                 continue;
             }
 
@@ -528,23 +534,28 @@ class MySceneGraph {
     }
 
     /**
-     * TODO Parses the <ambient> block. 
      * @param {ambient block element} ambientNode
      */
     parseAmbient(ambientNode) {
-        this.ambient = [];
+
+        //TODO push to this
+        this.ambient;
+
         var children = ambientNode.children;
 
         for (let i = 0; i < children.length; i++) {
 
-            var ambient={
-                r:ambientR,
-                g:ambientG,
-                b:ambientB,
-                a:ambientA
-            }
-            if (children.nodeName == "ambient") {
-                 ambient.r = this.reader.getFloat(children[i], 'r');
+            //Ambient
+            if (children[i].nodeName == "ambient") {
+
+                var ambient={
+                    r:ambientR,
+                    g:ambientG,
+                    b:ambientB,
+                    a:ambientA
+                }
+
+                ambient.r = this.reader.getFloat(children[i], 'r');
                 if (ambient.r<0||ambient.r==null||isNaN(ambient.r)||ambient.r>1) {
                     return "Invalid R value";
                 }
@@ -561,8 +572,8 @@ class MySceneGraph {
                     return "Invalid A value";
                 }
 
-
-            } else if (children.nodeName == "background") {
+            //Background
+            } else if (children[i].nodeName == "background") {
 
                 var background={
                     r:backgroundR,
@@ -587,8 +598,11 @@ class MySceneGraph {
                 if (background.a<0||background.a==null||isNaN(background.a)||background.a>1) {
                     return "Invalid A value";
                 }
-            } else {
-                return "No more nodes";
+            }
+            //Unknown
+            else {
+                this.onXMLMinorError("unknown tag <" + children[i].nodeName + "> in ambient");
+                continue;
             }
 
         }
@@ -612,10 +626,43 @@ class MySceneGraph {
     }
 
     /**
-     * TODO Parses the <textures> node.
      * @param {textures block element} texturesNode
      */
     parseTextures(texturesNode) {
+
+        //TODO push to here
+        var textures = [];
+
+        //Children
+        var children = texturesNode.children;
+
+        for (let i = 0; i < children.length; i++) {
+            
+            //Texture
+            if(children[i].nodeName == "texture"){
+                var texture = {
+                    id: "",
+                    path: ""
+                }
+
+                //Id
+                texture.id = this.reader.getString(children[i], 'id');
+                if (texture.id == null)
+                    return "no ID defined for texture";
+
+                //Path
+                texture.path = this.reader.getString(children[i], 'path');
+                if (texture.path == null)
+                    return "no path defined for texture";
+
+            }
+            //Unknown
+            else{
+                this.onXMLMinorError("unknown tag <" + children[i].nodeName + "> in textures");
+                continue;
+            }
+            
+        }
 
         this.log("Parsed textures");
 
@@ -628,6 +675,63 @@ class MySceneGraph {
      * @param {materials block element} materialsNode
      */
     parseMaterials(materialsNode) {
+
+        //TODO push to here
+        this.materials = [];
+
+        //Children
+
+        var children = materialsNode.children;
+
+        for (let i = 0; i < children.length; i++) {
+
+            var material = {
+                id: "",
+                shininess: 0,
+                emission: {
+                    r: 0,
+                    g: 0,
+                    b: 0,
+                    a: 0
+                },
+                ambient: {
+                    r: 0,
+                    g: 0,
+                    b: 0,
+                    a: 0
+                },
+                diffuse: {
+                    r: 0,
+                    g: 0,
+                    b: 0,
+                    a: 0
+                },
+                specular: {
+                    r: 0,
+                    g: 0,
+                    b: 0,
+                    a: 0
+                },
+            }
+
+            //Id
+            material.id = this.reader.getString(children[i], 'id');
+            if (material.id == null)
+                return "no ID defined for material";
+
+            //Shininess
+            material.shininess = this.reader.getString(children[i], 'shininess');
+            if (material.shininess == null)
+                return "no shininess defined for material";
+
+            //Grandchildren
+            var grandChildren = children[i].children;
+
+            for (let j = 0; j < grandChildren.length; j++) {
+                //TODO here
+            }
+
+        }
 
         this.log("Parsed materials");
 
