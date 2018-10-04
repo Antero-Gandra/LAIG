@@ -639,8 +639,7 @@ class MySceneGraph {
         var children = lightsNode.children;
         for (let i = 0; i < children.length; i++) {
             //Omni
-            if (children.nodeName == "omni") {
-                let grandChildren = children[i].children;
+            if (children[i].nodeName == "omni") {
                 var omni = {
                     id: "",
                     enabled: "",
@@ -670,31 +669,69 @@ class MySceneGraph {
 
                     }
                 }
+
+                //Id
                 omni.id = this.reader.getString(children[i], 'id');
+
+                //Enabled
                 omni.enabled = this.reader.getString(children[i], 'enabled');
 
+                //Grandchildren
+                var grandChildren = children[i].children;
                 for (let j = 0; j < grandChildren.length; j++) {
-                    omni.location.x = this.reader.getFloat(grandchildren[j], 'x');
-                    omni.location.y = this.reader.getFloat(grandchildren[j], 'y');
-                    omni.location.z = this.reader.getFloat(grandchildren[j], 'z');
-                    omni.location.w = this.reader.getFloat(grandchildren[j], 'w');
-                    omni.ambient.r = this.reader.getFloat(grandchildren[j], 'r');
-                    omni.ambient.g = this.reader.getFloat(grandchildren[j], 'g');
-                    omni.ambient.b = this.reader.getFloat(grandchildren[j], 'b');
-                    omni.ambient.a = this.reader.getFloat(grandchildren[j], 'a');
-                    omni.diffuse.r = this.reader.getFloat(grandchildren[j], 'r');
-                    omni.diffuse.g = this.reader.getFloat(grandchildren[j], 'g');
-                    omni.diffuse.b = this.reader.getFloat(grandchildren[j], 'b');
-                    omni.diffuse.a = this.reader.getFloat(grandchildren[j], 'a');
-                    omni.specular.r = this.reader.getFloat(grandchildren[j], 'r');
-                    omni.specular.g = this.reader.getFloat(grandchildren[j], 'g');
-                    omni.specular.b = this.reader.getFloat(grandchildren[j], 'b');
-                    omni.specular.a = this.reader.getFloat(grandchildren[j], 'a');
+                    //Location
+                    if (grandChildren[i].nodeName == "location") {
+                        //x
+                        omni.location.x = this.reader.getFloat(grandChildren[j], 'x');
+                        if (omni.location.x < 0 || omni.location.x == null || isNaN(omni.location.x) || omni.location.x > 1) {
+                            return "Invalid x value in omni light location";
+                        }
+                        //y
+                        omni.location.y = this.reader.getFloat(grandChildren[j], 'y');
+                        if (omni.location.y < 0 || omni.location.y == null || isNaN(omni.location.y) || omni.location.y > 1) {
+                            return "Invalid y value in omni light location";
+                        }
+                        //z
+                        omni.location.z = this.reader.getFloat(grandChildren[j], 'z');
+                        if (omni.location.z < 0 || omni.location.z == null || isNaN(omni.location.z) || omni.location.z > 1) {
+                            return "Invalid z value in omni light location";
+                        }
+                        //w
+                        omni.location.w = this.reader.getFloat(grandChildren[j], 'w');
+                        if (omni.location.w < 0 || omni.location.w == null || isNaN(omni.location.w) || omni.location.w > 1) {
+                            return "Invalid w value in omni light location";
+                        }
+                    }
+                    //Ambient
+                    else if (grandChildren[i].nodeName == "ambient") {
+                        omni.ambient.r = this.reader.getFloat(grandChildren[j], 'r');
+                        omni.ambient.g = this.reader.getFloat(grandChildren[j], 'g');
+                        omni.ambient.b = this.reader.getFloat(grandChildren[j], 'b');
+                        omni.ambient.a = this.reader.getFloat(grandChildren[j], 'a');
+                    }
+                    //Diffuse
+                    else if (grandChildren[i].nodeName == "diffuse") {
+                        omni.diffuse.r = this.reader.getFloat(grandChildren[j], 'r');
+                        omni.diffuse.g = this.reader.getFloat(grandChildren[j], 'g');
+                        omni.diffuse.b = this.reader.getFloat(grandChildren[j], 'b');
+                        omni.diffuse.a = this.reader.getFloat(grandChildren[j], 'a');
+                    }
+                    //Specular
+                    else if (grandChildren[i].nodeName == "specular") {
+                        omni.specular.r = this.reader.getFloat(grandChildren[j], 'r');
+                        omni.specular.g = this.reader.getFloat(grandChildren[j], 'g');
+                        omni.specular.b = this.reader.getFloat(grandChildren[j], 'b');
+                        omni.specular.a = this.reader.getFloat(grandChildren[j], 'a');
+                    }
+                    //Unknown
+                    else{
+                        this.onXMLMinorError("unknown tag <" + grandChildren[j].nodeName + "> in omni light");
+                        continue;
+                    }
                 }
             }
             //Spot
-            else if (children.nodeName = "spot") {
-                var grandChildren = children[i].children;
+            else if (children[i].nodeName == "spot") {
                 var spot = {
                     id: "",
                     enabled: "",
@@ -725,27 +762,55 @@ class MySceneGraph {
                         a: 0
                     }
                 }
+
+                //Id
                 spot.id = this.reader.getString(children[i], 'id');
+
+                //Enabled
                 spot.enabled = this.reader.getString(children[i], 'enabled');
+
+                //Angle
                 spot.angle = this.reader.getString(children[i], 'angle');
+
+                //Exponent
                 spot.exponent = this.reader.getString(children[i], 'exponent');
+
+                //Grandchildren
+                var grandChildren = children[i].children;
                 for (let j = 0; j < grandChildren.length; j++) {
-                    spot.location.x = this.reader.getFloat(grandchildren[j], 'x');
-                    spot.location.y = this.reader.getFloat(grandchildren[j], 'y');
-                    spot.location.z = this.reader.getFloat(grandchildren[j], 'z');
-                    spot.location.w = this.reader.getFloat(grandchildren[j], 'w');
-                    spot.ambient.r = this.reader.getFloat(grandchildren[j], 'r');
-                    spot.ambient.g = this.reader.getFloat(grandchildren[j], 'g');
-                    spot.ambient.b = this.reader.getFloat(grandchildren[j], 'b');
-                    spot.ambient.a = this.reader.getFloat(grandchildren[j], 'a');
-                    spot.diffuse.r = this.reader.getFloat(grandchildren[j], 'r');
-                    spot.diffuse.g = this.reader.getFloat(grandchildren[j], 'g');
-                    spot.diffuse.b = this.reader.getFloat(grandchildren[j], 'b');
-                    spot.diffuse.a = this.reader.getFloat(grandchildren[j], 'a');
-                    spot.specular.r = this.reader.getFloat(grandchildren[j], 'r');
-                    spot.specular.g = this.reader.getFloat(grandchildren[j], 'g');
-                    spot.specular.b = this.reader.getFloat(grandchildren[j], 'b');
-                    spot.specular.a = this.reader.getFloat(grandchildren[j], 'a');
+                    //Location
+                    if (grandChildren[i].nodeName == "location") {
+                        spot.location.x = this.reader.getFloat(grandChildren[j], 'x');
+                        spot.location.y = this.reader.getFloat(grandChildren[j], 'y');
+                        spot.location.z = this.reader.getFloat(grandChildren[j], 'z');
+                        spot.location.w = this.reader.getFloat(grandChildren[j], 'w');
+                    }
+                    //Ambient
+                    else if (grandChildren[i].nodeName == "ambient") {
+                        spot.ambient.r = this.reader.getFloat(grandChildren[j], 'r');
+                        spot.ambient.g = this.reader.getFloat(grandChildren[j], 'g');
+                        spot.ambient.b = this.reader.getFloat(grandChildren[j], 'b');
+                        spot.ambient.a = this.reader.getFloat(grandChildren[j], 'a');
+                    }
+                    //Diffuse
+                    else if (grandChildren[i].nodeName == "diffuse") {
+                        spot.diffuse.r = this.reader.getFloat(grandChildren[j], 'r');
+                        spot.diffuse.g = this.reader.getFloat(grandChildren[j], 'g');
+                        spot.diffuse.b = this.reader.getFloat(grandChildren[j], 'b');
+                        spot.diffuse.a = this.reader.getFloat(grandChildren[j], 'a');
+                    }
+                    //Specular
+                    else if (grandChildren[i].nodeName == "specular") {
+                        spot.specular.r = this.reader.getFloat(grandChildren[j], 'r');
+                        spot.specular.g = this.reader.getFloat(grandChildren[j], 'g');
+                        spot.specular.b = this.reader.getFloat(grandChildren[j], 'b');
+                        spot.specular.a = this.reader.getFloat(grandChildren[j], 'a');
+                    }
+                    //Unknown
+                    else {
+                        this.onXMLMinorError("unknown tag <" + grandChildren[j].nodeName + "> in spot light");
+                        continue;
+                    }
                 }
 
             }
