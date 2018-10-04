@@ -24,7 +24,7 @@
         <!-- Deve existir um ou mais blocos "omni" ou "spot" -->
         <!-- Os identificadores "id" nao podem ser repetidos -->
         <omni id="omni" enabled="true">
-            <location x="10" y="10" z="80" w="ff" />
+            <location x="10" y="10" z="80" w="10" />
             <ambient r="1" g="1" b="1" a="0" />
             <diffuse r="0.2" g="0.2" b="0.2" a="0" />
             <specular r="0" g="0" b="0" a="0" />
