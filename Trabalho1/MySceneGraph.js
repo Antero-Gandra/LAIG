@@ -986,7 +986,6 @@ class MySceneGraph {
     }
 
     /**
-     * TODO Parses the <materials> node.
      * @param {materials block element} materialsNode
      */
     parseMaterials(materialsNode) {
@@ -1037,14 +1036,94 @@ class MySceneGraph {
 
             //Shininess
             material.shininess = this.reader.getString(children[i], 'shininess');
-            if (material.shininess == null)
-                return "no shininess defined for material";
+            if (material.shininess == null || isNaN(material.shininess))
+                return "invalid shininess defined for material";
 
             //Grandchildren
             var grandChildren = children[i].children;
 
             for (let j = 0; j < grandChildren.length; j++) {
-                //TODO from here
+                //Emission
+                if (grandChildren[j].nodeName == "emission") {
+                    //r
+                    material.emission.r = this.reader.getFloat(grandChildren[j], 'r');
+                    if (material.emission.r < 0 || material.emission.r == null || isNaN(material.emission.r) || material.emission.r > 1)
+                        return "Invalid r value in material emission";
+                    //g
+                    material.emission.g = this.reader.getFloat(grandChildren[j], 'g');
+                    if (material.emission.g < 0 || material.emission.g == null || isNaN(material.emission.g) || material.emission.g > 1)
+                        return "Invalid g value in material emission";
+                    //b
+                    material.emission.b = this.reader.getFloat(grandChildren[j], 'b');
+                    if (material.emission.b < 0 || material.emission.b == null || isNaN(material.emission.b) || material.emission.b > 1)
+                        return "Invalid b value in material emission";
+                    //a
+                    material.emission.a = this.reader.getFloat(grandChildren[j], 'a');
+                    if (material.emission.a < 0 || material.emission.a == null || isNaN(material.emission.a) || material.emission.a > 1)
+                        return "Invalid a value in material emission";
+                }
+                //Ambient
+                else if(grandChildren[j].nodeName == "ambient"){
+                    //r
+                    material.ambient.r = this.reader.getFloat(grandChildren[j], 'r');
+                    if (material.ambient.r < 0 || material.ambient.r == null || isNaN(material.ambient.r) || material.ambient.r > 1)
+                        return "Invalid r value in material ambient";
+                    //g
+                    material.ambient.g = this.reader.getFloat(grandChildren[j], 'g');
+                    if (material.ambient.g < 0 || material.ambient.g == null || isNaN(material.ambient.g) || material.ambient.g > 1)
+                        return "Invalid g value in material ambient";
+                    //b
+                    material.ambient.b = this.reader.getFloat(grandChildren[j], 'b');
+                    if (material.ambient.b < 0 || material.ambient.b == null || isNaN(material.ambient.b) || material.ambient.b > 1)
+                        return "Invalid b value in material ambient";
+                    //a
+                    material.ambient.a = this.reader.getFloat(grandChildren[j], 'a');
+                    if (material.ambient.a < 0 || material.ambient.a == null || isNaN(material.ambient.a) || material.ambient.a > 1)
+                        return "Invalid a value in material ambient";
+                }
+                //Diffuse
+                else if(grandChildren[j].nodeName == "diffuse"){
+                    //r
+                    material.diffuse.r = this.reader.getFloat(grandChildren[j], 'r');
+                    if (material.diffuse.r < 0 || material.diffuse.r == null || isNaN(material.diffuse.r) || material.diffuse.r > 1)
+                        return "Invalid r value in material diffuse";
+                    //g
+                    material.diffuse.g = this.reader.getFloat(grandChildren[j], 'g');
+                    if (material.diffuse.g < 0 || material.diffuse.g == null || isNaN(material.diffuse.g) || material.diffuse.g > 1)
+                        return "Invalid g value in material diffuse";
+                    //b
+                    material.diffuse.b = this.reader.getFloat(grandChildren[j], 'b');
+                    if (material.diffuse.b < 0 || material.diffuse.b == null || isNaN(material.diffuse.b) || material.diffuse.b > 1)
+                        return "Invalid b value in material diffuse";
+                    //a
+                    material.diffuse.a = this.reader.getFloat(grandChildren[j], 'a');
+                    if (material.diffuse.a < 0 || material.diffuse.a == null || isNaN(material.diffuse.a) || material.diffuse.a > 1)
+                        return "Invalid a value in material diffuse";
+                }
+                //Specular
+                else if(grandChildren[j].nodeName == "specular"){
+                    //r
+                    material.specular.r = this.reader.getFloat(grandChildren[j], 'r');
+                    if (material.specular.r < 0 || material.specular.r == null || isNaN(material.specular.r) || material.specular.r > 1)
+                        return "Invalid r value in material specular";
+                    //g
+                    material.specular.g = this.reader.getFloat(grandChildren[j], 'g');
+                    if (material.specular.g < 0 || material.specular.g == null || isNaN(material.specular.g) || material.specular.g > 1)
+                        return "Invalid g value in material specular";
+                    //b
+                    material.specular.b = this.reader.getFloat(grandChildren[j], 'b');
+                    if (material.specular.b < 0 || material.specular.b == null || isNaN(material.specular.b) || material.specular.b > 1)
+                        return "Invalid b value in material specular";
+                    //a
+                    material.specular.a = this.reader.getFloat(grandChildren[j], 'a');
+                    if (material.specular.a < 0 || material.specular.a == null || isNaN(material.specular.a) || material.specular.a > 1)
+                        return "Invalid a value in material specular";
+                }
+                //Unknown
+                else {
+                    this.onXMLMinorError("unknown tag <" + grandChildren[j].nodeName + "> in materials");
+                    continue;
+                }
             }
 
         }
