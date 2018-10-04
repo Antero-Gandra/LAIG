@@ -781,8 +781,7 @@ class MySceneGraph {
                     target: {
                         x: 0,
                         y: 0,
-                        z: 0,
-                        w: 0
+                        z: 0
                     },
                     ambient: {
                         r: 0,
@@ -860,10 +859,6 @@ class MySceneGraph {
                         spot.target.z = this.reader.getFloat(grandChildren[j], 'z');
                         if (spot.target.z == null || isNaN(spot.target.z))
                             return "Invalid z value in spot light target";
-                        //w
-                        spot.target.w = this.reader.getFloat(grandChildren[j], 'w');
-                        if (spot.target.w == null || isNaN(spot.target.w))
-                            return "Invalid w value in spot light target";
                     }
                     //Ambient
                     else if (grandChildren[j].nodeName == "ambient") {
