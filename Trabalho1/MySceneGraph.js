@@ -1152,9 +1152,14 @@ class MySceneGraph {
             if (children[i].nodeName == "transformation") {
 
                 var transformation = {
-                    id: 0,
+                    id: "",
                     list: []
                 }
+
+                //Id
+                transformation.id = this.reader.getString(children[i], 'id');
+                if (transformation.id == null)
+                    return "no ID defined for transformation";
 
                 //Grandchildren
                 var grandChildren = children[i].children;
@@ -1233,6 +1238,10 @@ class MySceneGraph {
                         continue;
                     }
                 }
+
+                //Check empty transformation
+                if (transformation.list.length == 0)
+                    return "empty transformation list in transformation with id: " + transformation.id;
 
             }
             //Unknown
