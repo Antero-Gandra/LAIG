@@ -1063,7 +1063,7 @@ class MySceneGraph {
                         return "Invalid a value in material emission";
                 }
                 //Ambient
-                else if(grandChildren[j].nodeName == "ambient"){
+                else if (grandChildren[j].nodeName == "ambient") {
                     //r
                     material.ambient.r = this.reader.getFloat(grandChildren[j], 'r');
                     if (material.ambient.r < 0 || material.ambient.r == null || isNaN(material.ambient.r) || material.ambient.r > 1)
@@ -1082,7 +1082,7 @@ class MySceneGraph {
                         return "Invalid a value in material ambient";
                 }
                 //Diffuse
-                else if(grandChildren[j].nodeName == "diffuse"){
+                else if (grandChildren[j].nodeName == "diffuse") {
                     //r
                     material.diffuse.r = this.reader.getFloat(grandChildren[j], 'r');
                     if (material.diffuse.r < 0 || material.diffuse.r == null || isNaN(material.diffuse.r) || material.diffuse.r > 1)
@@ -1101,7 +1101,7 @@ class MySceneGraph {
                         return "Invalid a value in material diffuse";
                 }
                 //Specular
-                else if(grandChildren[j].nodeName == "specular"){
+                else if (grandChildren[j].nodeName == "specular") {
                     //r
                     material.specular.r = this.reader.getFloat(grandChildren[j], 'r');
                     if (material.specular.r < 0 || material.specular.r == null || isNaN(material.specular.r) || material.specular.r > 1)
@@ -1139,6 +1139,108 @@ class MySceneGraph {
      * @param {transformations block element} transformationsNode
      */
     parseTransformations(transformationsNode) {
+
+        //TODO push to here
+        this.transformations = [];
+
+        //Children
+
+        var children = transformationsNode.children;
+
+        for (let i = 0; i < children.length; i++) {
+            //Transformation
+            if (children[i].nodeName == "transformation") {
+
+                var transformation = {
+                    id: 0,
+                    list: []
+                }
+
+                //Grandchildren
+                var grandChildren = children[i].children;
+                for (let j = 0; j < grandChildren.length; j++) {
+
+                    //Translate
+                    if (grandChildren[j].nodeName == "translate") {
+                        var translate = {
+                            x: 0,
+                            y: 0,
+                            z: 0
+                        }
+
+                        //x
+                        translate.x = this.reader.getFloat(grandChildren[j], 'x');
+                        if (translate.x == null || isNaN(translate.x))
+                            return "Invalid x value in transformation translate";
+                        //y
+                        translate.y = this.reader.getFloat(grandChildren[j], 'y');
+                        if (translate.y == null || isNaN(translate.y))
+                            return "Invalid y value in transformation translate";
+                        //z
+                        translate.z = this.reader.getFloat(grandChildren[j], 'z');
+                        if (translate.z == null || isNaN(translate.z))
+                            return "Invalid z value in transformation translate";
+
+                        //Add to transformations
+                        transformation.list.push(translate);
+                    }
+                    //Rotate
+                    else if (grandChildren[j].nodeName == "rotate") {
+                        var rotate = {
+                            axis: "",
+                            angle: 0
+                        }
+
+                        //axis
+                        rotate.axis = this.reader.getString(grandChildren[j], 'axis');
+                        if (rotate.axis != "x" && rotate.axis != "y" && rotate.axis != "z")
+                            return "Invalid axis value in transformation rotate";
+                        //angle
+                        rotate.angle = this.reader.getFloat(grandChildren[j], 'angle');
+                        if (rotate.angle == null || isNaN(rotate.angle))
+                            return "Invalid angle value in transformation rotate";
+
+                        //Add to transformations
+                        transformation.list.push(rotate);
+                    }
+                    //Scale
+                    else if (grandChildren[j].nodeName == "scale") {
+                        var scale = {
+                            x: 0,
+                            y: 0,
+                            z: 0
+                        }
+
+                        //x
+                        scale.x = this.reader.getFloat(grandChildren[j], 'x');
+                        if (scale.x == null || isNaN(scale.x))
+                            return "Invalid x value in transformation scale";
+                        //y
+                        scale.y = this.reader.getFloat(grandChildren[j], 'y');
+                        if (scale.y == null || isNaN(scale.y))
+                            return "Invalid y value in transformation scale";
+                        //z
+                        scale.z = this.reader.getFloat(grandChildren[j], 'z');
+                        if (scale.z == null || isNaN(scale.z))
+                            return "Invalid z value in transformation scale";
+
+                        //Add to transformations
+                        transformation.list.push(scale);
+                    }
+                    //Unknown
+                    else {
+                        this.onXMLMinorError("unknown tag <" + grandChildren[j].nodeName + "> in transformation with id: " + transformation.id);
+                        continue;
+                    }
+                }
+
+            }
+            //Unknown
+            else {
+                this.onXMLMinorError("unknown tag <" + children[i].nodeName + "> in transformations");
+                continue;
+            }
+        }
 
         this.log("Parsed transformations");
 

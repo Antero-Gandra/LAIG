@@ -64,9 +64,9 @@
         <transformation id="trans">
             <!-- instrucoes a usar sem limite nem ordem -->
             <!-- deve existir pelo menos uma transformacao -->
-            <translate x="ff" y="ff" z="ff" />
-            <rotate axis="cc" angle="ff" />
-            <scale x="ff" y="ff" z="ff" />
+            <translate x="5" y="0" z="5" />
+            <rotate axis="x" angle="10" />
+            <scale x="2" y="2" z="2" />
         </transformation>
     </transformations>
 
