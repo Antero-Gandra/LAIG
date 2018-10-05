@@ -79,26 +79,26 @@
         <!-- os parametros devem ser interpretados, genericamente, -->
         <!-- como em WebGL; o cilindro deve adicionalmente ter tampas -->
 
-        <!-- Cena de Teste: Primitivas para uma basketball e uma "tabela" -->
+        <!-- Cena de Teste que usa todas as primitivas: Primitivas para uma basketball e uma "tabela" -->
 
         <primitive id="backboard">
-            <rectangle x1="ff" y1="ff" x2="ff" y2="ff" />
+            <rectangle x1="-2" y1="-1" x2="2" y2="1" />
         </primitive>
 
         <primitive id="indicator">
-            <triangle x1="ff" y1="ff" z1="ff" x2="ff" y2="ff" z2="ff" x3="ff" y3="ff" z3="ff" />
+            <triangle x1="-1" y1="0" z1="0" x2="0" y2="1" z2="0" x3="1" y3="0" z3="0" />
         </primitive>
 
         <primitive id="post">
-            <cylinder base="ff" top="ff" height="ff" slices="ii" stacks="ii" />
+            <cylinder base="1" top="1" height="10" slices="10" stacks="1" />
         </primitive>
 
         <primitive id="basketball">
-            <sphere radius="ff" slices="ii" stacks="ii" />
+            <sphere radius="1" slices="10" stacks="1" />
         </primitive>
 
         <primitive id="ring">
-            <torus inner="ff" outer="ff" slices="ii" loops="ii" />
+            <torus inner="1" outer="1.2" slices="10" loops="1" />
         </primitive>
 
     </primitives>
