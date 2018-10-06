@@ -27,6 +27,7 @@ class MySceneGraph {
         this.idRoot = null;
         this.axisLength = null;
         this.views = [];
+        this.defaultView = null;
         this.ambient = {
             ambient: null,
             background: null
@@ -245,11 +246,6 @@ class MySceneGraph {
         //Clearing views
         this.views = [];
 
-        //Read default ID
-        var defaultViewId = this.reader.getString(viewsNode, 'default');
-        if (defaultViewId == null)
-            return "no default view ID defined";
-
         //Children
         var children = viewsNode.children;
 
@@ -363,6 +359,12 @@ class MySceneGraph {
                 if (orthographic.id == null)
                     return "no ID defined for orthographic view";
 
+                //Check unique ID
+                for (let v = 0; v < this.views.length; v++) {
+                    if (this.views[v].id == orthographic.id)
+                        return "view ID duplicate found for id: " + orthographic.id;
+                }
+
                 //Near
                 orthographic.near = this.reader.getFloat(children[i], 'near');
                 if (orthographic.near == null || orthographic.near < 0 || isNaN(orthographic.near))
@@ -403,9 +405,29 @@ class MySceneGraph {
                 continue;
             }
 
-
         }
 
+        //No views found
+        if (this.views.length == 0)
+            return "there needs to be at least 1 view defined";
+
+        //Read default ID
+        this.defaultView = this.reader.getString(viewsNode, 'default');
+        if (this.defaultView == null)
+            return "no default view ID defined";
+
+        //Default view not found
+        var found = false;
+        for (let v = 0; v < this.views.length; v++) {
+            if (this.views[v].id == this.defaultView) {
+                found = true;
+                break;
+            }
+        }
+        if (!found)
+            return "default view not found in views list";
+
+        //Parsing complete
         this.log("Parsed views");
 
         return null;
@@ -564,9 +586,15 @@ class MySceneGraph {
                 if (omni.id == null)
                     return "Invalid id value in omni light";
 
+                //Check unique ID
+                for (let v = 0; v < this.lights.length; v++) {
+                    if (this.lights[v].id == omni.id)
+                        return "omni light ID duplicate found for id: " + omni.id;
+                }
+
                 //Enabled
-                omni.enabled = this.reader.getString(children[i], 'enabled');
-                if (omni.enabled == null || (omni.enabled != "true" && omni.enabled != "false"))
+                omni.enabled = this.reader.getBoolean(children[i], 'enabled');
+                if (omni.enabled == null)
                     return "Invalid enabled value in omni light with id: " + omni.id;
 
                 //Grandchildren
@@ -702,9 +730,15 @@ class MySceneGraph {
                 if (spot.id == null)
                     return "Invalid id value in spot light";
 
+                //Check unique ID
+                for (let v = 0; v < this.lights.length; v++) {
+                    if (this.lights[v].id == spot.id)
+                        return "spot light ID duplicate found for id: " + spot.id;
+                }
+
                 //Enabled
-                spot.enabled = this.reader.getString(children[i], 'enabled');
-                if (spot.enabled == null || (spot.enabled != "true" && spot.enabled != "false"))
+                spot.enabled = this.reader.getBoolean(children[i], 'enabled');
+                if (spot.enabled == null)
                     return "Invalid enabled value in spot light with id: " + spot.id;
 
                 //Angle
@@ -861,6 +895,12 @@ class MySceneGraph {
                 if (texture.id == null)
                     return "no ID defined for texture";
 
+                //Check unique ID
+                for (let v = 0; v < this.textures.length; v++) {
+                    if (this.textures[v].id == texture.id)
+                        return "texture ID duplicate found for id: " + texture.id;
+                }
+
                 //Path
                 texture.file = this.reader.getString(children[i], 'file');
                 if (texture.file == null)
@@ -931,6 +971,12 @@ class MySceneGraph {
             material.id = this.reader.getString(children[i], 'id');
             if (material.id == null)
                 return "no ID defined for material";
+
+            //Check unique ID
+            for (let v = 0; v < this.materials.length; v++) {
+                if (this.materials[v].id == material.id)
+                    return "material ID duplicate found for id: " + material.id;
+            }
 
             //Shininess
             material.shininess = this.reader.getString(children[i], 'shininess');
@@ -1061,6 +1107,12 @@ class MySceneGraph {
                 if (transformation.id == null)
                     return "no ID defined for transformation";
 
+                //Check unique ID
+                for (let v = 0; v < this.transformations.length; v++) {
+                    if (this.transformations[v].id == transformation.id)
+                        return "transformation ID duplicate found for id: " + transformation.id;
+                }
+
                 //Grandchildren
                 var grandChildren = children[i].children;
                 for (let j = 0; j < grandChildren.length; j++) {
@@ -1184,6 +1236,12 @@ class MySceneGraph {
                 primitive.id = this.reader.getString(children[i], 'id');
                 if (primitive.id == null)
                     return "no ID defined for primitive";
+
+                //Check unique ID
+                for (let v = 0; v < this.primitives.length; v++) {
+                    if (this.primitives[v].id == primitive.id)
+                        return "primitive ID duplicate found for id: " + primitive.id;
+                }
 
                 //Grandchildren
                 var grandChildren = children[i].children;
@@ -1418,10 +1476,16 @@ class MySceneGraph {
                     childrenPrimitives: []
                 }
 
-                //Id
+                //ID
                 component.id = this.reader.getString(children[i], 'id');
                 if (component.id == null)
                     return "no ID defined for component";
+
+                //Check unique ID
+                for (let v = 0; v < this.components.length; v++) {
+                    if (this.components[v].id == component.id)
+                        return "component ID duplicate found for id: " + component.id;
+                }
 
                 //Grandchildren
                 var grandChildren = children[i].children;
@@ -1437,14 +1501,26 @@ class MySceneGraph {
                             //TransformationRef
                             if (grandGrandChildren[h].nodeName == "transformationref") {
 
-                                //id
+                                //ID
                                 component.transformations_ref = this.reader.getString(grandGrandChildren[h], 'id');
                                 if (component.transformations_ref == null)
                                     return "no ID defined for component transformations_ref with id: " + component.id;
 
+                                //Check ID exists
+                                var found = false;
+                                for (let v = 0; v < this.transformations.length; v++) {
+                                    if (this.transformations[v].id == component.transformations_ref) {
+                                        found = true;
+                                        break;
+                                    }
+                                }
+                                if (!found)
+                                    return "transformations_ref not found in transformations array with id: " + component.transformations_ref
+
                                 //Found transformationref, we can ignore transformation list and break;
                                 component.transformations_list = [];
                                 break;
+
                             }
                             //Translate
                             else if (grandGrandChildren[h].nodeName == "translate") {
@@ -1529,10 +1605,21 @@ class MySceneGraph {
                         for (let h = 0; h < grandGrandChildren.length; h++) {
                             //Material
                             if (grandGrandChildren[h].nodeName == "material") {
-                                //id
+                                //ID
                                 var tmp = this.reader.getString(grandGrandChildren[h], 'id');
                                 if (tmp == null)
-                                    return "no ID defined for component transformations_ref with id: " + component.id;
+                                    return "no ID defined for component material with id: " + component.id;
+
+                                //Check material ID exists
+                                var found = false;
+                                for (let v = 0; v < this.materials.length; v++) {
+                                    if (this.materials[v].id == tmp) {
+                                        found = true;
+                                        break;
+                                    }
+                                }
+                                if (!found)
+                                    return "material ID not found in materials array with id: " + tmp;
 
                                 //Add to material list
                                 component.materials.push(tmp);
@@ -1547,10 +1634,21 @@ class MySceneGraph {
                     //Texture
                     else if (grandChildren[j].nodeName == "texture") {
 
-                        //id
+                        //ID
                         component.texture.id = this.reader.getString(grandChildren[j], 'id');
                         if (component.texture.id == null)
                             return "no ID defined for component texture with id: " + component.id;
+
+                        //Check texture ID exists
+                        var found = false;
+                        for (let v = 0; v < this.textures.length; v++) {
+                            if (this.textures[v].id == component.texture.id) {
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (!found)
+                            return "texture ID not found in textures array with id: " + component.texture.id;
 
                         //length_s
                         component.texture.length_s = this.reader.getFloat(grandChildren[j], 'length_s');
@@ -1572,18 +1670,33 @@ class MySceneGraph {
 
                             //ComponentRef
                             if (grandGrandChildren[h].nodeName == "componentref") {
-                                //id
+                                //ID
                                 var tmp = this.reader.getString(grandGrandChildren[h], 'id');
                                 if (tmp == null)
                                     return "no ID defined for component child componentref with id: " + component.id;
+
+                                //Add ID to list
                                 component.childrenComponents.push(tmp);
                             }
                             //PrimitiveRef
                             else if (grandGrandChildren[h].nodeName == "primitiveref") {
-                                //id
+                                //ID
                                 var tmp = this.reader.getString(grandGrandChildren[h], 'id');
                                 if (tmp == null)
                                     return "no ID defined for component child primitiveref with id: " + component.id;
+
+                                //Check PrimitiveRef ID exists
+                                var found = false;
+                                for (let v = 0; v < this.primitives.length; v++) {
+                                    if (this.primitives[v].id == tmp) {
+                                        found = true;
+                                        break;
+                                    }
+                                }
+                                if (!found)
+                                    return "PrimitiveRef ID not found in primitives array with id: " + tmp;
+
+                                //Add ID to list
                                 component.childrenPrimitives.push(tmp);
                             }
                             //Unknown
@@ -1605,6 +1718,21 @@ class MySceneGraph {
             //Add to components array
             this.components.push(component);
 
+        }
+
+        //Check all components have children component with correct ID(after reading all components)
+        for (let i = 0; i < this.components.length; i++) {
+            for (let j = 0; j < this.components[i].childrenComponents.length; j++) {
+                var found = false;
+                for (let h = 0; h < this.components.length; h++) {
+                    if(this.components[h].id == this.components[i].childrenComponents[j]){
+                        found = true;
+                        break;
+                    }
+                }         
+                if(!found)
+                    "component with id: " + this.components[i].id + " has a children component with id: " + this.components[i].childrenComponents[j] + " which doesn't exist";
+            }
         }
 
         this.log("Parsed components");

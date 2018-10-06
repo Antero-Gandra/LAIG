@@ -36,12 +36,13 @@ class MyInterface extends CGFinterface {
 
         // add two check boxes to the group. The identifiers must be members variables of the scene initialized in scene.init as boolean
         // e.g. this.option1=true; this.option2=false;
-
+        
         for (var key in lights) {
             if (lights.hasOwnProperty(key)) {
-                this.scene.lightValues[key] = lights[key][0];
+                this.scene.lightValues[key] = lights[key].enabled;
                 group.add(this.scene.lightValues, key);
             }
         }
+        
     }
 }
