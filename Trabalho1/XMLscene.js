@@ -46,36 +46,35 @@ class XMLscene extends CGFscene {
      * Initializes the scene lights with the values read from the XML file.
      */
     initLights() {
-        var i = 0;
-        // Lights index.
 
-        // Reads the lights from the scene graph.
-        for (var key in this.graph.lights) {
-            // Only eight lights allowed by WebGL.
-            if (i >= 8)
-                break;
+        //Setup lights
+        for (let i = 0; i < this.graph.lights.length; i++) {
 
-            if (this.graph.lights.hasOwnProperty(key)) {
-                var light = this.graph.lights[key];
+            const light = this.graph.lights[i];
 
-                //lights are predefined in cgfscene
-                this.lights[i].setPosition(light.location.x, light.location.y, light.location.z, light.location.w);
-                this.lights[i].setAmbient(light.ambient.r, light.ambient.g, light.ambient.b, light.ambient.a);
-                this.lights[i].setDiffuse(light.diffuse.r, light.diffuse.g, light.diffuse.b, light.diffuse.a);
-                this.lights[i].setSpecular(light.specular.r, light.specular.g, light.specular.b, light.specular.a);
+            this.lights[i].setPosition(light.location.x, light.location.y, light.location.z, light.location.w);
+            this.lights[i].setAmbient(light.ambient.r, light.ambient.g, light.ambient.b, light.ambient.a);
+            this.lights[i].setDiffuse(light.diffuse.r, light.diffuse.g, light.diffuse.b, light.diffuse.a);
+            this.lights[i].setSpecular(light.specular.r, light.specular.g, light.specular.b, light.specular.a);
 
-                this.lights[i].setVisible(true);
-
-                if (light.enable)
-                    this.lights[i].enable();
-                else
-                    this.lights[i].disable();
-
-                this.lights[i].update();
-
-                i++;
+            //Detect if it's spotlight
+            if(light.angle != undefined){
+                this.lights[i].setSpotCutOff(light.angle);
+                this.lights[i].setSpotExponent(light.exponent);
+                //TODO doesn't seem right
+                this.lights[i].setSpotDirection(light.target.x, light.target.y, light.target.z);
             }
+
+            this.lights[i].setVisible(true);
+
+            if (light.enable)
+                this.lights[i].enable();
+            else
+                this.lights[i].disable();
+
+            this.lights[i].update();
         }
+
     }
 
 
@@ -126,6 +125,7 @@ class XMLscene extends CGFscene {
 
         //Was the graph loaded already?
         if (this.sceneInited) {
+
             // Draw axis
             this.axis.display();
 

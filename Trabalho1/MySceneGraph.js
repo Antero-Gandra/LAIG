@@ -24,7 +24,7 @@ class MySceneGraph {
         scene.graph = this;
 
         //Loaded data
-        //TODO have a similar structure but with CGF objects of this data that was read
+        //TODO Change structure to use CGF derived objects
         this.idRoot = null;
         this.axisLength = null;
         this.views = [];
@@ -1280,7 +1280,7 @@ class MySceneGraph {
                             return "Invalid y2 value in rectangle primitive with id: " + primitive.id;
 
                         //Add to primitive and break out of loop(only 1 "shape" per primitive)
-                        primitive.shape = rectangle;
+                        primitive.shape = new Rectangle(this.scene, rectangle.x1, rectangle.y1, rectangle.x2, rectangle.y2);
                         break;
                     }
                     //Triangle
