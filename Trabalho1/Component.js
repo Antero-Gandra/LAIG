@@ -23,25 +23,27 @@ class Component {
 
         //TODO Setup transformation
         //Detect if transformations was explicitly declared or is a reference to the transformations array
-        if(transformations.isArray()){
+        if (Array.isArray(this.transformations)) {
 
         }
 
         //Setup primitive nodes
-        for (let i = 0; i < scene.graph.primitives.length; i++) {
-            for (let j = 0; j < childrenPrimitivesIDs.length; j++) {
-                if (scene.graph.primitives[i].id == childrenPrimitivesIDs[j]) {
-                    this.childrenPrimitives.push(scene.graph.primitives[i].shape);
+        this.childrenPrimitives = [];
+        for (let i = 0; i < this.scene.graph.primitives.length; i++) {
+            for (let j = 0; j < this.childrenPrimitivesIDs.length; j++) {
+                if (this.scene.graph.primitives[i].id == this.childrenPrimitivesIDs[j]) {
+                    this.childrenPrimitives.push(this.scene.graph.primitives[i].shape);
                     break;
                 }
             }
         }
 
         //Setup component nodes
-        for (let i = 0; i < scene.graph.components.length; i++) {
-            for (let j = 0; j < childrenComponentsIDs.length; j++) {
-                if (scene.graph.components[i].id == childrenComponentsIDs[j]) {
-                    this.childrenComponents.push(scene.graph.components[i]);
+        this.childrenComponents = [];
+        for (let i = 0; i < this.scene.graph.components.length; i++) {
+            for (let j = 0; j < this.childrenComponentsIDs.length; j++) {
+                if (this.scene.graph.components[i].id == this.childrenComponentsIDs[j]) {
+                    this.childrenComponents.push(this.scene.graph.components[i]);
                     break;
                 }
             }
