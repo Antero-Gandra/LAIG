@@ -618,7 +618,6 @@ class MySceneGraph {
                 this.onXMLMinorError("unknown tag <" + children[i].nodeName + "> in ambient");
                 continue;
             }
-
         }
 
         this.log("Parsed ambient");
@@ -932,7 +931,6 @@ class MySceneGraph {
                 this.onXMLMinorError("unknown tag <" + children[i].nodeName + "> in lights");
                 continue;
             }
-
         }
 
         this.log("Parsed lights");
@@ -1126,7 +1124,6 @@ class MySceneGraph {
                     continue;
                 }
             }
-
         }
 
         this.log("Parsed materials");
@@ -1472,7 +1469,6 @@ class MySceneGraph {
                     continue;
                 }
             }
-
         }
 
         this.log("Parsed primitives");
@@ -1684,7 +1680,6 @@ class MySceneGraph {
                     }
                 }
             }
-
         }
 
         this.log("Parsed components");
