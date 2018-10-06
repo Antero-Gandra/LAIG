@@ -208,13 +208,13 @@ class MySceneGraph {
         //Root
         var sceneRoot = this.reader.getString(sceneNode, 'root');
         if (sceneRoot == null) {
-            return "No root defined"
+            return "no root defined"
         }
 
         //Axis
         var sceneAxisLength = this.reader.getFloat(sceneNode, 'axis_length');
-        if (sceneAxisLength <= 0) {
-            return "Scene axis length should be bigger then 0"
+        if (sceneAxisLength <= 0 || isNaN(sceneAxisLength)) {
+            return "invalid axis_length for root"
         }
 
         this.log("Parsed scene");
@@ -267,12 +267,12 @@ class MySceneGraph {
 
                 //Near
                 perspective.near = this.reader.getFloat(children[i], 'near');
-                if (perspective.near < 0 || perspective.near == null)
+                if (perspective.near < 0 || perspective.near == null || isNaN(perspective.near))
                     return "invalid near plane for perspective view";
 
                 //Far
                 perspective.far = this.reader.getFloat(children[i], 'far');
-                if (perspective.far < 0 || perspective.far == null)
+                if (perspective.far < 0 || perspective.far == null || isNaN(perspective.far))
                     return "invalid far plane for perspective view";
 
                 //Children of Perspective
