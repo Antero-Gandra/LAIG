@@ -268,12 +268,12 @@ class MySceneGraph {
                 //Near
                 perspective.near = this.reader.getFloat(children[i], 'near');
                 if (perspective.near < 0 || perspective.near == null || isNaN(perspective.near))
-                    return "invalid near plane for perspective view";
+                    return "invalid near plane for perspective view with id: " + perspective.id;
 
                 //Far
                 perspective.far = this.reader.getFloat(children[i], 'far');
                 if (perspective.far < 0 || perspective.far == null || isNaN(perspective.far))
-                    return "invalid far plane for perspective view";
+                    return "invalid far plane for perspective view with id: " + perspective.id;
 
                 //Children of Perspective
                 var grandChildren = children[i].children;
@@ -287,17 +287,17 @@ class MySceneGraph {
                         //x
                         x = this.reader.getFloat(grandChildren[j], 'x');
                         if (x == null || isNaN(x))
-                            return "invalid x value for perspective view from";
+                            return "invalid x value for perspective view from with id: " + perspective.id;
                         perspective.from.x = x;
                         //y
                         y = this.reader.getFloat(grandChildren[j], 'y');
                         if (y == null || isNaN(y))
-                            return "invalid y value for perspective view from";
+                            return "invalid y value for perspective view from with id: " + perspective.id;
                         perspective.from.y = y;
                         //z
                         z = this.reader.getFloat(grandChildren[j], 'z');
                         if (z == null || isNaN(z))
-                            return "invalid z value for perspective view from";
+                            return "invalid z value for perspective view from with id: " + perspective.id;
                         perspective.from.z = z;
                     }
                     //To
@@ -305,17 +305,17 @@ class MySceneGraph {
                         //x
                         x = this.reader.getFloat(grandChildren[j], 'x');
                         if (x == null || isNaN(x))
-                            return "invalid x value for perspective view to";
+                            return "invalid x value for perspective view to with id: " + perspective.id;
                         perspective.to.x = x;
                         //y
                         y = this.reader.getFloat(grandChildren[j], 'y');
                         if (y == null || isNaN(y))
-                            return "invalid y value for perspective view to";
+                            return "invalid y value for perspective view to with id: " + perspective.id;
                         perspective.to.y = y;
                         //z
                         z = this.reader.getFloat(grandChildren[j], 'z');
                         if (z == null || isNaN(z))
-                            return "invalid z value for perspective view to";
+                            return "invalid z value for perspective view to with id: " + perspective.id;
                         perspective.to.z = z;
                     }
                     //Unknown
@@ -348,32 +348,32 @@ class MySceneGraph {
                 //Near
                 orthographic.near = this.reader.getFloat(children[i], 'near');
                 if (orthographic.near == null || orthographic.near < 0 || isNaN(orthographic.near))
-                    return "no near defined for orthographic view";
+                    return "no near defined for orthographic view with id: " + orthographic.id;
 
                 //Far
                 orthographic.far = this.reader.getFloat(children[i], 'far');
                 if (orthographic.far == null || orthographic.far < 0 || isNaN(orthographic.far))
-                    return "no far defined for orthographic view";
+                    return "no far defined for orthographic view with id: " + orthographic.id;
 
                 //Left
                 orthographic.left = this.reader.getFloat(children[i], 'left');
                 if (orthographic.left == null || isNaN(orthographic.left))
-                    return "no left defined for orthographic view";
+                    return "no left defined for orthographic view with id: " + orthographic.id;
 
                 //Right
                 orthographic.right = this.reader.getFloat(children[i], 'right');
                 if (orthographic.right == null || isNaN(orthographic.right))
-                    return "no right defined for orthographic view";
+                    return "no right defined for orthographic view with id: " + orthographic.id;
 
                 //Top
                 orthographic.top = this.reader.getFloat(children[i], 'top');
                 if (orthographic.top == null || isNaN(orthographic.top))
-                    return "no top defined for orthographic view";
+                    return "no top defined for orthographic view with id: " + orthographic.id;
 
                 //Bottom
                 orthographic.bottom = this.reader.getFloat(children[i], 'bottom');
                 if (orthographic.bottom == null || isNaN(orthographic.bottom))
-                    return "no bottom defined for orthographic view";
+                    return "no bottom defined for orthographic view with id: " + orthographic.id;
 
             }
             //Unknown tag
@@ -536,7 +536,7 @@ class MySceneGraph {
                 //Enabled
                 omni.enabled = this.reader.getString(children[i], 'enabled');
                 if (omni.enabled == null || (omni.enabled != "true" && omni.enabled != "false"))
-                    return "Invalid enabled value in omni light";
+                    return "Invalid enabled value in omni light with id: " + omni.id;
 
                 //Grandchildren
                 var grandChildren = children[i].children;
@@ -546,80 +546,80 @@ class MySceneGraph {
                         //x
                         omni.location.x = this.reader.getFloat(grandChildren[j], 'x');
                         if (omni.location.x == null || isNaN(omni.location.x))
-                            return "Invalid x value in omni light location";
+                            return "Invalid x value in omni light location with id: " + omni.id;
                         //y
                         omni.location.y = this.reader.getFloat(grandChildren[j], 'y');
                         if (omni.location.y == null || isNaN(omni.location.y))
-                            return "Invalid y value in omni light location";
+                            return "Invalid y value in omni light location with id: " + omni.id;
                         //z
                         omni.location.z = this.reader.getFloat(grandChildren[j], 'z');
                         if (omni.location.z == null || isNaN(omni.location.z))
-                            return "Invalid z value in omni light location";
+                            return "Invalid z value in omni light location with id: " + omni.id;
                         //w
                         omni.location.w = this.reader.getFloat(grandChildren[j], 'w');
                         if (omni.location.w == null || isNaN(omni.location.w))
-                            return "Invalid w value in omni light location";
+                            return "Invalid w value in omni light location with id: " + omni.id;
                     }
                     //Ambient
                     else if (grandChildren[j].nodeName == "ambient") {
                         //r
                         omni.ambient.r = this.reader.getFloat(grandChildren[j], 'r');
                         if (omni.ambient.r < 0 || omni.ambient.r == null || isNaN(omni.ambient.r) || omni.ambient.r > 1)
-                            return "Invalid r value in omni light ambient";
+                            return "Invalid r value in omni light ambient with id: " + omni.id;
                         //g
                         omni.ambient.g = this.reader.getFloat(grandChildren[j], 'g');
                         if (omni.ambient.g < 0 || omni.ambient.g == null || isNaN(omni.ambient.g) || omni.ambient.g > 1)
-                            return "Invalid g value in omni light ambient";
+                            return "Invalid g value in omni light ambient with id: " + omni.id;
                         //b
                         omni.ambient.b = this.reader.getFloat(grandChildren[j], 'b');
                         if (omni.ambient.b < 0 || omni.ambient.b == null || isNaN(omni.ambient.b) || omni.ambient.b > 1)
-                            return "Invalid b value in omni light ambient";
+                            return "Invalid b value in omni light ambient with id: " + omni.id;
                         //a
                         omni.ambient.a = this.reader.getFloat(grandChildren[j], 'a');
                         if (omni.ambient.a < 0 || omni.ambient.a == null || isNaN(omni.ambient.a) || omni.ambient.a > 1)
-                            return "Invalid a value in omni light ambient";
+                            return "Invalid a value in omni light ambient with id: " + omni.id;
                     }
                     //Diffuse
                     else if (grandChildren[j].nodeName == "diffuse") {
                         //r
                         omni.diffuse.r = this.reader.getFloat(grandChildren[j], 'r');
                         if (omni.diffuse.r < 0 || omni.diffuse.r == null || isNaN(omni.diffuse.r) || omni.diffuse.r > 1)
-                            return "Invalid r value in omni light diffuse";
+                            return "Invalid r value in omni light diffuse with id: " + omni.id;
                         //g
                         omni.diffuse.g = this.reader.getFloat(grandChildren[j], 'g');
                         if (omni.diffuse.g < 0 || omni.diffuse.g == null || isNaN(omni.diffuse.g) || omni.diffuse.g > 1)
-                            return "Invalid g value in omni light diffuse";
+                            return "Invalid g value in omni light diffuse with id: " + omni.id;
                         //b
                         omni.diffuse.b = this.reader.getFloat(grandChildren[j], 'b');
                         if (omni.diffuse.b < 0 || omni.diffuse.b == null || isNaN(omni.diffuse.b) || omni.diffuse.b > 1)
-                            return "Invalid b value in omni light diffuse";
+                            return "Invalid b value in omni light diffuse with id: " + omni.id;
                         //a
                         omni.diffuse.a = this.reader.getFloat(grandChildren[j], 'a');
                         if (omni.diffuse.a < 0 || omni.diffuse.a == null || isNaN(omni.diffuse.a) || omni.diffuse.a > 1)
-                            return "Invalid a value in omni light diffuse";
+                            return "Invalid a value in omni light diffuse with id: " + omni.id;
                     }
                     //Specular
                     else if (grandChildren[j].nodeName == "specular") {
                         //r
                         omni.specular.r = this.reader.getFloat(grandChildren[j], 'r');
                         if (omni.specular.r < 0 || omni.specular.r == null || isNaN(omni.specular.r) || omni.specular.r > 1)
-                            return "Invalid r value in omni light specular";
+                            return "Invalid r value in omni light specular with id: " + omni.id;
                         //g
                         omni.specular.g = this.reader.getFloat(grandChildren[j], 'g');
                         if (omni.specular.g < 0 || omni.specular.g == null || isNaN(omni.specular.g) || omni.specular.g > 1)
-                            return "Invalid g value in omni light specular";
+                            return "Invalid g value in omni light specular with id: " + omni.id;
                         //b
                         omni.specular.b = this.reader.getFloat(grandChildren[j], 'b');
                         if (omni.specular.b < 0 || omni.specular.b == null || isNaN(omni.specular.b) || omni.specular.b > 1)
-                            return "Invalid b value in omni light specular";
+                            return "Invalid b value in omni light specular with id: " + omni.id;
                         //a
                         omni.specular.a = this.reader.getFloat(grandChildren[j], 'a');
                         if (omni.specular.a < 0 || omni.specular.a == null || isNaN(omni.specular.a) || omni.specular.a > 1)
-                            return "Invalid a value in omni light specular";
+                            return "Invalid a value in omni light specular with id: " + omni.id;
                     }
                     //Unknown
                     else {
-                        this.onXMLMinorError("unknown tag <" + grandChildren[j].nodeName + "> in omni light");
+                        this.onXMLMinorError("unknown tag <" + grandChildren[j].nodeName + "> in omni light with id: " + omni.id);
                         continue;
                     }
                 }
@@ -670,17 +670,17 @@ class MySceneGraph {
                 //Enabled
                 spot.enabled = this.reader.getString(children[i], 'enabled');
                 if (spot.enabled == null || (spot.enabled != "true" && spot.enabled != "false"))
-                    return "Invalid enabled value in spot light";
+                    return "Invalid enabled value in spot light with id: " + spot.id;
 
                 //Angle
                 spot.angle = this.reader.getFloat(children[i], 'angle');
                 if (spot.angle < 0 || spot.angle == null || isNaN(spot.angle))
-                    return "Invalid a angle value in spot light";
+                    return "Invalid a angle value in spot light with id: " + spot.id;
 
                 //Exponent
                 spot.exponent = this.reader.getFloat(children[i], 'exponent');
                 if (spot.exponent < 0 || spot.exponent == null || isNaN(spot.exponent))
-                    return "Invalid a exponent value in spot light";
+                    return "Invalid a exponent value in spot light with id: " + spot.id;
 
                 //Grandchildren
                 var grandChildren = children[i].children;
@@ -690,95 +690,95 @@ class MySceneGraph {
                         //x
                         spot.location.x = this.reader.getFloat(grandChildren[j], 'x');
                         if (spot.location.x == null || isNaN(spot.location.x))
-                            return "Invalid x value in spot light location";
+                            return "Invalid x value in spot light location with id: " + spot.id;
                         //y
                         spot.location.y = this.reader.getFloat(grandChildren[j], 'y');
                         if (spot.location.y == null || isNaN(spot.location.y))
-                            return "Invalid y value in spot light location";
+                            return "Invalid y value in spot light location with id: " + spot.id;
                         //z
                         spot.location.z = this.reader.getFloat(grandChildren[j], 'z');
                         if (spot.location.z == null || isNaN(spot.location.z))
-                            return "Invalid z value in spot light location";
+                            return "Invalid z value in spot light location with id: " + spot.id;
                         //w
                         spot.location.w = this.reader.getFloat(grandChildren[j], 'w');
                         if (spot.location.w == null || isNaN(spot.location.w))
-                            return "Invalid w value in spot light location";
+                            return "Invalid w value in spot light location with id: " + spot.id;
                     }
                     //Target
                     else if (grandChildren[j].nodeName == "target") {
                         //x
                         spot.target.x = this.reader.getFloat(grandChildren[j], 'x');
                         if (spot.target.x == null || isNaN(spot.target.x))
-                            return "Invalid x value in spot light target";
+                            return "Invalid x value in spot light target with id: " + spot.id;
                         //y
                         spot.target.y = this.reader.getFloat(grandChildren[j], 'y');
                         if (spot.target.y == null || isNaN(spot.target.y))
-                            return "Invalid y value in spot light target";
+                            return "Invalid y value in spot light target with id: " + spot.id;
                         //z
                         spot.target.z = this.reader.getFloat(grandChildren[j], 'z');
                         if (spot.target.z == null || isNaN(spot.target.z))
-                            return "Invalid z value in spot light target";
+                            return "Invalid z value in spot light target with id: " + spot.id;
                     }
                     //Ambient
                     else if (grandChildren[j].nodeName == "ambient") {
                         //r
                         spot.ambient.r = this.reader.getFloat(grandChildren[j], 'r');
                         if (spot.ambient.r < 0 || spot.ambient.r == null || isNaN(spot.ambient.r) || spot.ambient.r > 1)
-                            return "Invalid r value in spot light ambient";
+                            return "Invalid r value in spot light ambient with id: " + spot.id;
                         //g
                         spot.ambient.g = this.reader.getFloat(grandChildren[j], 'g');
                         if (spot.ambient.g < 0 || spot.ambient.g == null || isNaN(spot.ambient.g) || spot.ambient.g > 1)
-                            return "Invalid g value in spot light ambient";
+                            return "Invalid g value in spot light ambient with id: " + spot.id;
                         //b
                         spot.ambient.b = this.reader.getFloat(grandChildren[j], 'b');
                         if (spot.ambient.b < 0 || spot.ambient.b == null || isNaN(spot.ambient.b) || spot.ambient.b > 1)
-                            return "Invalid b value in spot light ambient";
+                            return "Invalid b value in spot light ambient with id: " + spot.id;
                         //a
                         spot.ambient.a = this.reader.getFloat(grandChildren[j], 'a');
                         if (spot.ambient.a < 0 || spot.ambient.a == null || isNaN(spot.ambient.a) || spot.ambient.a > 1)
-                            return "Invalid a value in spot light ambient";
+                            return "Invalid a value in spot light ambient with id: " + spot.id;
                     }
                     //Diffuse
                     else if (grandChildren[j].nodeName == "diffuse") {
                         //r
                         spot.diffuse.r = this.reader.getFloat(grandChildren[j], 'r');
                         if (spot.diffuse.r < 0 || spot.diffuse.r == null || isNaN(spot.diffuse.r) || spot.diffuse.r > 1)
-                            return "Invalid r value in spot light diffuse";
+                            return "Invalid r value in spot light diffuse with id: " + spot.id;
                         //g
                         spot.diffuse.g = this.reader.getFloat(grandChildren[j], 'g');
                         if (spot.diffuse.g < 0 || spot.diffuse.g == null || isNaN(spot.diffuse.g) || spot.diffuse.g > 1)
-                            return "Invalid g value in spot light diffuse";
+                            return "Invalid g value in spot light diffuse with id: " + spot.id;
                         //b
                         spot.diffuse.b = this.reader.getFloat(grandChildren[j], 'b');
                         if (spot.diffuse.b < 0 || spot.diffuse.b == null || isNaN(spot.diffuse.b) || spot.diffuse.b > 1)
-                            return "Invalid b value in spot light diffuse";
+                            return "Invalid b value in spot light diffuse with id: " + spot.id;
                         //a
                         spot.diffuse.a = this.reader.getFloat(grandChildren[j], 'a');
                         if (spot.diffuse.a < 0 || spot.diffuse.a == null || isNaN(spot.diffuse.a) || spot.diffuse.a > 1)
-                            return "Invalid a value in spot light diffuse";
+                            return "Invalid a value in spot light diffuse with id: " + spot.id;
                     }
                     //Specular
                     else if (grandChildren[j].nodeName == "specular") {
                         //r
                         spot.specular.r = this.reader.getFloat(grandChildren[j], 'r');
                         if (spot.specular.r < 0 || spot.specular.r == null || isNaN(spot.specular.r) || spot.specular.r > 1)
-                            return "Invalid r value in spot light specular";
+                            return "Invalid r value in spot light specular with id: " + spot.id;
                         //g
                         spot.specular.g = this.reader.getFloat(grandChildren[j], 'g');
                         if (spot.specular.g < 0 || spot.specular.g == null || isNaN(spot.specular.g) || spot.specular.g > 1)
-                            return "Invalid g value in spot light specular";
+                            return "Invalid g value in spot light specular with id: " + spot.id;
                         //b
                         spot.specular.b = this.reader.getFloat(grandChildren[j], 'b');
                         if (spot.specular.b < 0 || spot.specular.b == null || isNaN(spot.specular.b) || spot.specular.b > 1)
-                            return "Invalid b value in spot light specular";
+                            return "Invalid b value in spot light specular with id: " + spot.id;
                         //a
                         spot.specular.a = this.reader.getFloat(grandChildren[j], 'a');
                         if (spot.specular.a < 0 || spot.specular.a == null || isNaN(spot.specular.a) || spot.specular.a > 1)
-                            return "Invalid a value in spot light specular";
+                            return "Invalid a value in spot light specular with id: " + spot.id;
                     }
                     //Unknown
                     else {
-                        this.onXMLMinorError("unknown tag <" + grandChildren[j].nodeName + "> in spot light");
+                        this.onXMLMinorError("unknown tag <" + grandChildren[j].nodeName + "> in spot light with id: " + spot.id);
                         continue;
                     }
                 }
@@ -826,7 +826,7 @@ class MySceneGraph {
                 //Path
                 texture.file = this.reader.getString(children[i], 'file');
                 if (texture.file == null)
-                    return "no file defined for texture";
+                    return "no file defined for texture with id: " + texture.id;
 
             }
             //Unknown
@@ -894,7 +894,7 @@ class MySceneGraph {
             //Shininess
             material.shininess = this.reader.getString(children[i], 'shininess');
             if (material.shininess == null || isNaN(material.shininess))
-                return "invalid shininess defined for material";
+                return "invalid shininess defined for material with id: " + material.id;
 
             //Grandchildren
             var grandChildren = children[i].children;
@@ -905,76 +905,76 @@ class MySceneGraph {
                     //r
                     material.emission.r = this.reader.getFloat(grandChildren[j], 'r');
                     if (material.emission.r < 0 || material.emission.r == null || isNaN(material.emission.r) || material.emission.r > 1)
-                        return "Invalid r value in material emission";
+                        return "Invalid r value in material emission with id: " + material.id;
                     //g
                     material.emission.g = this.reader.getFloat(grandChildren[j], 'g');
                     if (material.emission.g < 0 || material.emission.g == null || isNaN(material.emission.g) || material.emission.g > 1)
-                        return "Invalid g value in material emission";
+                        return "Invalid g value in material emission with id: " + material.id;
                     //b
                     material.emission.b = this.reader.getFloat(grandChildren[j], 'b');
                     if (material.emission.b < 0 || material.emission.b == null || isNaN(material.emission.b) || material.emission.b > 1)
-                        return "Invalid b value in material emission";
+                        return "Invalid b value in material emission with id: " + material.id;
                     //a
                     material.emission.a = this.reader.getFloat(grandChildren[j], 'a');
                     if (material.emission.a < 0 || material.emission.a == null || isNaN(material.emission.a) || material.emission.a > 1)
-                        return "Invalid a value in material emission";
+                        return "Invalid a value in material emission with id: " + material.id;
                 }
                 //Ambient
                 else if (grandChildren[j].nodeName == "ambient") {
                     //r
                     material.ambient.r = this.reader.getFloat(grandChildren[j], 'r');
                     if (material.ambient.r < 0 || material.ambient.r == null || isNaN(material.ambient.r) || material.ambient.r > 1)
-                        return "Invalid r value in material ambient";
+                        return "Invalid r value in material ambient with id: " + material.id;
                     //g
                     material.ambient.g = this.reader.getFloat(grandChildren[j], 'g');
                     if (material.ambient.g < 0 || material.ambient.g == null || isNaN(material.ambient.g) || material.ambient.g > 1)
-                        return "Invalid g value in material ambient";
+                        return "Invalid g value in material ambient with id: " + material.id;
                     //b
                     material.ambient.b = this.reader.getFloat(grandChildren[j], 'b');
                     if (material.ambient.b < 0 || material.ambient.b == null || isNaN(material.ambient.b) || material.ambient.b > 1)
-                        return "Invalid b value in material ambient";
+                        return "Invalid b value in material ambient with id: " + material.id;
                     //a
                     material.ambient.a = this.reader.getFloat(grandChildren[j], 'a');
                     if (material.ambient.a < 0 || material.ambient.a == null || isNaN(material.ambient.a) || material.ambient.a > 1)
-                        return "Invalid a value in material ambient";
+                        return "Invalid a value in material ambient with id: " + material.id;
                 }
                 //Diffuse
                 else if (grandChildren[j].nodeName == "diffuse") {
                     //r
                     material.diffuse.r = this.reader.getFloat(grandChildren[j], 'r');
                     if (material.diffuse.r < 0 || material.diffuse.r == null || isNaN(material.diffuse.r) || material.diffuse.r > 1)
-                        return "Invalid r value in material diffuse";
+                        return "Invalid r value in material diffuse with id: " + material.id;
                     //g
                     material.diffuse.g = this.reader.getFloat(grandChildren[j], 'g');
                     if (material.diffuse.g < 0 || material.diffuse.g == null || isNaN(material.diffuse.g) || material.diffuse.g > 1)
-                        return "Invalid g value in material diffuse";
+                        return "Invalid g value in material diffuse with id: " + material.id;
                     //b
                     material.diffuse.b = this.reader.getFloat(grandChildren[j], 'b');
                     if (material.diffuse.b < 0 || material.diffuse.b == null || isNaN(material.diffuse.b) || material.diffuse.b > 1)
-                        return "Invalid b value in material diffuse";
+                        return "Invalid b value in material diffuse with id: " + material.id;
                     //a
                     material.diffuse.a = this.reader.getFloat(grandChildren[j], 'a');
                     if (material.diffuse.a < 0 || material.diffuse.a == null || isNaN(material.diffuse.a) || material.diffuse.a > 1)
-                        return "Invalid a value in material diffuse";
+                        return "Invalid a value in material diffuse with id: " + material.id;
                 }
                 //Specular
                 else if (grandChildren[j].nodeName == "specular") {
                     //r
                     material.specular.r = this.reader.getFloat(grandChildren[j], 'r');
                     if (material.specular.r < 0 || material.specular.r == null || isNaN(material.specular.r) || material.specular.r > 1)
-                        return "Invalid r value in material specular";
+                        return "Invalid r value in material specular with id: " + material.id;
                     //g
                     material.specular.g = this.reader.getFloat(grandChildren[j], 'g');
                     if (material.specular.g < 0 || material.specular.g == null || isNaN(material.specular.g) || material.specular.g > 1)
-                        return "Invalid g value in material specular";
+                        return "Invalid g value in material specular with id: " + material.id;
                     //b
                     material.specular.b = this.reader.getFloat(grandChildren[j], 'b');
                     if (material.specular.b < 0 || material.specular.b == null || isNaN(material.specular.b) || material.specular.b > 1)
-                        return "Invalid b value in material specular";
+                        return "Invalid b value in material specular with id: " + material.id;
                     //a
                     material.specular.a = this.reader.getFloat(grandChildren[j], 'a');
                     if (material.specular.a < 0 || material.specular.a == null || isNaN(material.specular.a) || material.specular.a > 1)
-                        return "Invalid a value in material specular";
+                        return "Invalid a value in material specular with id: " + material.id;
                 }
                 //Unknown
                 else {
@@ -1031,15 +1031,15 @@ class MySceneGraph {
                         //x
                         translate.x = this.reader.getFloat(grandChildren[j], 'x');
                         if (translate.x == null || isNaN(translate.x))
-                            return "Invalid x value in transformation translate";
+                            return "Invalid x value in transformation translate with id: " + transformation.id;
                         //y
                         translate.y = this.reader.getFloat(grandChildren[j], 'y');
                         if (translate.y == null || isNaN(translate.y))
-                            return "Invalid y value in transformation translate";
+                            return "Invalid y value in transformation translate with id: " + transformation.id;
                         //z
                         translate.z = this.reader.getFloat(grandChildren[j], 'z');
                         if (translate.z == null || isNaN(translate.z))
-                            return "Invalid z value in transformation translate";
+                            return "Invalid z value in transformation translate with id: " + transformation.id;
 
                         //Add to transformations
                         transformation.list.push(translate);
@@ -1054,11 +1054,11 @@ class MySceneGraph {
                         //axis
                         rotate.axis = this.reader.getString(grandChildren[j], 'axis');
                         if (rotate.axis != "x" && rotate.axis != "y" && rotate.axis != "z")
-                            return "Invalid axis value in transformation rotate";
+                            return "Invalid axis value in transformation rotate with id: " + transformation.id;
                         //angle
                         rotate.angle = this.reader.getFloat(grandChildren[j], 'angle');
                         if (rotate.angle == null || isNaN(rotate.angle))
-                            return "Invalid angle value in transformation rotate";
+                            return "Invalid angle value in transformation rotate with id: " + transformation.id;
 
                         //Add to transformations
                         transformation.list.push(rotate);
@@ -1074,15 +1074,15 @@ class MySceneGraph {
                         //x
                         scale.x = this.reader.getFloat(grandChildren[j], 'x');
                         if (scale.x == null || isNaN(scale.x))
-                            return "Invalid x value in transformation scale";
+                            return "Invalid x value in transformation scale with id: " + transformation.id;
                         //y
                         scale.y = this.reader.getFloat(grandChildren[j], 'y');
                         if (scale.y == null || isNaN(scale.y))
-                            return "Invalid y value in transformation scale";
+                            return "Invalid y value in transformation scale with id: " + transformation.id;
                         //z
                         scale.z = this.reader.getFloat(grandChildren[j], 'z');
                         if (scale.z == null || isNaN(scale.z))
-                            return "Invalid z value in transformation scale";
+                            return "Invalid z value in transformation scale with id: " + transformation.id;
 
                         //Add to transformations
                         transformation.list.push(scale);
@@ -1125,12 +1125,6 @@ class MySceneGraph {
 
         for (let i = 0; i < children.length; i++) {
 
-            //Unknown tag
-            if (children[i].nodeName != "primitive") {
-                this.onXMLMinorError("unknown tag <" + children[i].nodeName + "> in primitives");
-                continue;
-            }
-
             //Primitive
             var primitive = {
                 id: 0,
@@ -1158,19 +1152,19 @@ class MySceneGraph {
                     //x1
                     rectangle.x1 = this.reader.getFloat(grandChildren[j], 'x1');
                     if (rectangle.x1 == null || isNaN(rectangle.x1))
-                        return "Invalid x1 value in rectangle primitive";
+                        return "Invalid x1 value in rectangle primitive with id: " + primitive.id;
                     //y1
                     rectangle.y1 = this.reader.getFloat(grandChildren[j], 'y1');
                     if (rectangle.y1 == null || isNaN(rectangle.y1))
-                        return "Invalid y1 value in rectangle primitive";
+                        return "Invalid y1 value in rectangle primitive with id: " + primitive.id;
                     //x2
                     rectangle.x2 = this.reader.getFloat(grandChildren[j], 'x2');
                     if (rectangle.x2 == null || isNaN(rectangle.x2))
-                        return "Invalid x2 value in rectangle primitive";
+                        return "Invalid x2 value in rectangle primitive with id: " + primitive.id;
                     //y2
                     rectangle.y2 = this.reader.getFloat(grandChildren[j], 'y2');
                     if (rectangle.y2 == null || isNaN(rectangle.y2))
-                        return "Invalid y2 value in rectangle primitive";
+                        return "Invalid y2 value in rectangle primitive with id: " + primitive.id;
 
                     //Add to primitive and break out of loop(only 1 "shape" per primitive)
                     primitive.shape = rectangle;
@@ -1193,39 +1187,39 @@ class MySceneGraph {
                     //x1
                     triangle.x1 = this.reader.getFloat(grandChildren[j], 'x1');
                     if (triangle.x1 == null || isNaN(triangle.x1))
-                        return "Invalid x1 value in triangle primitive";
+                        return "Invalid x1 value in triangle primitive with id: " + primitive.id;
                     //y1
                     triangle.y1 = this.reader.getFloat(grandChildren[j], 'y1');
                     if (triangle.y1 == null || isNaN(triangle.y1))
-                        return "Invalid y1 value in triangle primitive";
+                        return "Invalid y1 value in triangle primitive with id: " + primitive.id;
                     //z1
                     triangle.z1 = this.reader.getFloat(grandChildren[j], 'z1');
                     if (triangle.z1 == null || isNaN(triangle.z1))
-                        return "Invalid z1 value in triangle primitive";
+                        return "Invalid z1 value in triangle primitive with id: " + primitive.id;
                     //x2
                     triangle.x2 = this.reader.getFloat(grandChildren[j], 'x2');
                     if (triangle.x2 == null || isNaN(triangle.x2))
-                        return "Invalid x2 value in triangle primitive";
+                        return "Invalid x2 value in triangle primitive with id: " + primitive.id;
                     //y2
                     triangle.y2 = this.reader.getFloat(grandChildren[j], 'y2');
                     if (triangle.y2 == null || isNaN(triangle.y2))
-                        return "Invalid y2 value in triangle primitive";
+                        return "Invalid y2 value in triangle primitive with id: " + primitive.id;
                     //z2
                     triangle.z2 = this.reader.getFloat(grandChildren[j], 'z2');
                     if (triangle.z2 == null || isNaN(triangle.z2))
-                        return "Invalid z2 value in triangle primitive";
+                        return "Invalid z2 value in triangle primitive with id: " + primitive.id;
                     //x3
                     triangle.x3 = this.reader.getFloat(grandChildren[j], 'x3');
                     if (triangle.x3 == null || isNaN(triangle.x3))
-                        return "Invalid x3 value in triangle primitive";
+                        return "Invalid x3 value in triangle primitive with id: " + primitive.id;
                     //y3
                     triangle.y3 = this.reader.getFloat(grandChildren[j], 'y3');
                     if (triangle.y3 == null || isNaN(triangle.y3))
-                        return "Invalid y3 value in triangle primitive";
+                        return "Invalid y3 value in triangle primitive with id: " + primitive.id;
                     //z3
                     triangle.z3 = this.reader.getFloat(grandChildren[j], 'z3');
                     if (triangle.z3 == null || isNaN(triangle.z3))
-                        return "Invalid z3 value in triangle primitive";
+                        return "Invalid z3 value in triangle primitive with id: " + primitive.id;
 
                     //Add to primitive and break out of loop(only 1 "shape" per primitive)
                     primitive.shape = triangle;
@@ -1244,23 +1238,23 @@ class MySceneGraph {
                     //base
                     cylinder.base = this.reader.getFloat(grandChildren[j], 'base');
                     if (cylinder.base == null || isNaN(cylinder.base) || cylinder.base < 0)
-                        return "Invalid base value in cylinder primitive";
+                        return "Invalid base value in cylinder primitive with id: " + primitive.id;
                     //top
                     cylinder.top = this.reader.getFloat(grandChildren[j], 'top');
                     if (cylinder.top == null || isNaN(cylinder.top) || cylinder.top < 0)
-                        return "Invalid top value in cylinder primitive";
+                        return "Invalid top value in cylinder primitive with id: " + primitive.id;
                     //height
                     cylinder.height = this.reader.getFloat(grandChildren[j], 'height');
                     if (cylinder.height == null || isNaN(cylinder.height) || cylinder.height < 0)
-                        return "Invalid height value in cylinder primitive";
+                        return "Invalid height value in cylinder primitive with id: " + primitive.id;
                     //slices
                     cylinder.slices = this.reader.getFloat(grandChildren[j], 'slices');
                     if (cylinder.slices == null || isNaN(cylinder.slices) || cylinder.slices < 0)
-                        return "Invalid slices value in cylinder primitive";
+                        return "Invalid slices value in cylinder primitive with id: " + primitive.id;
                     //stacks
                     cylinder.stacks = this.reader.getFloat(grandChildren[j], 'stacks');
                     if (cylinder.stacks == null || isNaN(cylinder.stacks) || cylinder.stacks < 0)
-                        return "Invalid stacks value in cylinder primitive";
+                        return "Invalid stacks value in cylinder primitive with id: " + primitive.id;
 
                     //Add to primitive and break out of loop(only 1 "shape" per primitive)
                     primitive.shape = cylinder;
@@ -1277,15 +1271,15 @@ class MySceneGraph {
                     //radius
                     sphere.radius = this.reader.getFloat(grandChildren[j], 'radius');
                     if (sphere.radius == null || isNaN(sphere.radius) || sphere.radius < 0)
-                        return "Invalid radius value in sphere primitive";
+                        return "Invalid radius value in sphere primitive with id: " + primitive.id;
                     //slices
                     sphere.slices = this.reader.getFloat(grandChildren[j], 'slices');
                     if (sphere.slices == null || isNaN(sphere.slices) || sphere.slices < 0)
-                        return "Invalid slices value in sphere primitive";
+                        return "Invalid slices value in sphere primitive with id: " + primitive.id;
                     //stacks
                     sphere.stacks = this.reader.getFloat(grandChildren[j], 'stacks');
                     if (sphere.stacks == null || isNaN(sphere.stacks) || sphere.stacks < 0)
-                        return "Invalid stacks value in sphere primitive";
+                        return "Invalid stacks value in sphere primitive with id: " + primitive.id;
 
                     //Add to primitive and break out of loop(only 1 "shape" per primitive)
                     primitive.shape = sphere;
@@ -1303,19 +1297,19 @@ class MySceneGraph {
                     //inner
                     torus.inner = this.reader.getFloat(grandChildren[j], 'inner');
                     if (torus.inner == null || isNaN(torus.inner) || torus.inner < 0)
-                        return "Invalid inner value in torus primitive";
+                        return "Invalid inner value in torus primitive with id: " + primitive.id;
                     //outer
                     torus.outer = this.reader.getFloat(grandChildren[j], 'outer');
                     if (torus.outer == null || isNaN(torus.outer) || torus.outer < 0)
-                        return "Invalid outer value in torus primitive";
+                        return "Invalid outer value in torus primitive with id: " + primitive.id;
                     //slices
                     torus.slices = this.reader.getFloat(grandChildren[j], 'slices');
                     if (torus.slices == null || isNaN(torus.slices) || torus.slices < 0)
-                        return "Invalid slices value in torus primitive";
+                        return "Invalid slices value in torus primitive with id: " + primitive.id;
                     //loops
                     torus.loops = this.reader.getFloat(grandChildren[j], 'loops');
                     if (torus.loops == null || isNaN(torus.loops) || torus.loops < 0)
-                        return "Invalid loops value in torus primitive";
+                        return "Invalid loops value in torus primitive with id: " + primitive.id;
 
                     //Add to primitive and break out of loop(only 1 "shape" per primitive)
                     primitive.shape = torus;
@@ -1327,6 +1321,13 @@ class MySceneGraph {
                     continue;
                 }
             }
+
+            //Unknown tag
+            if (children[i].nodeName != "primitive") {
+                this.onXMLMinorError("unknown tag <" + children[i].nodeName + "> in primitives");
+                continue;
+            }
+
         }
 
         this.log("Parsed primitives");
@@ -1383,7 +1384,7 @@ class MySceneGraph {
                             //id
                             component.transformations_ref = this.reader.getString(grandGrandChildren[h], 'id');
                             if (component.transformations_ref == null)
-                                return "no ID defined for component transformations_ref";
+                                return "no ID defined for component transformations_ref with id: " + component.id;
 
                             //Found transformationref, we can ignore transformation list and break;
                             component.transformations_list = [];
@@ -1400,15 +1401,15 @@ class MySceneGraph {
                             //x
                             translate.x = this.reader.getFloat(grandGrandChildren[h], 'x');
                             if (translate.x == null || isNaN(translate.x))
-                                return "Invalid x value in explicit transformation translate";
+                                return "Invalid x value in component explicit transformation translate with id: " + component.id;
                             //y
                             translate.y = this.reader.getFloat(grandGrandChildren[h], 'y');
                             if (translate.y == null || isNaN(translate.y))
-                                return "Invalid y value in explicit transformation translate";
+                                return "Invalid y value in component explicit transformation translate with id: " + component.id;
                             //z
                             translate.z = this.reader.getFloat(grandGrandChildren[h], 'z');
                             if (translate.z == null || isNaN(translate.z))
-                                return "Invalid z value in explicit transformation translate";
+                                return "Invalid z value in component explicit transformation translate with id: " + component.id;
 
                             //Add to transformations
                             component.transformations_list.push(translate);
@@ -1423,11 +1424,11 @@ class MySceneGraph {
                             //axis
                             rotate.axis = this.reader.getString(grandGrandChildren[h], 'axis');
                             if (rotate.axis != "x" && rotate.axis != "y" && rotate.axis != "z")
-                                return "Invalid axis value in explicit transformation rotate";
+                                return "Invalid axis value in component explicit transformation rotate with id: " + component.id;
                             //angle
                             rotate.angle = this.reader.getFloat(grandGrandChildren[h], 'angle');
                             if (rotate.angle == null || isNaN(rotate.angle))
-                                return "Invalid angle value in explicit transformation rotate";
+                                return "Invalid angle value in component explicit transformation rotate with id: " + component.id;
 
                             //Add to transformations
                             component.transformations_list.push(rotate);
@@ -1443,15 +1444,15 @@ class MySceneGraph {
                             //x
                             scale.x = this.reader.getFloat(grandGrandChildren[h], 'x');
                             if (scale.x == null || isNaN(scale.x))
-                                return "Invalid x value in explicit transformation scale";
+                                return "Invalid x value in component explicit transformation scale with id: " + component.id;
                             //y
                             scale.y = this.reader.getFloat(grandGrandChildren[h], 'y');
                             if (scale.y == null || isNaN(scale.y))
-                                return "Invalid y value in explicit transformation scale";
+                                return "Invalid y value in component explicit transformation scale with id: " + component.id;
                             //z
                             scale.z = this.reader.getFloat(grandGrandChildren[h], 'z');
                             if (scale.z == null || isNaN(scale.z))
-                                return "Invalid z value in explicit transformation scale";
+                                return "Invalid z value in component explicit transformation scale with id: " + component.id;
 
                             //Add to transformations
                             component.transformations_list.push(scale);
@@ -1475,7 +1476,7 @@ class MySceneGraph {
                             //id
                             var tmp = this.reader.getString(grandGrandChildren[h], 'id');
                             if (tmp == null)
-                                return "no ID defined for component transformations_ref";
+                                return "no ID defined for component transformations_ref with id: " + component.id;
 
                             //Add to material list
                             component.materials.push(tmp);
@@ -1493,17 +1494,17 @@ class MySceneGraph {
                     //id
                     component.texture.id = this.reader.getString(grandChildren[j], 'id');
                     if (component.texture.id == null)
-                        return "no ID defined for component texture";
+                        return "no ID defined for component texture with id: " + component.id;
 
                     //length_s
                     component.texture.length_s = this.reader.getFloat(grandChildren[j], 'length_s');
                     if (component.texture.length_s == null || component.texture.length_s <= 0 || isNaN(component.texture.length_s))
-                        return "no length_s defined for component texture";
+                        return "no length_s defined for component texture with id: " + component.id;
 
                     //length_t
                     component.texture.length_t = this.reader.getFloat(grandChildren[j], 'length_t');
                     if (component.texture.length_t == null || component.texture.length_t <= 0 || isNaN(component.texture.length_t))
-                        return "no length_t defined for component texture";
+                        return "no length_t defined for component texture with id: " + component.id;
 
                 }
                 //Component Children
@@ -1518,7 +1519,7 @@ class MySceneGraph {
                             //id
                             var tmp = this.reader.getString(grandGrandChildren[h], 'id');
                             if (tmp == null)
-                                return "no ID defined for component child componentref";
+                                return "no ID defined for component child componentref with id: " + component.id;
                             component.childrenComponents.push(tmp);
                         }
                         //PrimitiveRef
@@ -1526,7 +1527,7 @@ class MySceneGraph {
                             //id
                             var tmp = this.reader.getString(grandGrandChildren[h], 'id');
                             if (tmp == null)
-                                return "no ID defined for component child primitiveref";
+                                return "no ID defined for component child primitiveref with id: " + component.id;
                             component.childrenPrimitives.push(tmp);
                         }
                         //Unknown
