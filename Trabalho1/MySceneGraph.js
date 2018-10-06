@@ -1460,6 +1460,7 @@ class MySceneGraph {
 
         //Clear components array
         this.components = [];
+        this.tmpComponents = [];
 
         //Children
         var children = componentsNode.children;
@@ -1722,45 +1723,86 @@ class MySceneGraph {
                 continue;
             }
 
-            //Add to components array
-            //Explicit transformations
-            if (component.transformations_ref == null) {
-                this.components.push(new Component(
-                    this.scene,
-                    component.id,
-                    component.transformations_list,
-                    component.materials,
-                    component.texture,
-                    component.childrenComponents,
-                    component.childrenPrimitives));
-            }
-            //Reference to transformations array
-            else {
-                this.components.push(new Component(
-                    this.scene,
-                    component.id,
-                    component.transformations_ref,
-                    component.materials,
-                    component.texture,
-                    component.childrenComponents,
-                    component.childrenPrimitives));
-            }
+            //Add to temporary components
+            this.tmpComponents.push(component);
 
         }
 
         //Check all components have children component with correct ID(after reading all components)
-        for (let i = 0; i < this.components.length; i++) {
-            for (let j = 0; j < this.components[i].childrenComponents.length; j++) {
+        for (let i = 0; i < this.tmpComponents.length; i++) {
+            for (let j = 0; j < this.tmpComponents[i].childrenComponents.length; j++) {
                 var found = false;
-                for (let h = 0; h < this.components.length; h++) {
-                    if (this.components[h].id == this.components[i].childrenComponents[j]) {
+                for (let h = 0; h < this.tmpComponents.length; h++) {
+                    //Don't check with itself
+                    if (i == h)
+                        continue;
+                    //Check if IDs match
+                    if (this.tmpComponents[h].id == this.tmpComponents[i].childrenComponents[j]) {
                         found = true;
                         break;
                     }
                 }
                 if (!found)
-                    "component with id: " + this.components[i].id + " has a children component with id: " + this.components[i].childrenComponents[j] + " which doesn't exist";
+                    return "component with id: " + this.tmpComponents[i].id + " has a children component with id: " + this.tmpComponents[i].childrenComponents[j] + " which doesn't exist";
             }
+        }
+
+        //Check Components without father
+        var fatherless = [];
+        for (let i = 0; i < this.tmpComponents.length; i++) {
+            var hasFather = false;
+            for (let j = 0; j < this.tmpComponents.length; j++) {
+                //Don't check with itself
+                if (i == j)
+                    continue;
+                for (let h = 0; h < this.tmpComponents[j].childrenComponents.length; h++) {
+                    if (this.tmpComponents[j].childrenComponents[h] == this.tmpComponents[i].id) {
+                        hasFather = true;
+                        break;
+                    }
+                }
+            }
+            //Doesn't have father, add to array
+            if (!hasFather)
+                fatherless.push(this.tmpComponents[i].id);
+        }
+
+        //Make proper components after all error checking
+        for (let i = 0; i < this.tmpComponents.length; i++) {
+            //Add to components array
+            //Explicit transformations
+            if (this.tmpComponents.transformations_ref == null) {
+                this.components.push(new Component(
+                    this.scene,
+                    this.tmpComponents[i].id,
+                    this.tmpComponents[i].transformations_list,
+                    this.tmpComponents[i].materials,
+                    this.tmpComponents[i].texture,
+                    this.tmpComponents[i].childrenComponents,
+                    this.tmpComponents[i].childrenPrimitives));
+            }
+            //Reference to transformations array
+            else {
+                this.components.push(new Component(
+                    this.scene,
+                    this.tmpComponents[i].id,
+                    this.tmpComponents[i].transformations_ref,
+                    this.tmpComponents[i].materials,
+                    this.tmpComponents[i].texture,
+                    this.tmpComponents[i].childrenComponents,
+                    this.tmpComponents[i].childrenPrimitives));
+            }
+
+            //Create root with fatherless components
+            this.root = new Component(
+                this.scene,
+                this.idRoot,
+                [],
+                null,
+                null,
+                fatherless,
+                []);
+
         }
 
         //Parsing complete
@@ -1800,7 +1842,13 @@ class MySceneGraph {
      * Displays the scene, processing each node, starting in the root node.
      */
     displayScene() {
-        // entry point for graph rendering
-        //TODO: Render loop starting at root of graph
+
+        this.scene.pushMatrix();
+
+        //Call draw for root component(father of all components without a father)
+        this.root.display();
+
+        this.scene.popMatrix();
+
     }
 }

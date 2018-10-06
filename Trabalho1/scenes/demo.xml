@@ -16,27 +16,27 @@
     </views>
 
     <ambient>
-        <ambient r="0.1" g="0.1" b="0.1" a="0" />
-        <background r="0" g="0" b="0" a="0" />
+        <ambient r="0.1" g="0.1" b="0.1" a="1" />
+        <background r="0.1" g="0.1" b="0.1" a="1" />
     </ambient>
 
     <lights>
         <!-- Deve existir um ou mais blocos "omni" ou "spot" -->
         <!-- Os identificadores "id" nao podem ser repetidos -->
         <omni id="omni" enabled="true">
-            <location x="5" y="10" z="5" w="0" />
-            <ambient r="0.2" g="0.2" b="0.2" a="0" />
-            <diffuse r="0.2" g="0.2" b="0.2" a="0" />
-            <specular r="0" g="0" b="0" a="0" />
+            <location x="5" y="5" z="5" w="0" />
+            <ambient r="0.2" g="0.2" b="0.2" a="1" />
+            <diffuse r="0.2" g="0.2" b="0.2" a="1" />
+            <specular r="0" g="0" b="0" a="1" />
         </omni>
 
         <spot id="spot" enabled="false" angle="30" exponent="1">
             <!-- atencao, "target" e' diferente de "direction" -->
             <location x="5" y="0" z="5" w="0" />
             <target x="0" y="0" z="0" />
-            <ambient r="0" g="0" b="0" a="0" />
-            <diffuse r="0.2" g="0.2" b="0.2" a="0" />
-            <specular r="0" g="0" b="0" a="0" />
+            <ambient r="0.1" g="0.1" b="0.1" a="1" />
+            <diffuse r="0.2" g="0.2" b="0.2" a="1" />
+            <specular r="0" g="0" b="0" a="1" />
         </spot>
     </lights>
 
@@ -104,7 +104,7 @@
     </primitives>
 
     <components>
-        <component id="ss">
+        <component id="teste">
             <!-- Uma "component" e' um objeto composto e pode ser -->
             <!-- usada em nos intermédios -->
             <!-- bloco "transformation" e' obrigatorio -->
@@ -150,10 +150,27 @@
                 <!-- deve existir uma ou mais tags "componentref" e/ou -->
                 <!-- "primitiveref", identificando outros -->
                 <!-- componentes ou primitivas -->
-                <componentref id="ss" />
+                <componentref id="a" />
                 <primitiveref id="square" />
             </children>
         </component>
+
+        <component id="a">
+            <transformation>
+                <transformationref id="trans" />
+                <translate x="ff" y="ff" z="ff" />
+                <rotate axis="cc" angle="ff" />
+                <scale x="ff" y="ff" z="ff" />
+            </transformation>
+            <materials>
+                <material id="material" />
+            </materials>
+            <texture id="texture" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="square" />
+            </children>
+        </component>
+
     </components>
 
 </yas>

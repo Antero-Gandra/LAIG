@@ -59,13 +59,13 @@ class Component {
         //TODO apply transformations
 
         //Draw primitives
-        for (let i = 0; i < childrenPrimitives.length; i++) {
-            childrenPrimitives[i].display();
+        for (let i = 0; i < this.childrenPrimitives.length; i++) {
+            this.childrenPrimitives[i].display();
         }
 
         //Tell children nodes to draw
-        for (let i = 0; i < childrenComponents.length; i++) {
-            childrenComponents[i].display();
+        for (let i = 0; i < this.childrenComponents.length; i++) {
+            this.childrenComponents[i].display();
         }
 
     }
