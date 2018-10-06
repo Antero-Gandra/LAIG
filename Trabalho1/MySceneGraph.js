@@ -23,10 +23,22 @@ class MySceneGraph {
         this.scene = scene;
         scene.graph = this;
 
-        this.nodes = [];
+        //Loaded data
+        this.idRoot = null;
+        this.axisLength = null;
+        this.views = [];
+        this.ambient = {
+            ambient: null,
+            background: null
+        }
+        this.lights = [];
+        this.textures = [];
+        this.materials = [];
+        this.transformations = [];
+        this.primitives = [];
+        this.components = [];
 
-        this.idRoot = null; // The id of the root element.
-
+        //Axis coordinates
         this.axisCoords = [];
         this.axisCoords['x'] = [1, 0, 0];
         this.axisCoords['y'] = [0, 1, 0];
@@ -202,19 +214,22 @@ class MySceneGraph {
      */
     parseScene(sceneNode) {
 
-        //TODO push to this
-        this.scene;
+        //Clear root
+        this.idRoot = null;
+
+        //Clear axis length
+        this.axisLength = null;
 
         //Root
-        var sceneRoot = this.reader.getString(sceneNode, 'root');
-        if (sceneRoot == null) {
+        this.idRoot = this.reader.getString(sceneNode, 'root');
+        if (this.idRoot == null) {
             return "no root defined"
         }
 
-        //Axis
-        var sceneAxisLength = this.reader.getFloat(sceneNode, 'axis_length');
-        if (sceneAxisLength <= 0 || isNaN(sceneAxisLength)) {
-            return "invalid axis_length for root"
+        //Axis Length
+        this.axisLength = this.reader.getFloat(sceneNode, 'axis_length');
+        if (this.axisLength <= 0 || isNaN(this.axisLength)) {
+            return "invalid axis_length"
         }
 
         this.log("Parsed scene");
@@ -227,7 +242,7 @@ class MySceneGraph {
      */
     parseViews(viewsNode) {
 
-        //TODO push to this
+        //Clearing views
         this.views = [];
 
         //Read default ID
@@ -326,6 +341,9 @@ class MySceneGraph {
 
                 }
 
+                //Add to views array
+                this.views.push(perspective);
+
             }
             //Orthographic
             else if (children[i].nodeName == "ortho") {
@@ -375,6 +393,9 @@ class MySceneGraph {
                 if (orthographic.bottom == null || isNaN(orthographic.bottom))
                     return "no bottom defined for orthographic view with id: " + orthographic.id;
 
+                //Add to views array
+                this.views.push(orthographic);
+
             }
             //Unknown tag
             else {
@@ -395,8 +416,11 @@ class MySceneGraph {
      */
     parseAmbient(ambientNode) {
 
-        //TODO push to this
-        this.ambient;
+        //Clear ambient
+        this.ambient = {
+            ambient: null,
+            background: null
+        }
 
         //Children
         var children = ambientNode.children;
@@ -437,6 +461,9 @@ class MySceneGraph {
                     return "Invalid A value";
                 }
 
+                //Add ambient
+                this.ambient.ambient = ambient;
+
                 //Background
             } else if (children[i].nodeName == "background") {
 
@@ -470,6 +497,10 @@ class MySceneGraph {
                 if (background.a < 0 || background.a == null || isNaN(background.a) || background.a > 1) {
                     return "Invalid A value";
                 }
+
+                //Add ambient
+                this.ambient.background = background;
+
             }
             //Unknown
             else {
@@ -489,7 +520,7 @@ class MySceneGraph {
      */
     parseLights(lightsNode) {
 
-        //TODO push to here
+        //Clear lights array
         this.lights = [];
 
         //Children
@@ -623,6 +654,10 @@ class MySceneGraph {
                         continue;
                     }
                 }
+
+                //Add omni to array
+                this.lights.push(omni);
+
             }
             //Spot
             else if (children[i].nodeName == "spot") {
@@ -783,6 +818,9 @@ class MySceneGraph {
                     }
                 }
 
+                //Add spot to array
+                this.lights.push(spot);
+
             }
             //Unknown 
             else {
@@ -803,8 +841,8 @@ class MySceneGraph {
      */
     parseTextures(texturesNode) {
 
-        //TODO push to here
-        var textures = [];
+        //Clear textures array
+        this.textures = [];
 
         //Children
         var children = texturesNode.children;
@@ -828,6 +866,9 @@ class MySceneGraph {
                 if (texture.file == null)
                     return "no file defined for texture with id: " + texture.id;
 
+                //Add texture to array
+                this.textures.push(texture);
+
             }
             //Unknown
             else {
@@ -848,7 +889,7 @@ class MySceneGraph {
      */
     parseMaterials(materialsNode) {
 
-        //TODO push to here
+        //Clear materials array
         this.materials = [];
 
         //Children
@@ -982,6 +1023,10 @@ class MySceneGraph {
                     continue;
                 }
             }
+
+            //Add material to array
+            this.materials.push(material);
+
         }
 
         this.log("Parsed materials");
@@ -995,7 +1040,7 @@ class MySceneGraph {
      */
     parseTransformations(transformationsNode) {
 
-        //TODO push to here
+        //Clear transformations array
         this.transformations = [];
 
         //Children
@@ -1098,6 +1143,9 @@ class MySceneGraph {
                 if (transformation.list.length == 0)
                     return "empty transformation list in transformation with id: " + transformation.id;
 
+                //Add to transformations array
+                this.transformations.push(transformation);
+
             }
             //Unknown
             else {
@@ -1117,7 +1165,7 @@ class MySceneGraph {
      */
     parsePrimitives(primitivesNode) {
 
-        //TODO push to here
+        //Clear primitives array
         this.primitives = [];
 
         //Children
@@ -1126,207 +1174,211 @@ class MySceneGraph {
         for (let i = 0; i < children.length; i++) {
 
             //Primitive
-            var primitive = {
-                id: 0,
-                shape: ""
+            if (children[i].nodeName == "primitive") {
+                var primitive = {
+                    id: 0,
+                    shape: null
+                }
+
+                //Id
+                primitive.id = this.reader.getString(children[i], 'id');
+                if (primitive.id == null)
+                    return "no ID defined for primitive";
+
+                //Grandchildren
+                var grandChildren = children[i].children;
+
+                for (let j = 0; j < grandChildren.length; j++) {
+                    //Rectangle
+                    if (grandChildren[j].nodeName == "rectangle") {
+                        var rectangle = {
+                            x1: 0,
+                            y1: 0,
+                            x2: 0,
+                            y2: 0
+                        }
+
+                        //x1
+                        rectangle.x1 = this.reader.getFloat(grandChildren[j], 'x1');
+                        if (rectangle.x1 == null || isNaN(rectangle.x1))
+                            return "Invalid x1 value in rectangle primitive with id: " + primitive.id;
+                        //y1
+                        rectangle.y1 = this.reader.getFloat(grandChildren[j], 'y1');
+                        if (rectangle.y1 == null || isNaN(rectangle.y1))
+                            return "Invalid y1 value in rectangle primitive with id: " + primitive.id;
+                        //x2
+                        rectangle.x2 = this.reader.getFloat(grandChildren[j], 'x2');
+                        if (rectangle.x2 == null || isNaN(rectangle.x2))
+                            return "Invalid x2 value in rectangle primitive with id: " + primitive.id;
+                        //y2
+                        rectangle.y2 = this.reader.getFloat(grandChildren[j], 'y2');
+                        if (rectangle.y2 == null || isNaN(rectangle.y2))
+                            return "Invalid y2 value in rectangle primitive with id: " + primitive.id;
+
+                        //Add to primitive and break out of loop(only 1 "shape" per primitive)
+                        primitive.shape = rectangle;
+                        break;
+                    }
+                    //Triangle
+                    else if (grandChildren[j].nodeName == "triangle") {
+                        var triangle = {
+                            x1: 0,
+                            y1: 0,
+                            z1: 0,
+                            x2: 0,
+                            y2: 0,
+                            z2: 0,
+                            x3: 0,
+                            y3: 0,
+                            z3: 0
+                        }
+
+                        //x1
+                        triangle.x1 = this.reader.getFloat(grandChildren[j], 'x1');
+                        if (triangle.x1 == null || isNaN(triangle.x1))
+                            return "Invalid x1 value in triangle primitive with id: " + primitive.id;
+                        //y1
+                        triangle.y1 = this.reader.getFloat(grandChildren[j], 'y1');
+                        if (triangle.y1 == null || isNaN(triangle.y1))
+                            return "Invalid y1 value in triangle primitive with id: " + primitive.id;
+                        //z1
+                        triangle.z1 = this.reader.getFloat(grandChildren[j], 'z1');
+                        if (triangle.z1 == null || isNaN(triangle.z1))
+                            return "Invalid z1 value in triangle primitive with id: " + primitive.id;
+                        //x2
+                        triangle.x2 = this.reader.getFloat(grandChildren[j], 'x2');
+                        if (triangle.x2 == null || isNaN(triangle.x2))
+                            return "Invalid x2 value in triangle primitive with id: " + primitive.id;
+                        //y2
+                        triangle.y2 = this.reader.getFloat(grandChildren[j], 'y2');
+                        if (triangle.y2 == null || isNaN(triangle.y2))
+                            return "Invalid y2 value in triangle primitive with id: " + primitive.id;
+                        //z2
+                        triangle.z2 = this.reader.getFloat(grandChildren[j], 'z2');
+                        if (triangle.z2 == null || isNaN(triangle.z2))
+                            return "Invalid z2 value in triangle primitive with id: " + primitive.id;
+                        //x3
+                        triangle.x3 = this.reader.getFloat(grandChildren[j], 'x3');
+                        if (triangle.x3 == null || isNaN(triangle.x3))
+                            return "Invalid x3 value in triangle primitive with id: " + primitive.id;
+                        //y3
+                        triangle.y3 = this.reader.getFloat(grandChildren[j], 'y3');
+                        if (triangle.y3 == null || isNaN(triangle.y3))
+                            return "Invalid y3 value in triangle primitive with id: " + primitive.id;
+                        //z3
+                        triangle.z3 = this.reader.getFloat(grandChildren[j], 'z3');
+                        if (triangle.z3 == null || isNaN(triangle.z3))
+                            return "Invalid z3 value in triangle primitive with id: " + primitive.id;
+
+                        //Add to primitive and break out of loop(only 1 "shape" per primitive)
+                        primitive.shape = triangle;
+                        break;
+                    }
+                    //Cylinder
+                    else if (grandChildren[j].nodeName == "cylinder") {
+                        var cylinder = {
+                            base: 0,
+                            top: 0,
+                            height: 0,
+                            slices: 0,
+                            stacks: 0
+                        }
+
+                        //base
+                        cylinder.base = this.reader.getFloat(grandChildren[j], 'base');
+                        if (cylinder.base == null || isNaN(cylinder.base) || cylinder.base < 0)
+                            return "Invalid base value in cylinder primitive with id: " + primitive.id;
+                        //top
+                        cylinder.top = this.reader.getFloat(grandChildren[j], 'top');
+                        if (cylinder.top == null || isNaN(cylinder.top) || cylinder.top < 0)
+                            return "Invalid top value in cylinder primitive with id: " + primitive.id;
+                        //height
+                        cylinder.height = this.reader.getFloat(grandChildren[j], 'height');
+                        if (cylinder.height == null || isNaN(cylinder.height) || cylinder.height < 0)
+                            return "Invalid height value in cylinder primitive with id: " + primitive.id;
+                        //slices
+                        cylinder.slices = this.reader.getFloat(grandChildren[j], 'slices');
+                        if (cylinder.slices == null || isNaN(cylinder.slices) || cylinder.slices < 0)
+                            return "Invalid slices value in cylinder primitive with id: " + primitive.id;
+                        //stacks
+                        cylinder.stacks = this.reader.getFloat(grandChildren[j], 'stacks');
+                        if (cylinder.stacks == null || isNaN(cylinder.stacks) || cylinder.stacks < 0)
+                            return "Invalid stacks value in cylinder primitive with id: " + primitive.id;
+
+                        //Add to primitive and break out of loop(only 1 "shape" per primitive)
+                        primitive.shape = cylinder;
+                        break;
+                    }
+                    //Sphere
+                    else if (grandChildren[j].nodeName == "sphere") {
+                        var sphere = {
+                            radius: 0,
+                            slices: 0,
+                            stacks: 0
+                        }
+
+                        //radius
+                        sphere.radius = this.reader.getFloat(grandChildren[j], 'radius');
+                        if (sphere.radius == null || isNaN(sphere.radius) || sphere.radius < 0)
+                            return "Invalid radius value in sphere primitive with id: " + primitive.id;
+                        //slices
+                        sphere.slices = this.reader.getFloat(grandChildren[j], 'slices');
+                        if (sphere.slices == null || isNaN(sphere.slices) || sphere.slices < 0)
+                            return "Invalid slices value in sphere primitive with id: " + primitive.id;
+                        //stacks
+                        sphere.stacks = this.reader.getFloat(grandChildren[j], 'stacks');
+                        if (sphere.stacks == null || isNaN(sphere.stacks) || sphere.stacks < 0)
+                            return "Invalid stacks value in sphere primitive with id: " + primitive.id;
+
+                        //Add to primitive and break out of loop(only 1 "shape" per primitive)
+                        primitive.shape = sphere;
+                        break;
+                    }
+                    //Torus
+                    else if (grandChildren[j].nodeName == "torus") {
+                        var torus = {
+                            inner: 0,
+                            outer: 0,
+                            slices: 0,
+                            loops: 0
+                        }
+
+                        //inner
+                        torus.inner = this.reader.getFloat(grandChildren[j], 'inner');
+                        if (torus.inner == null || isNaN(torus.inner) || torus.inner < 0)
+                            return "Invalid inner value in torus primitive with id: " + primitive.id;
+                        //outer
+                        torus.outer = this.reader.getFloat(grandChildren[j], 'outer');
+                        if (torus.outer == null || isNaN(torus.outer) || torus.outer < 0)
+                            return "Invalid outer value in torus primitive with id: " + primitive.id;
+                        //slices
+                        torus.slices = this.reader.getFloat(grandChildren[j], 'slices');
+                        if (torus.slices == null || isNaN(torus.slices) || torus.slices < 0)
+                            return "Invalid slices value in torus primitive with id: " + primitive.id;
+                        //loops
+                        torus.loops = this.reader.getFloat(grandChildren[j], 'loops');
+                        if (torus.loops == null || isNaN(torus.loops) || torus.loops < 0)
+                            return "Invalid loops value in torus primitive with id: " + primitive.id;
+
+                        //Add to primitive and break out of loop(only 1 "shape" per primitive)
+                        primitive.shape = torus;
+                        break;
+                    }
+                    //Unknown
+                    else {
+                        this.onXMLMinorError("unknown tag <" + grandChildren[j].nodeName + "> in primitive with id: " + primitive.id);
+                        continue;
+                    }
+                }
             }
-
-            //Id
-            primitive.id = this.reader.getString(children[i], 'id');
-            if (primitive.id == null)
-                return "no ID defined for primitive";
-
-            //Grandchildren
-            var grandChildren = children[i].children;
-
-            for (let j = 0; j < grandChildren.length; j++) {
-                //Rectangle
-                if (grandChildren[j].nodeName == "rectangle") {
-                    var rectangle = {
-                        x1: 0,
-                        y1: 0,
-                        x2: 0,
-                        y2: 0
-                    }
-
-                    //x1
-                    rectangle.x1 = this.reader.getFloat(grandChildren[j], 'x1');
-                    if (rectangle.x1 == null || isNaN(rectangle.x1))
-                        return "Invalid x1 value in rectangle primitive with id: " + primitive.id;
-                    //y1
-                    rectangle.y1 = this.reader.getFloat(grandChildren[j], 'y1');
-                    if (rectangle.y1 == null || isNaN(rectangle.y1))
-                        return "Invalid y1 value in rectangle primitive with id: " + primitive.id;
-                    //x2
-                    rectangle.x2 = this.reader.getFloat(grandChildren[j], 'x2');
-                    if (rectangle.x2 == null || isNaN(rectangle.x2))
-                        return "Invalid x2 value in rectangle primitive with id: " + primitive.id;
-                    //y2
-                    rectangle.y2 = this.reader.getFloat(grandChildren[j], 'y2');
-                    if (rectangle.y2 == null || isNaN(rectangle.y2))
-                        return "Invalid y2 value in rectangle primitive with id: " + primitive.id;
-
-                    //Add to primitive and break out of loop(only 1 "shape" per primitive)
-                    primitive.shape = rectangle;
-                    break;
-                }
-                //Triangle
-                else if (grandChildren[j].nodeName == "triangle") {
-                    var triangle = {
-                        x1: 0,
-                        y1: 0,
-                        z1: 0,
-                        x2: 0,
-                        y2: 0,
-                        z2: 0,
-                        x3: 0,
-                        y3: 0,
-                        z3: 0
-                    }
-
-                    //x1
-                    triangle.x1 = this.reader.getFloat(grandChildren[j], 'x1');
-                    if (triangle.x1 == null || isNaN(triangle.x1))
-                        return "Invalid x1 value in triangle primitive with id: " + primitive.id;
-                    //y1
-                    triangle.y1 = this.reader.getFloat(grandChildren[j], 'y1');
-                    if (triangle.y1 == null || isNaN(triangle.y1))
-                        return "Invalid y1 value in triangle primitive with id: " + primitive.id;
-                    //z1
-                    triangle.z1 = this.reader.getFloat(grandChildren[j], 'z1');
-                    if (triangle.z1 == null || isNaN(triangle.z1))
-                        return "Invalid z1 value in triangle primitive with id: " + primitive.id;
-                    //x2
-                    triangle.x2 = this.reader.getFloat(grandChildren[j], 'x2');
-                    if (triangle.x2 == null || isNaN(triangle.x2))
-                        return "Invalid x2 value in triangle primitive with id: " + primitive.id;
-                    //y2
-                    triangle.y2 = this.reader.getFloat(grandChildren[j], 'y2');
-                    if (triangle.y2 == null || isNaN(triangle.y2))
-                        return "Invalid y2 value in triangle primitive with id: " + primitive.id;
-                    //z2
-                    triangle.z2 = this.reader.getFloat(grandChildren[j], 'z2');
-                    if (triangle.z2 == null || isNaN(triangle.z2))
-                        return "Invalid z2 value in triangle primitive with id: " + primitive.id;
-                    //x3
-                    triangle.x3 = this.reader.getFloat(grandChildren[j], 'x3');
-                    if (triangle.x3 == null || isNaN(triangle.x3))
-                        return "Invalid x3 value in triangle primitive with id: " + primitive.id;
-                    //y3
-                    triangle.y3 = this.reader.getFloat(grandChildren[j], 'y3');
-                    if (triangle.y3 == null || isNaN(triangle.y3))
-                        return "Invalid y3 value in triangle primitive with id: " + primitive.id;
-                    //z3
-                    triangle.z3 = this.reader.getFloat(grandChildren[j], 'z3');
-                    if (triangle.z3 == null || isNaN(triangle.z3))
-                        return "Invalid z3 value in triangle primitive with id: " + primitive.id;
-
-                    //Add to primitive and break out of loop(only 1 "shape" per primitive)
-                    primitive.shape = triangle;
-                    break;
-                }
-                //Cylinder
-                else if (grandChildren[j].nodeName == "cylinder") {
-                    var cylinder = {
-                        base: 0,
-                        top: 0,
-                        height: 0,
-                        slices: 0,
-                        stacks: 0
-                    }
-
-                    //base
-                    cylinder.base = this.reader.getFloat(grandChildren[j], 'base');
-                    if (cylinder.base == null || isNaN(cylinder.base) || cylinder.base < 0)
-                        return "Invalid base value in cylinder primitive with id: " + primitive.id;
-                    //top
-                    cylinder.top = this.reader.getFloat(grandChildren[j], 'top');
-                    if (cylinder.top == null || isNaN(cylinder.top) || cylinder.top < 0)
-                        return "Invalid top value in cylinder primitive with id: " + primitive.id;
-                    //height
-                    cylinder.height = this.reader.getFloat(grandChildren[j], 'height');
-                    if (cylinder.height == null || isNaN(cylinder.height) || cylinder.height < 0)
-                        return "Invalid height value in cylinder primitive with id: " + primitive.id;
-                    //slices
-                    cylinder.slices = this.reader.getFloat(grandChildren[j], 'slices');
-                    if (cylinder.slices == null || isNaN(cylinder.slices) || cylinder.slices < 0)
-                        return "Invalid slices value in cylinder primitive with id: " + primitive.id;
-                    //stacks
-                    cylinder.stacks = this.reader.getFloat(grandChildren[j], 'stacks');
-                    if (cylinder.stacks == null || isNaN(cylinder.stacks) || cylinder.stacks < 0)
-                        return "Invalid stacks value in cylinder primitive with id: " + primitive.id;
-
-                    //Add to primitive and break out of loop(only 1 "shape" per primitive)
-                    primitive.shape = cylinder;
-                    break;
-                }
-                //Sphere
-                else if (grandChildren[j].nodeName == "sphere") {
-                    var sphere = {
-                        radius: 0,
-                        slices: 0,
-                        stacks: 0
-                    }
-
-                    //radius
-                    sphere.radius = this.reader.getFloat(grandChildren[j], 'radius');
-                    if (sphere.radius == null || isNaN(sphere.radius) || sphere.radius < 0)
-                        return "Invalid radius value in sphere primitive with id: " + primitive.id;
-                    //slices
-                    sphere.slices = this.reader.getFloat(grandChildren[j], 'slices');
-                    if (sphere.slices == null || isNaN(sphere.slices) || sphere.slices < 0)
-                        return "Invalid slices value in sphere primitive with id: " + primitive.id;
-                    //stacks
-                    sphere.stacks = this.reader.getFloat(grandChildren[j], 'stacks');
-                    if (sphere.stacks == null || isNaN(sphere.stacks) || sphere.stacks < 0)
-                        return "Invalid stacks value in sphere primitive with id: " + primitive.id;
-
-                    //Add to primitive and break out of loop(only 1 "shape" per primitive)
-                    primitive.shape = sphere;
-                    break;
-                }
-                //Torus
-                else if (grandChildren[j].nodeName == "torus") {
-                    var torus = {
-                        inner: 0,
-                        outer: 0,
-                        slices: 0,
-                        loops: 0
-                    }
-
-                    //inner
-                    torus.inner = this.reader.getFloat(grandChildren[j], 'inner');
-                    if (torus.inner == null || isNaN(torus.inner) || torus.inner < 0)
-                        return "Invalid inner value in torus primitive with id: " + primitive.id;
-                    //outer
-                    torus.outer = this.reader.getFloat(grandChildren[j], 'outer');
-                    if (torus.outer == null || isNaN(torus.outer) || torus.outer < 0)
-                        return "Invalid outer value in torus primitive with id: " + primitive.id;
-                    //slices
-                    torus.slices = this.reader.getFloat(grandChildren[j], 'slices');
-                    if (torus.slices == null || isNaN(torus.slices) || torus.slices < 0)
-                        return "Invalid slices value in torus primitive with id: " + primitive.id;
-                    //loops
-                    torus.loops = this.reader.getFloat(grandChildren[j], 'loops');
-                    if (torus.loops == null || isNaN(torus.loops) || torus.loops < 0)
-                        return "Invalid loops value in torus primitive with id: " + primitive.id;
-
-                    //Add to primitive and break out of loop(only 1 "shape" per primitive)
-                    primitive.shape = torus;
-                    break;
-                }
-                //Unknown
-                else {
-                    this.onXMLMinorError("unknown tag <" + grandChildren[j].nodeName + "> in primitive with id: " + primitive.id);
-                    continue;
-                }
-            }
-
-            //Unknown tag
-            if (children[i].nodeName != "primitive") {
+            //Unknown
+            else {
                 this.onXMLMinorError("unknown tag <" + children[i].nodeName + "> in primitives");
                 continue;
             }
+
+            //Add to primitives array
+            this.primitives.push(primitive);
 
         }
 
@@ -1341,204 +1393,218 @@ class MySceneGraph {
      */
     parseComponents(componentsNode) {
 
-        //TODO push to here
+        //Clear components array
         this.components = [];
 
         //Children
         var children = componentsNode.children;
 
         for (let i = 0; i < children.length; i++) {
-            var component = {
-                id: "",
-                transformations_ref: null,
-                transformations_list: [],
-                materials: [],
-                texture: {
+
+            //Component
+            if (children[i].nodeName == "component") {
+
+                var component = {
                     id: "",
-                    length_s: 1,
-                    length_t: 1
-                },
-                childrenComponents: [],
-                childrenPrimitives: []
+                    transformations_ref: null,
+                    transformations_list: [],
+                    materials: [],
+                    texture: {
+                        id: "",
+                        length_s: 1,
+                        length_t: 1
+                    },
+                    childrenComponents: [],
+                    childrenPrimitives: []
+                }
+
+                //Id
+                component.id = this.reader.getString(children[i], 'id');
+                if (component.id == null)
+                    return "no ID defined for component";
+
+                //Grandchildren
+                var grandChildren = children[i].children;
+                for (let j = 0; j < grandChildren.length; j++) {
+
+                    //Transformation
+                    if (grandChildren[j].nodeName == "transformation") {
+
+                        //Transformation Grandgrandchildren
+                        var grandGrandChildren = grandChildren[j].children;
+                        for (let h = 0; h < grandGrandChildren.length; h++) {
+
+                            //TransformationRef
+                            if (grandGrandChildren[h].nodeName == "transformationref") {
+
+                                //id
+                                component.transformations_ref = this.reader.getString(grandGrandChildren[h], 'id');
+                                if (component.transformations_ref == null)
+                                    return "no ID defined for component transformations_ref with id: " + component.id;
+
+                                //Found transformationref, we can ignore transformation list and break;
+                                component.transformations_list = [];
+                                break;
+                            }
+                            //Translate
+                            else if (grandGrandChildren[h].nodeName == "translate") {
+                                var translate = {
+                                    x: 0,
+                                    y: 0,
+                                    z: 0
+                                }
+
+                                //x
+                                translate.x = this.reader.getFloat(grandGrandChildren[h], 'x');
+                                if (translate.x == null || isNaN(translate.x))
+                                    return "Invalid x value in component explicit transformation translate with id: " + component.id;
+                                //y
+                                translate.y = this.reader.getFloat(grandGrandChildren[h], 'y');
+                                if (translate.y == null || isNaN(translate.y))
+                                    return "Invalid y value in component explicit transformation translate with id: " + component.id;
+                                //z
+                                translate.z = this.reader.getFloat(grandGrandChildren[h], 'z');
+                                if (translate.z == null || isNaN(translate.z))
+                                    return "Invalid z value in component explicit transformation translate with id: " + component.id;
+
+                                //Add to transformations
+                                component.transformations_list.push(translate);
+                            }
+                            //Rotate
+                            else if (grandGrandChildren[h].nodeName == "rotate") {
+                                var rotate = {
+                                    axis: "",
+                                    angle: 0
+                                }
+
+                                //axis
+                                rotate.axis = this.reader.getString(grandGrandChildren[h], 'axis');
+                                if (rotate.axis != "x" && rotate.axis != "y" && rotate.axis != "z")
+                                    return "Invalid axis value in component explicit transformation rotate with id: " + component.id;
+                                //angle
+                                rotate.angle = this.reader.getFloat(grandGrandChildren[h], 'angle');
+                                if (rotate.angle == null || isNaN(rotate.angle))
+                                    return "Invalid angle value in component explicit transformation rotate with id: " + component.id;
+
+                                //Add to transformations
+                                component.transformations_list.push(rotate);
+                            }
+                            //Scale
+                            else if (grandGrandChildren[h].nodeName == "scale") {
+                                var scale = {
+                                    x: 0,
+                                    y: 0,
+                                    z: 0
+                                }
+
+                                //x
+                                scale.x = this.reader.getFloat(grandGrandChildren[h], 'x');
+                                if (scale.x == null || isNaN(scale.x))
+                                    return "Invalid x value in component explicit transformation scale with id: " + component.id;
+                                //y
+                                scale.y = this.reader.getFloat(grandGrandChildren[h], 'y');
+                                if (scale.y == null || isNaN(scale.y))
+                                    return "Invalid y value in component explicit transformation scale with id: " + component.id;
+                                //z
+                                scale.z = this.reader.getFloat(grandGrandChildren[h], 'z');
+                                if (scale.z == null || isNaN(scale.z))
+                                    return "Invalid z value in component explicit transformation scale with id: " + component.id;
+
+                                //Add to transformations
+                                component.transformations_list.push(scale);
+                            }
+                            //Unknown
+                            else {
+                                this.onXMLMinorError("unknown tag <" + grandGrandChildren[h].nodeName + "> in transformations for component with id: " + component.id);
+                                continue;
+                            }
+
+                        }
+                    }
+                    //Materials
+                    else if (grandChildren[j].nodeName == "materials") {
+
+                        //Materials Grandgrandchildren
+                        var grandGrandChildren = grandChildren[j].children;
+                        for (let h = 0; h < grandGrandChildren.length; h++) {
+                            //Material
+                            if (grandGrandChildren[h].nodeName == "material") {
+                                //id
+                                var tmp = this.reader.getString(grandGrandChildren[h], 'id');
+                                if (tmp == null)
+                                    return "no ID defined for component transformations_ref with id: " + component.id;
+
+                                //Add to material list
+                                component.materials.push(tmp);
+                            }
+                            //Unknown
+                            else {
+                                this.onXMLMinorError("unknown tag <" + grandGrandChildren[h].nodeName + "> in materials for component with id: " + component.id);
+                                continue;
+                            }
+                        }
+                    }
+                    //Texture
+                    else if (grandChildren[j].nodeName == "texture") {
+
+                        //id
+                        component.texture.id = this.reader.getString(grandChildren[j], 'id');
+                        if (component.texture.id == null)
+                            return "no ID defined for component texture with id: " + component.id;
+
+                        //length_s
+                        component.texture.length_s = this.reader.getFloat(grandChildren[j], 'length_s');
+                        if (component.texture.length_s == null || component.texture.length_s <= 0 || isNaN(component.texture.length_s))
+                            return "no length_s defined for component texture with id: " + component.id;
+
+                        //length_t
+                        component.texture.length_t = this.reader.getFloat(grandChildren[j], 'length_t');
+                        if (component.texture.length_t == null || component.texture.length_t <= 0 || isNaN(component.texture.length_t))
+                            return "no length_t defined for component texture with id: " + component.id;
+
+                    }
+                    //Component Children
+                    else if (grandChildren[j].nodeName == "children") {
+
+                        //Component Children Grandgrandchildren
+                        var grandGrandChildren = grandChildren[j].children;
+                        for (let h = 0; h < grandGrandChildren.length; h++) {
+
+                            //ComponentRef
+                            if (grandGrandChildren[h].nodeName == "componentref") {
+                                //id
+                                var tmp = this.reader.getString(grandGrandChildren[h], 'id');
+                                if (tmp == null)
+                                    return "no ID defined for component child componentref with id: " + component.id;
+                                component.childrenComponents.push(tmp);
+                            }
+                            //PrimitiveRef
+                            else if (grandGrandChildren[h].nodeName == "primitiveref") {
+                                //id
+                                var tmp = this.reader.getString(grandGrandChildren[h], 'id');
+                                if (tmp == null)
+                                    return "no ID defined for component child primitiveref with id: " + component.id;
+                                component.childrenPrimitives.push(tmp);
+                            }
+                            //Unknown
+                            else {
+                                this.onXMLMinorError("unknown tag <" + grandGrandChildren[h].nodeName + "> in children for component with id: " + component.id);
+                                continue;
+                            }
+
+                        }
+                    }
+                }
+            }
+            //Unknown
+            else {
+                this.onXMLMinorError("unknown tag <" + children[i].nodeName + "> in components");
+                continue;
             }
 
-            //Id
-            component.id = this.reader.getString(children[i], 'id');
-            if (component.id == null)
-                return "no ID defined for component";
+            //Add to components array
+            this.components.push(component);
 
-            //Grandchildren
-            var grandChildren = children[i].children;
-            for (let j = 0; j < grandChildren.length; j++) {
-
-                //Transformation
-                if (grandChildren[j].nodeName == "transformation") {
-
-                    //Transformation Grandgrandchildren
-                    var grandGrandChildren = grandChildren[j].children;
-                    for (let h = 0; h < grandGrandChildren.length; h++) {
-
-                        //TransformationRef
-                        if (grandGrandChildren[h].nodeName == "transformationref") {
-
-                            //id
-                            component.transformations_ref = this.reader.getString(grandGrandChildren[h], 'id');
-                            if (component.transformations_ref == null)
-                                return "no ID defined for component transformations_ref with id: " + component.id;
-
-                            //Found transformationref, we can ignore transformation list and break;
-                            component.transformations_list = [];
-                            break;
-                        }
-                        //Translate
-                        else if (grandGrandChildren[h].nodeName == "translate") {
-                            var translate = {
-                                x: 0,
-                                y: 0,
-                                z: 0
-                            }
-
-                            //x
-                            translate.x = this.reader.getFloat(grandGrandChildren[h], 'x');
-                            if (translate.x == null || isNaN(translate.x))
-                                return "Invalid x value in component explicit transformation translate with id: " + component.id;
-                            //y
-                            translate.y = this.reader.getFloat(grandGrandChildren[h], 'y');
-                            if (translate.y == null || isNaN(translate.y))
-                                return "Invalid y value in component explicit transformation translate with id: " + component.id;
-                            //z
-                            translate.z = this.reader.getFloat(grandGrandChildren[h], 'z');
-                            if (translate.z == null || isNaN(translate.z))
-                                return "Invalid z value in component explicit transformation translate with id: " + component.id;
-
-                            //Add to transformations
-                            component.transformations_list.push(translate);
-                        }
-                        //Rotate
-                        else if (grandGrandChildren[h].nodeName == "rotate") {
-                            var rotate = {
-                                axis: "",
-                                angle: 0
-                            }
-
-                            //axis
-                            rotate.axis = this.reader.getString(grandGrandChildren[h], 'axis');
-                            if (rotate.axis != "x" && rotate.axis != "y" && rotate.axis != "z")
-                                return "Invalid axis value in component explicit transformation rotate with id: " + component.id;
-                            //angle
-                            rotate.angle = this.reader.getFloat(grandGrandChildren[h], 'angle');
-                            if (rotate.angle == null || isNaN(rotate.angle))
-                                return "Invalid angle value in component explicit transformation rotate with id: " + component.id;
-
-                            //Add to transformations
-                            component.transformations_list.push(rotate);
-                        }
-                        //Scale
-                        else if (grandGrandChildren[h].nodeName == "scale") {
-                            var scale = {
-                                x: 0,
-                                y: 0,
-                                z: 0
-                            }
-
-                            //x
-                            scale.x = this.reader.getFloat(grandGrandChildren[h], 'x');
-                            if (scale.x == null || isNaN(scale.x))
-                                return "Invalid x value in component explicit transformation scale with id: " + component.id;
-                            //y
-                            scale.y = this.reader.getFloat(grandGrandChildren[h], 'y');
-                            if (scale.y == null || isNaN(scale.y))
-                                return "Invalid y value in component explicit transformation scale with id: " + component.id;
-                            //z
-                            scale.z = this.reader.getFloat(grandGrandChildren[h], 'z');
-                            if (scale.z == null || isNaN(scale.z))
-                                return "Invalid z value in component explicit transformation scale with id: " + component.id;
-
-                            //Add to transformations
-                            component.transformations_list.push(scale);
-                        }
-                        //Unknown
-                        else {
-                            this.onXMLMinorError("unknown tag <" + grandGrandChildren[h].nodeName + "> in transformations for component with id: " + component.id);
-                            continue;
-                        }
-
-                    }
-                }
-                //Materials
-                else if (grandChildren[j].nodeName == "materials") {
-
-                    //Materials Grandgrandchildren
-                    var grandGrandChildren = grandChildren[j].children;
-                    for (let h = 0; h < grandGrandChildren.length; h++) {
-                        //Material
-                        if (grandGrandChildren[h].nodeName == "material") {
-                            //id
-                            var tmp = this.reader.getString(grandGrandChildren[h], 'id');
-                            if (tmp == null)
-                                return "no ID defined for component transformations_ref with id: " + component.id;
-
-                            //Add to material list
-                            component.materials.push(tmp);
-                        }
-                        //Unknown
-                        else {
-                            this.onXMLMinorError("unknown tag <" + grandGrandChildren[h].nodeName + "> in materials for component with id: " + component.id);
-                            continue;
-                        }
-                    }
-                }
-                //Texture
-                else if (grandChildren[j].nodeName == "texture") {
-
-                    //id
-                    component.texture.id = this.reader.getString(grandChildren[j], 'id');
-                    if (component.texture.id == null)
-                        return "no ID defined for component texture with id: " + component.id;
-
-                    //length_s
-                    component.texture.length_s = this.reader.getFloat(grandChildren[j], 'length_s');
-                    if (component.texture.length_s == null || component.texture.length_s <= 0 || isNaN(component.texture.length_s))
-                        return "no length_s defined for component texture with id: " + component.id;
-
-                    //length_t
-                    component.texture.length_t = this.reader.getFloat(grandChildren[j], 'length_t');
-                    if (component.texture.length_t == null || component.texture.length_t <= 0 || isNaN(component.texture.length_t))
-                        return "no length_t defined for component texture with id: " + component.id;
-
-                }
-                //Component Children
-                else if (grandChildren[j].nodeName == "children") {
-
-                    //Component Children Grandgrandchildren
-                    var grandGrandChildren = grandChildren[j].children;
-                    for (let h = 0; h < grandGrandChildren.length; h++) {
-
-                        //ComponentRef
-                        if (grandGrandChildren[h].nodeName == "componentref") {
-                            //id
-                            var tmp = this.reader.getString(grandGrandChildren[h], 'id');
-                            if (tmp == null)
-                                return "no ID defined for component child componentref with id: " + component.id;
-                            component.childrenComponents.push(tmp);
-                        }
-                        //PrimitiveRef
-                        else if (grandGrandChildren[h].nodeName == "primitiveref") {
-                            //id
-                            var tmp = this.reader.getString(grandGrandChildren[h], 'id');
-                            if (tmp == null)
-                                return "no ID defined for component child primitiveref with id: " + component.id;
-                            component.childrenPrimitives.push(tmp);
-                        }
-                        //Unknown
-                        else {
-                            this.onXMLMinorError("unknown tag <" + grandGrandChildren[h].nodeName + "> in texture for component with id: " + component.id);
-                            continue;
-                        }
-
-                    }
-                }
-            }
         }
 
         this.log("Parsed components");
