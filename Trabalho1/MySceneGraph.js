@@ -1271,7 +1271,7 @@ class MySceneGraph {
         for (let i = 0; i < children.length; i++) {
 
             //Unknown tag
-            if(children[i].nodeName != "primitive"){
+            if (children[i].nodeName != "primitive") {
                 this.onXMLMinorError("unknown tag <" + children[i].nodeName + "> in primitives");
                 continue;
             }
@@ -1482,10 +1482,210 @@ class MySceneGraph {
     }
 
     /**
-     * TODO Parses the <components> node.
      * @param {components block element} componentsNode
      */
     parseComponents(componentsNode) {
+
+        //TODO push to here
+        this.components = [];
+
+        //Children
+        var children = componentsNode.children;
+
+        for (let i = 0; i < children.length; i++) {
+            var component = {
+                id: "",
+                transformations_ref: null,
+                transformations_list: [],
+                materials: [],
+                texture: {
+                    id: "",
+                    length_s: 1,
+                    length_t: 1
+                },
+                childrenComponents: [],
+                childrenPrimitives: []
+            }
+
+            //Id
+            component.id = this.reader.getString(children[i], 'id');
+            if (component.id == null)
+                return "no ID defined for component";
+
+            //Grandchildren
+            var grandChildren = children[i].children;
+            for (let j = 0; j < grandChildren.length; j++) {
+
+                //Transformation
+                if (grandChildren[j].nodeName == "transformation") {
+
+                    //Transformation Grandgrandchildren
+                    var grandGrandChildren = grandChildren[j].children;
+                    for (let h = 0; h < grandGrandChildren.length; h++) {
+
+                        //TransformationRef
+                        if (grandGrandChildren[h].nodeName == "transformationref") {
+
+                            //id
+                            component.transformations_ref = this.reader.getString(grandGrandChildren[h], 'id');
+                            if (component.transformations_ref == null)
+                                return "no ID defined for component transformations_ref";
+
+                            //Found transformationref, we can ignore transformation list and break;
+                            component.transformations_list = [];
+                            break;
+                        }
+                        //Translate
+                        else if (grandGrandChildren[h].nodeName == "translate") {
+                            var translate = {
+                                x: 0,
+                                y: 0,
+                                z: 0
+                            }
+
+                            //x
+                            translate.x = this.reader.getFloat(grandGrandChildren[h], 'x');
+                            if (translate.x == null || isNaN(translate.x))
+                                return "Invalid x value in explicit transformation translate";
+                            //y
+                            translate.y = this.reader.getFloat(grandGrandChildren[h], 'y');
+                            if (translate.y == null || isNaN(translate.y))
+                                return "Invalid y value in explicit transformation translate";
+                            //z
+                            translate.z = this.reader.getFloat(grandGrandChildren[h], 'z');
+                            if (translate.z == null || isNaN(translate.z))
+                                return "Invalid z value in explicit transformation translate";
+
+                            //Add to transformations
+                            component.transformations_list.push(translate);
+                        }
+                        //Rotate
+                        else if (grandGrandChildren[h].nodeName == "rotate") {
+                            var rotate = {
+                                axis: "",
+                                angle: 0
+                            }
+
+                            //axis
+                            rotate.axis = this.reader.getString(grandGrandChildren[h], 'axis');
+                            if (rotate.axis != "x" && rotate.axis != "y" && rotate.axis != "z")
+                                return "Invalid axis value in explicit transformation rotate";
+                            //angle
+                            rotate.angle = this.reader.getFloat(grandGrandChildren[h], 'angle');
+                            if (rotate.angle == null || isNaN(rotate.angle))
+                                return "Invalid angle value in explicit transformation rotate";
+
+                            //Add to transformations
+                            component.transformations_list.push(rotate);
+                        }
+                        //Scale
+                        else if (grandGrandChildren[h].nodeName == "scale") {
+                            var scale = {
+                                x: 0,
+                                y: 0,
+                                z: 0
+                            }
+
+                            //x
+                            scale.x = this.reader.getFloat(grandGrandChildren[h], 'x');
+                            if (scale.x == null || isNaN(scale.x))
+                                return "Invalid x value in explicit transformation scale";
+                            //y
+                            scale.y = this.reader.getFloat(grandGrandChildren[h], 'y');
+                            if (scale.y == null || isNaN(scale.y))
+                                return "Invalid y value in explicit transformation scale";
+                            //z
+                            scale.z = this.reader.getFloat(grandGrandChildren[h], 'z');
+                            if (scale.z == null || isNaN(scale.z))
+                                return "Invalid z value in explicit transformation scale";
+
+                            //Add to transformations
+                            component.transformations_list.push(scale);
+                        }
+                        //Unknown
+                        else {
+                            this.onXMLMinorError("unknown tag <" + grandGrandChildren[h].nodeName + "> in transformations for component with id: " + component.id);
+                            continue;
+                        }
+
+                    }
+                }
+                //Materials
+                else if (grandChildren[j].nodeName == "materials") {
+
+                    //Materials Grandgrandchildren
+                    var grandGrandChildren = grandChildren[j].children;
+                    for (let h = 0; h < grandGrandChildren.length; h++) {
+                        //Material
+                        if (grandGrandChildren[h].nodeName == "material") {
+                            //id
+                            var tmp = this.reader.getString(grandGrandChildren[h], 'id');
+                            if (tmp == null)
+                                return "no ID defined for component transformations_ref";
+
+                            //Add to material list
+                            component.materials.push(tmp);
+                        }
+                        //Unknown
+                        else {
+                            this.onXMLMinorError("unknown tag <" + grandGrandChildren[h].nodeName + "> in materials for component with id: " + component.id);
+                            continue;
+                        }
+                    }
+                }
+                //Texture
+                else if (grandChildren[j].nodeName == "texture") {
+
+                    //id
+                    component.texture.id = this.reader.getString(grandChildren[j], 'id');
+                    if (component.texture.id == null)
+                        return "no ID defined for component texture";
+
+                    //length_s
+                    component.texture.length_s = this.reader.getFloat(grandChildren[j], 'length_s');
+                    if (component.texture.length_s == null || component.texture.length_s <= 0 || isNaN(component.texture.length_s))
+                        return "no length_s defined for component texture";
+
+                    //length_t
+                    component.texture.length_t = this.reader.getFloat(grandChildren[j], 'length_t');
+                    if (component.texture.length_t == null || component.texture.length_t <= 0 || isNaN(component.texture.length_t))
+                        return "no length_t defined for component texture";
+
+                }
+                //Component Children
+                else if (grandChildren[j].nodeName == "children") {
+
+                    //Component Children Grandgrandchildren
+                    var grandGrandChildren = grandChildren[j].children;
+                    for (let h = 0; h < grandGrandChildren.length; h++) {
+
+                        //ComponentRef
+                        if (grandGrandChildren[h].nodeName == "componentref") {
+                            //id
+                            var tmp = this.reader.getString(grandGrandChildren[h], 'id');
+                            if (tmp == null)
+                                return "no ID defined for component child componentref";
+                            component.childrenComponents.push(tmp);
+                        }
+                        //PrimitiveRef
+                        else if (grandGrandChildren[h].nodeName == "primitiveref") {
+                            //id
+                            var tmp = this.reader.getString(grandGrandChildren[h], 'id');
+                            if (tmp == null)
+                                return "no ID defined for component child primitiveref";
+                            component.childrenPrimitives.push(tmp);
+                        }
+                        //Unknown
+                        else {
+                            this.onXMLMinorError("unknown tag <" + grandGrandChildren[h].nodeName + "> in texture for component with id: " + component.id);
+                            continue;
+                        }
+
+                    }
+                }
+            }
+
+        }
 
         this.log("Parsed components");
 

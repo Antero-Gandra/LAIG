@@ -81,11 +81,11 @@
 
         <!-- Cena de Teste que usa todas as primitivas: Primitivas para uma basketball e uma "tabela" -->
 
-        <primitive id="backboard">
+        <primitive id="board">
             <rectangle x1="-2" y1="-1" x2="2" y2="1" />
         </primitive>
 
-        <primitive id="indicator">
+        <primitive id="triangle">
             <triangle x1="-1" y1="0" z1="0" x2="0" y2="1" z2="0" x3="1" y3="0" z3="0" />
         </primitive>
 
@@ -93,7 +93,7 @@
             <cylinder base="1" top="1" height="10" slices="10" stacks="1" />
         </primitive>
 
-        <primitive id="basketball">
+        <primitive id="ball">
             <sphere radius="1" slices="10" stacks="1" />
         </primitive>
 
