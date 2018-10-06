@@ -24,7 +24,6 @@ class MySceneGraph {
         scene.graph = this;
 
         //Loaded data
-        //TODO Change structure to use CGF derived objects
         this.idRoot = null;
         this.axisLength = null;
         this.views = [];
@@ -1220,6 +1219,7 @@ class MySceneGraph {
 
     /**
      * @param {primitives block element} primitivesNode
+     * TODO update array to have shape as a CGF Object (like rectangle already)
      */
     parsePrimitives(primitivesNode) {
 
@@ -1723,7 +1723,28 @@ class MySceneGraph {
             }
 
             //Add to components array
-            this.components.push(component);
+            //Explicit transformations
+            if (component.transformations_ref == null) {
+                this.components.push(new Component(
+                    this.scene,
+                    component.id,
+                    component.transformations_list,
+                    component.materials,
+                    component.texture,
+                    component.childrenComponents,
+                    component.childrenPrimitives));
+            }
+            //Reference to transformations array
+            else {
+                this.components.push(new Component(
+                    this.scene,
+                    component.id,
+                    component.transformations_ref,
+                    component.materials,
+                    component.texture,
+                    component.childrenComponents,
+                    component.childrenPrimitives));
+            }
 
         }
 
@@ -1732,12 +1753,12 @@ class MySceneGraph {
             for (let j = 0; j < this.components[i].childrenComponents.length; j++) {
                 var found = false;
                 for (let h = 0; h < this.components.length; h++) {
-                    if(this.components[h].id == this.components[i].childrenComponents[j]){
+                    if (this.components[h].id == this.components[i].childrenComponents[j]) {
                         found = true;
                         break;
                     }
-                }         
-                if(!found)
+                }
+                if (!found)
                     "component with id: " + this.components[i].id + " has a children component with id: " + this.components[i].childrenComponents[j] + " which doesn't exist";
             }
         }

@@ -2,10 +2,10 @@ class Component {
     /**
      * @constructor
      */
-    constructor(scene, id, transformations_list, materials, texture, childrenComponentsIDs, childrenPrimitivesIDs) {
+    constructor(scene, id, transformations, materials, texture, childrenComponentsIDs, childrenPrimitivesIDs) {
         this.scene = scene;
         this.id = id;
-        this.transformations_list = transformations_list;
+        this.transformations = transformations;
         this.materials = materials;
         this.texture = texture;
         this.childrenComponentsIDs = childrenComponentsIDs;
@@ -22,12 +22,16 @@ class Component {
         //TODO Setup texture and materials
 
         //TODO Setup transformation
+        //Detect if transformations was explicitly declared or is a reference to the transformations array
+        if(transformations.isArray()){
+
+        }
 
         //Setup primitive nodes
         for (let i = 0; i < scene.graph.primitives.length; i++) {
             for (let j = 0; j < childrenPrimitivesIDs.length; j++) {
-                if (scene.graph.primitives[i] == childrenPrimitivesIDs[j]) {
-                    this.childrenPrimitives.push(scene.graph.primitives[i]);
+                if (scene.graph.primitives[i].id == childrenPrimitivesIDs[j]) {
+                    this.childrenPrimitives.push(scene.graph.primitives[i].shape);
                     break;
                 }
             }
@@ -36,7 +40,7 @@ class Component {
         //Setup component nodes
         for (let i = 0; i < scene.graph.components.length; i++) {
             for (let j = 0; j < childrenComponentsIDs.length; j++) {
-                if (scene.graph.components[i] == childrenComponentsIDs[j]) {
+                if (scene.graph.components[i].id == childrenComponentsIDs[j]) {
                     this.childrenComponents.push(scene.graph.components[i]);
                     break;
                 }
