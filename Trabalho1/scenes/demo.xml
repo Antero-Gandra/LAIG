@@ -81,8 +81,8 @@
 
         <!-- Cena de Teste que usa todas as primitivas: Primitivas para uma basketball e uma "tabela" -->
 
-        <primitive id="board">
-            <rectangle x1="-2" y1="-1" x2="2" y2="1" />
+        <primitive id="square">
+            <rectangle x1="-1" y1="-1" x2="1" y2="1" />
         </primitive>
 
         <primitive id="triangle">
@@ -151,7 +151,7 @@
                 <!-- "primitiveref", identificando outros -->
                 <!-- componentes ou primitivas -->
                 <componentref id="ss" />
-                <primitiveref id="board" />
+                <primitiveref id="square" />
             </children>
         </component>
     </components>

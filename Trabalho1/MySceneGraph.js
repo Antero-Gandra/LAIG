@@ -24,6 +24,7 @@ class MySceneGraph {
         scene.graph = this;
 
         //Loaded data
+        //TODO have a similar structure but with CGF objects of this data that was read
         this.idRoot = null;
         this.axisLength = null;
         this.views = [];
@@ -233,6 +234,7 @@ class MySceneGraph {
             return "invalid axis_length"
         }
 
+        //Parsing complete
         this.log("Parsed scene");
 
         return null;
@@ -531,6 +533,7 @@ class MySceneGraph {
             }
         }
 
+        //Parsing complete
         this.log("Parsed ambient");
 
         return null;
@@ -863,6 +866,7 @@ class MySceneGraph {
             }
         }
 
+        //Parsing complete
         this.log("Parsed lights");
 
         return null;
@@ -1075,6 +1079,7 @@ class MySceneGraph {
 
         }
 
+        //Parsing complete
         this.log("Parsed materials");
 
         return null;
@@ -1206,6 +1211,7 @@ class MySceneGraph {
             }
         }
 
+        //Parsing complete
         this.log("Parsed transformations");
 
         return null;
@@ -1440,6 +1446,7 @@ class MySceneGraph {
 
         }
 
+        //Parsing complete
         this.log("Parsed primitives");
 
         return null;
@@ -1735,6 +1742,7 @@ class MySceneGraph {
             }
         }
 
+        //Parsing complete
         this.log("Parsed components");
 
         return null;

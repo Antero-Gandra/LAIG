@@ -51,8 +51,9 @@ class XMLscene extends CGFscene {
 
         // Reads the lights from the scene graph.
         for (var key in this.graph.lights) {
+            // Only eight lights allowed by WebGL.
             if (i >= 8)
-                break;              // Only eight lights allowed by WebGL.
+                break;
 
             if (this.graph.lights.hasOwnProperty(key)) {
                 var light = this.graph.lights[key];
@@ -64,7 +65,8 @@ class XMLscene extends CGFscene {
                 this.lights[i].setSpecular(light.specular.r, light.specular.g, light.specular.b, light.specular.a);
 
                 this.lights[i].setVisible(true);
-                if (light[0])
+
+                if (light.enable)
                     this.lights[i].enable();
                 else
                     this.lights[i].disable();
@@ -81,14 +83,19 @@ class XMLscene extends CGFscene {
      * As loading is asynchronous, this may be called already after the application has started the run loop
      */
     onGraphLoaded() {
-        this.camera.near = this.graph.near;
-        this.camera.far = this.graph.far;
 
-        //TODO: Change reference length according to parsed graph
-        //this.axis = new CGFaxis(this, this.graph.referenceLength);
+        //Change ambient
+        this.setGlobalAmbientLight(this.graph.ambient.ambient.r, this.graph.ambient.ambient.g, this.graph.ambient.ambient.b, this.graph.ambient.ambient.a);
 
-        // TODO: Change ambient and background details according to parsed graph
+        //Change background
+        this.gl.clearColor(this.graph.ambient.background.r, this.graph.ambient.background.g, this.graph.ambient.background.b, this.graph.ambient.background.a);
 
+        //Change reference length according to parsed graph
+        this.axis = new CGFaxis(this, this.graph.axisLength);
+
+        //TODO Load initial camera      
+
+        //Initialize lights
         this.initLights();
 
         // Adds lights group.
@@ -117,6 +124,7 @@ class XMLscene extends CGFscene {
 
         this.pushMatrix();
 
+        //Was the graph loaded already?
         if (this.sceneInited) {
             // Draw axis
             this.axis.display();

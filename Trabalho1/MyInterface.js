@@ -26,7 +26,7 @@ class MyInterface extends CGFinterface {
     }
 
     /**
-     * Adds a folder containing the IDs of the lights passed as parameter.
+     * Adds a GUI folder containing the IDs of the lights passed as parameter.
      * @param {array} lights
      */
     addLightsGroup(lights) {
