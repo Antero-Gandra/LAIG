@@ -23,7 +23,24 @@ class Component {
      */
     setup() {
 
-        //TODO Setup texture and materials
+        //Setup materials
+        this.appearences = [];
+        for (let i = 0; i < this.materials.length; i++) {
+            for (let j = 0; j < this.scene.graph.materials.length; j++) {
+                const m = this.scene.graph.materials[j];
+                if (this.materials[i] == m.id) {
+                    var a = { id: "", appearence: null };
+                    a.id = m.id;
+                    a.appearence = new CGFappearance(this.scene);
+                    a.appearence.setShininess(m.shininess);
+                    a.appearence.setEmission(m.emission.r, m.emission.g, m.emission.b, m.emission.a);
+                    a.appearence.setAmbient(m.ambient.r, m.ambient.g, m.ambient.b, m.ambient.a);
+                    a.appearence.setDiffuse(m.diffuse.r, m.diffuse.g, m.diffuse.b, m.diffuse.a);
+                    a.appearence.setSpecular(m.specular.r, m.specular.g, m.specular.b, m.specular.a);
+                    this.appearences.push(a);
+                }
+            }
+        }
 
         //Detect if transformations was reference to the transformations array and find it
         if (!Array.isArray(this.transformations)) {
@@ -67,7 +84,12 @@ class Component {
      */
     display() {
 
-        //TODO Apply materials/texture
+        //TODO Apply materials(only applies first one for now)
+        if (!(this.appearences[0] == undefined)) {
+            if (this.appearences[0].id != "inherit") {
+                this.appearences[0].appearence.apply();
+            }
+        }
 
         //Apply transformations
         for (let t = 0; t < this.transformations.list.length; t++) {

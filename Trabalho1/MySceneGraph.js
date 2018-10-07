@@ -1627,7 +1627,7 @@ class MySceneGraph {
                                 //Check material ID exists
                                 var found = false;
                                 for (let v = 0; v < this.materials.length; v++) {
-                                    if (this.materials[v].id == tmp) {
+                                    if (this.materials[v].id == tmp || tmp == "inherit") {
                                         found = true;
                                         break;
                                     }
@@ -1656,7 +1656,7 @@ class MySceneGraph {
                         //Check texture ID exists
                         var found = false;
                         for (let v = 0; v < this.textures.length; v++) {
-                            if (this.textures[v].id == component.texture.id) {
+                            if (this.textures[v].id == component.texture.id || component.textures.id == "none" || component.textures.id == "inherit") {
                                 found = true;
                                 break;
                             }
@@ -1809,7 +1809,7 @@ class MySceneGraph {
             this.scene,
             this.idRoot,
             [],
-            null,
+            [],
             null,
             fatherless,
             []);
