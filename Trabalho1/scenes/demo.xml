@@ -111,14 +111,16 @@
             <transformation>
                 <!-- deve conter uma referencia a uma das "transformation" -->
                 <!-- declaradas anteriormente -->
-                <transformationref id="trans" />
+
+                <!--         <transformationref id="trans" />          -->
+                
                 <!-- ou, ALTERNATIVAMENTE, transformacoes explicitas, -->
                 <!-- usando zero ou mais das instrucoes seguintes, sem -->
                 <!-- limite nem ordem -->
                 <!-- ex: bloco transformation pode ficar sem conteudo -->
-                <translate x="ff" y="ff" z="ff" />
-                <rotate axis="cc" angle="ff" />
-                <scale x="ff" y="ff" z="ff" />
+                <translate x="1" y="1" z="0" />
+                <rotate axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
             </transformation>
             <!-- declaracao obrigatoria de pelo menos um material; -->
             <!-- o material id="inherit", mantem (herda) material do "pai" -->
@@ -157,10 +159,9 @@
 
         <component id="a">
             <transformation>
-                <transformationref id="trans" />
-                <translate x="ff" y="ff" z="ff" />
-                <rotate axis="cc" angle="ff" />
-                <scale x="ff" y="ff" z="ff" />
+                <translate x="0" y="1" z="0" />
+                <rotate axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
             </transformation>
             <materials>
                 <material id="material" />

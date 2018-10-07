@@ -1,3 +1,6 @@
+
+var DEGREE_TO_RAD = Math.PI / 180;
+
 class Component {
     /**
      * @constructor
@@ -22,10 +25,19 @@ class Component {
 
         //TODO Setup texture and materials
 
-        //TODO Setup transformation
-        //Detect if transformations was explicitly declared or is a reference to the transformations array
-        if (Array.isArray(this.transformations)) {
-
+        //Detect if transformations was reference to the transformations array and find it
+        if (!Array.isArray(this.transformations)) {
+            let id = this.transformations;
+            for (let i = 0; i < this.scene.graph.transformations.length; i++) {
+                if (id == this.scene.graph.transformations[i].id) {
+                    this.transformations = this.scene.graph.transformations[i];
+                    break;
+                }
+            }
+        }
+        //If it was a list just format it
+        else {
+            this.transformations = { list: this.transformations };
         }
 
         //Setup primitive nodes
@@ -55,9 +67,35 @@ class Component {
      */
     display() {
 
-        //TODO apply transformations
+        //Apply transformations
+        for (let t = 0; t < this.transformations.list.length; t++) {
+            switch (this.transformations.list[t].type) {
+                case "translate":
+                    this.scene.translate(this.transformations.list[t].x, this.transformations.list[t].y, this.transformations.list[t].z);
+                    break;
+                case "rotate":
+                    switch (this.transformations.list[t].axis) {
+                        case "x":
+                            this.scene.rotate(this.transformations.list[t].angle * DEGREE_TO_RAD, 1, 0, 0);
+                            break;
+                        case "y":
+                            this.scene.rotate(this.transformations.list[t].angle * DEGREE_TO_RAD, 0, 1, 0);
+                            break;
+                        case "z":
+                            this.scene.rotate(this.transformations.list[t].angle * DEGREE_TO_RAD, 0, 0, 1);
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                case "scale":
+                    this.scene.scale(this.transformations.list[t].x, this.transformations.list[t].y, this.transformations.list[t].z);
+                    break;
+                default:
+                    break;
+            }
+        }
 
-        
         //Draw primitives
         for (let i = 0; i < this.childrenPrimitives.length; i++)
             this.childrenPrimitives[i].display();

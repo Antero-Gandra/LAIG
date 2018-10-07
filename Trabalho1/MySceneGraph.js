@@ -1124,6 +1124,7 @@ class MySceneGraph {
                     //Translate
                     if (grandChildren[j].nodeName == "translate") {
                         var translate = {
+                            type: "translate",
                             x: 0,
                             y: 0,
                             z: 0
@@ -1148,6 +1149,7 @@ class MySceneGraph {
                     //Rotate
                     else if (grandChildren[j].nodeName == "rotate") {
                         var rotate = {
+                            type: "rotate",
                             axis: "",
                             angle: 0
                         }
@@ -1167,6 +1169,7 @@ class MySceneGraph {
                     //Scale
                     else if (grandChildren[j].nodeName == "scale") {
                         var scale = {
+                            type: "scale",
                             x: 0,
                             y: 0,
                             z: 0
@@ -1533,6 +1536,7 @@ class MySceneGraph {
                             //Translate
                             else if (grandGrandChildren[h].nodeName == "translate") {
                                 var translate = {
+                                    type: "translate",
                                     x: 0,
                                     y: 0,
                                     z: 0
@@ -1557,6 +1561,7 @@ class MySceneGraph {
                             //Rotate
                             else if (grandGrandChildren[h].nodeName == "rotate") {
                                 var rotate = {
+                                    type: "rotate",
                                     axis: "",
                                     angle: 0
                                 }
@@ -1576,6 +1581,7 @@ class MySceneGraph {
                             //Scale
                             else if (grandGrandChildren[h].nodeName == "scale") {
                                 var scale = {
+                                    type: "scale",
                                     x: 0,
                                     y: 0,
                                     z: 0
@@ -1771,7 +1777,7 @@ class MySceneGraph {
         for (let i = 0; i < this.tmpComponents.length; i++) {
             //Add to components array
             //Explicit transformations
-            if (this.tmpComponents.transformations_ref == null) {
+            if (this.tmpComponents[i].transformations_ref == null) {
                 this.components.push(new Component(
                     this.scene,
                     this.tmpComponents[i].id,
