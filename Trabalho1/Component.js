@@ -89,7 +89,7 @@ class Component {
 
         //Get previous texture
         var tmpTex = null;
-        if(this.texture.id == "inherit")
+        if (this.texture.id == "inherit")
             tmpTex = this.scene.activeTexture;
 
         //TODO Apply materials(only applies first one for now)
@@ -97,7 +97,7 @@ class Component {
             if (this.appearences[0].id != "inherit") {
                 this.appearences[0].appearence.apply();
             }
-        }else{
+        } else {
             this.appearences[0] = caller.appearences[0];
             this.appearences[0].appearence.apply();
         }
@@ -105,7 +105,7 @@ class Component {
         //Apply texture
         if (this.texture.id != "none") {
             //Use new texture
-            if(tmpTex == null){
+            if (tmpTex == null) {
                 for (let i = 0; i < this.scene.graph.loadedTextures.length; i++) {
                     if (this.scene.graph.loadedTextures[i].id == this.texture.id) {
                         if (this.scene.graph.loadedTextures[i].tex.bind()) {
@@ -118,7 +118,7 @@ class Component {
                 }
             }
             //Use inherited(previous texture)
-            else{
+            else {
                 if (tmpTex.bind()) {
                     var a = this.scene.gl;
                     a.texParameteri(a.TEXTURE_2D, a.TEXTURE_WRAP_S, this.texture.length_s);
@@ -129,7 +129,7 @@ class Component {
         }
 
         //Apply transformations
-        for (let t = 0; t < this.transformations.list.length; t++) {
+        for (let t = this.transformations.list.length - 1; t >= 0; t--) {
             switch (this.transformations.list[t].type) {
                 case "translate":
                     this.scene.translate(this.transformations.list[t].x, this.transformations.list[t].y, this.transformations.list[t].z);
