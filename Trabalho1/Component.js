@@ -23,6 +23,8 @@ class Component {
      */
     setup() {
 
+        //TODO Setup texture
+
         //Setup materials
         this.appearences = [];
         for (let i = 0; i < this.materials.length; i++) {
@@ -37,6 +39,7 @@ class Component {
                     a.appearence.setAmbient(m.ambient.r, m.ambient.g, m.ambient.b, m.ambient.a);
                     a.appearence.setDiffuse(m.diffuse.r, m.diffuse.g, m.diffuse.b, m.diffuse.a);
                     a.appearence.setSpecular(m.specular.r, m.specular.g, m.specular.b, m.specular.a);
+
                     this.appearences.push(a);
                 }
             }
@@ -88,6 +91,27 @@ class Component {
         if (!(this.appearences[0] == undefined)) {
             if (this.appearences[0].id != "inherit") {
                 this.appearences[0].appearence.apply();
+            }
+        }
+
+        //Apply texture
+        //Don't do anything if "inherit"
+        if (this.texture.id == "inherit") {
+        }
+        //TODO Set blank texture if "none" (Use a default texture)
+        else if (this.texture.id == "none") {
+        }
+        //Apply texture
+        else {
+            for (let i = 0; i < this.scene.graph.loadedTextures.length; i++) {
+                if (this.scene.graph.loadedTextures[i].id == this.texture.id) {
+                    if (this.scene.graph.loadedTextures[i].tex.bind()) {
+                        var a = this.scene.gl;
+                        a.texParameteri(a.TEXTURE_2D, a.TEXTURE_WRAP_S, this.texture.length_s);
+                        a.texParameteri(a.TEXTURE_2D, a.TEXTURE_WRAP_T, this.texture.length_t);
+                        this.scene.activeTexture = this.scene.graph.loadedTextures[i].tex;
+                    }
+                }
             }
         }
 

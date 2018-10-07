@@ -83,6 +83,19 @@ class XMLscene extends CGFscene {
      */
     onGraphLoaded() {
 
+        //Load Textures
+        for (let i = 0; i < this.graph.textures.length; i++) {
+            var loadedTexture = {
+                id: "",
+                tex: null
+            }
+
+            loadedTexture.id = this.graph.textures[i].id;
+            loadedTexture.tex = new CGFtexture(this, "scenes/" + this.graph.textures[i].file);
+
+            this.graph.loadedTextures.push(loadedTexture);
+        }
+
         //Change ambient
         this.setGlobalAmbientLight(this.graph.ambient.ambient.r, this.graph.ambient.ambient.g, this.graph.ambient.ambient.b, this.graph.ambient.ambient.a);
 

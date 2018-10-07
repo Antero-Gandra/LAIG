@@ -39,6 +39,9 @@ class MySceneGraph {
         this.primitives = [];
         this.components = [];
 
+        //Loaded textures after all data loaded
+        this.loadedTextures = [];
+
         //Axis coordinates
         this.axisCoords = [];
         this.axisCoords['x'] = [1, 0, 0];
@@ -1813,7 +1816,7 @@ class MySceneGraph {
             this.idRoot,
             [],
             [],
-            null,
+            { id: "none" },
             fatherless,
             []);
         this.root.setup();
