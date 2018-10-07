@@ -144,7 +144,6 @@
 
         <component id="base">
             <transformation>
-                <translate x="0" y="0" z="0" />
             </transformation>
             <materials>
                 <material id="baseMat" />
@@ -291,7 +290,6 @@
 
         <component id="upperbody">
             <transformation>
-                <translate x="0" y="0" z="0" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -307,7 +305,6 @@
 
         <component id="torso">
             <transformation>
-                <translate x="0" y="0" z="0" />
                 <scale x="0.4" y="0.8" z="0.4" />
             </transformation>
             <materials>
@@ -381,7 +378,6 @@
 
         <component id="lowerbody">
             <transformation>
-                <translate x="0" y="0" z="0" />
             </transformation>
             <materials>
                 <material id="inherit" />
