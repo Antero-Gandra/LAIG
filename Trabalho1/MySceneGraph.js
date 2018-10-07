@@ -1820,6 +1820,7 @@ class MySceneGraph {
             fatherless,
             []);
         this.root.setup();
+        this.root.appearences.push({appearence: new CGFappearance(this.scene)});
 
         //Parsing complete
         this.log("Parsed components");
@@ -1862,7 +1863,7 @@ class MySceneGraph {
         this.scene.pushMatrix();
 
         //Call draw for root component(father of all components without a father)
-        this.root.display();
+        this.root.display(this.root);
 
         this.scene.popMatrix();
 

@@ -85,7 +85,7 @@ class Component {
     /**
      * Displays children primitives and tells children components to do the same
      */
-    display() {
+    display(caller) {
 
         //Get previous texture
         var tmpTex = null;
@@ -97,6 +97,9 @@ class Component {
             if (this.appearences[0].id != "inherit") {
                 this.appearences[0].appearence.apply();
             }
+        }else{
+            this.appearences[0] = caller.appearences[0];
+            this.appearences[0].appearence.apply();
         }
 
         //Apply texture
@@ -161,7 +164,7 @@ class Component {
         //Tell children nodes to draw
         for (let i = 0; i < this.childrenComponents.length; i++) {
             this.scene.pushMatrix();
-            this.childrenComponents[i].display();
+            this.childrenComponents[i].display(this);
             this.scene.popMatrix();
         }
 
