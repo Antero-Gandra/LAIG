@@ -1398,7 +1398,7 @@ class MySceneGraph {
                             return "Invalid stacks value in sphere primitive with id: " + primitive.id;
 
                         //Add to primitive and break out of loop(only 1 "shape" per primitive)
-                        primitive.shape = sphere;
+                        primitive.shape = new Sphere(this.scene, sphere.radius, sphere.slices, sphere.stacks);
                         break;
                     }
                     //Torus

@@ -64,7 +64,7 @@
         <transformation id="trans">
             <!-- instrucoes a usar sem limite nem ordem -->
             <!-- deve existir pelo menos uma transformacao -->
-            <translate x="0" y="0" z="1" />
+            <translate x="0" y="0" z="2" />
             <rotate axis="x" angle="90" />
             <scale x="1" y="1" z="1" />
         </transformation>
@@ -90,11 +90,11 @@
         </primitive>
 
         <primitive id="post">
-            <cylinder base="1" top="1" height="1" slices="10" stacks="1" />
+            <cylinder base="1.4" top="0.4" height="1" slices="10" stacks="1" />
         </primitive>
 
         <primitive id="ball">
-            <sphere radius="1" slices="10" stacks="1" />
+            <sphere radius="1" slices="20" stacks="20" />
         </primitive>
 
         <primitive id="ring">
@@ -176,7 +176,7 @@
             <transformation>
                 <transformationref id="trans" />
                 <!-- It will ignore after this -->
-                <translate x="0" y="0" z="1" />
+                <translate x="0" y="0" z="2" />
                 <rotate axis="x" angle="90" />
                 <scale x="1" y="1" z="1" />
             </transformation>
@@ -186,6 +186,21 @@
             <texture id="texture" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="post" />
+            </children>
+        </component>
+
+        <component id="sph">
+            <transformation>
+                <translate x="3" y="0" z="0" />
+                <rotate axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </transformation>
+            <materials>
+                <material id="material" />
+            </materials>
+            <texture id="texture" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="ball" />
             </children>
         </component>
 
