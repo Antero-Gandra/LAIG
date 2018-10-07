@@ -43,7 +43,9 @@ class Triangle extends CGFobject {
         ];
 
         this.indices = [
-            2, 1, 0
+            2, 1, 0,
+            //Double side
+            0, 1, 2 
         ];
 
         this.normals = [

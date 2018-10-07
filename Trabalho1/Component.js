@@ -67,6 +67,8 @@ class Component {
      */
     display() {
 
+        //TODO Apply materials/texture
+
         //Apply transformations
         for (let t = 0; t < this.transformations.list.length; t++) {
             switch (this.transformations.list[t].type) {
