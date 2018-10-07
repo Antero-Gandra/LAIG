@@ -8,7 +8,7 @@ class Cylinder extends CGFobject {
         this.top = top;
         this.height = height;
 
-        this.coreCylinder = new CoreCylinder (scene, base, top, height, slices, stacks);
+        this.coreCylinder = new CoreCylinder(scene, base, top, height, slices, stacks);
 
         this.baseCircle = new Circle(scene, slices, base);
         this.topCirlce = new Circle(scene, slices, top);

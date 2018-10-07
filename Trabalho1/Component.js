@@ -103,8 +103,11 @@ class Component {
             this.childrenPrimitives[i].display();
 
         //Tell children nodes to draw
-        for (let i = 0; i < this.childrenComponents.length; i++)
+        for (let i = 0; i < this.childrenComponents.length; i++) {
+            this.scene.pushMatrix();
             this.childrenComponents[i].display();
+            this.scene.popMatrix();
+        }
 
     }
 

@@ -64,9 +64,9 @@
         <transformation id="trans">
             <!-- instrucoes a usar sem limite nem ordem -->
             <!-- deve existir pelo menos uma transformacao -->
-            <translate x="5" y="0" z="5" />
-            <rotate axis="x" angle="10" />
-            <scale x="2" y="2" z="2" />
+            <translate x="0" y="0" z="1" />
+            <rotate axis="x" angle="90" />
+            <scale x="1" y="1" z="1" />
         </transformation>
     </transformations>
 
@@ -90,7 +90,7 @@
         </primitive>
 
         <primitive id="post">
-            <cylinder base="1" top="1" height="10" slices="10" stacks="1" />
+            <cylinder base="1" top="1" height="1" slices="10" stacks="1" />
         </primitive>
 
         <primitive id="ball">
@@ -104,7 +104,7 @@
     </primitives>
 
     <components>
-        <component id="teste">
+        <component id="quad">
             <!-- Uma "component" e' um objeto composto e pode ser -->
             <!-- usada em nos intermédios -->
             <!-- bloco "transformation" e' obrigatorio -->
@@ -113,7 +113,7 @@
                 <!-- declaradas anteriormente -->
 
                 <!--         <transformationref id="trans" />          -->
-                
+
                 <!-- ou, ALTERNATIVAMENTE, transformacoes explicitas, -->
                 <!-- usando zero ou mais das instrucoes seguintes, sem -->
                 <!-- limite nem ordem -->
@@ -152,12 +152,12 @@
                 <!-- deve existir uma ou mais tags "componentref" e/ou -->
                 <!-- "primitiveref", identificando outros -->
                 <!-- componentes ou primitivas -->
-                <componentref id="a" />
+                <componentref id="tri" />
                 <primitiveref id="square" />
             </children>
         </component>
 
-        <component id="a">
+        <component id="tri">
             <transformation>
                 <translate x="0" y="1" z="0" />
                 <rotate axis="x" angle="0" />
@@ -169,6 +169,23 @@
             <texture id="texture" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="triangle" />
+            </children>
+        </component>
+
+        <component id="cil">
+            <transformation>
+                <transformationref id="trans" />
+                <!-- It will ignore after this -->
+                <translate x="0" y="0" z="1" />
+                <rotate axis="x" angle="90" />
+                <scale x="1" y="1" z="1" />
+            </transformation>
+            <materials>
+                <material id="material" />
+            </materials>
+            <texture id="texture" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="post" />
             </children>
         </component>
 

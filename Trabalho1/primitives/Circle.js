@@ -48,7 +48,7 @@ class Circle extends CGFobject {
 
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
-        
+
     };
 
     //TODO function to update texCoords if needed
