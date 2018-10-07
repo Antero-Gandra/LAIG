@@ -1428,7 +1428,7 @@ class MySceneGraph {
                             return "Invalid loops value in torus primitive with id: " + primitive.id;
 
                         //Add to primitive and break out of loop(only 1 "shape" per primitive)
-                        primitive.shape = torus;
+                        primitive.shape = new Torus(this.scene, torus.inner, torus.outer, torus.slices, torus.loops);
                         break;
                     }
                     //Unknown

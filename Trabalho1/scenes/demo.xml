@@ -90,7 +90,7 @@
         </primitive>
 
         <primitive id="post">
-            <cylinder base="1.4" top="0.4" height="1" slices="10" stacks="1" />
+            <cylinder base="1.4" top="0.4" height="1" slices="20" stacks="1" />
         </primitive>
 
         <primitive id="ball">
@@ -98,7 +98,7 @@
         </primitive>
 
         <primitive id="ring">
-            <torus inner="1" outer="1.2" slices="10" loops="1" />
+            <torus inner="0.7" outer="1.2" slices="20" loops="20" />
         </primitive>
 
     </primitives>
@@ -201,6 +201,21 @@
             <texture id="texture" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="ball" />
+            </children>
+        </component>
+
+        <component id="tor">
+            <transformation>
+                <translate x="0" y="3" z="0" />
+                <rotate axis="x" angle="90" />
+                <scale x="1" y="1" z="1" />
+            </transformation>
+            <materials>
+                <material id="material" />
+            </materials>
+            <texture id="texture" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="ring" />
             </children>
         </component>
 
