@@ -87,6 +87,11 @@ class Component {
      */
     display() {
 
+        //Get previous texture
+        var tmpTex = null;
+        if(this.texture.id == "inherit")
+            tmpTex = this.scene.activeTexture;
+
         //TODO Apply materials(only applies first one for now)
         if (!(this.appearences[0] == undefined)) {
             if (this.appearences[0].id != "inherit") {
@@ -95,22 +100,27 @@ class Component {
         }
 
         //Apply texture
-        //Don't do anything if "inherit"
-        if (this.texture.id == "inherit") {
-        }
-        //TODO Set blank texture if "none" (Use a default texture)
-        else if (this.texture.id == "none") {
-        }
-        //Apply texture
-        else {
-            for (let i = 0; i < this.scene.graph.loadedTextures.length; i++) {
-                if (this.scene.graph.loadedTextures[i].id == this.texture.id) {
-                    if (this.scene.graph.loadedTextures[i].tex.bind()) {
-                        var a = this.scene.gl;
-                        a.texParameteri(a.TEXTURE_2D, a.TEXTURE_WRAP_S, this.texture.length_s);
-                        a.texParameteri(a.TEXTURE_2D, a.TEXTURE_WRAP_T, this.texture.length_t);
-                        this.scene.activeTexture = this.scene.graph.loadedTextures[i].tex;
+        if (this.texture.id != "none") {
+            //Use new texture
+            if(tmpTex == null){
+                for (let i = 0; i < this.scene.graph.loadedTextures.length; i++) {
+                    if (this.scene.graph.loadedTextures[i].id == this.texture.id) {
+                        if (this.scene.graph.loadedTextures[i].tex.bind()) {
+                            var a = this.scene.gl;
+                            a.texParameteri(a.TEXTURE_2D, a.TEXTURE_WRAP_S, this.texture.length_s);
+                            a.texParameteri(a.TEXTURE_2D, a.TEXTURE_WRAP_T, this.texture.length_t);
+                            this.scene.activeTexture = this.scene.graph.loadedTextures[i].tex;
+                        }
                     }
+                }
+            }
+            //Use inherited(previous texture)
+            else{
+                if (tmpTex.bind()) {
+                    var a = this.scene.gl;
+                    a.texParameteri(a.TEXTURE_2D, a.TEXTURE_WRAP_S, this.texture.length_s);
+                    a.texParameteri(a.TEXTURE_2D, a.TEXTURE_WRAP_T, this.texture.length_t);
+                    this.scene.activeTexture = tmpTex;
                 }
             }
         }
