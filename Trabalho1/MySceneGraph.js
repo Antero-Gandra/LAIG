@@ -1373,7 +1373,7 @@ class MySceneGraph {
                             return "Invalid stacks value in cylinder primitive with id: " + primitive.id;
 
                         //Add to primitive and break out of loop(only 1 "shape" per primitive)
-                        primitive.shape = cylinder;
+                        primitive.shape = new Cylinder(this.scene, cylinder.base, cylinder.top, cylinder.height, cylinder.slices, cylinder.stacks);
                         break;
                     }
                     //Sphere
