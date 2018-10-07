@@ -232,7 +232,7 @@ class MySceneGraph {
 
         //Axis Length
         this.axisLength = this.reader.getFloat(sceneNode, 'axis_length');
-        if (this.axisLength <= 0 || isNaN(this.axisLength)) {
+        if (this.axisLength < 0 || isNaN(this.axisLength)) {
             return "invalid axis_length"
         }
 
