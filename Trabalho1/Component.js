@@ -11,7 +11,8 @@ class Component {
         this.childrenComponentsIDs = childrenComponentsIDs;
         this.childrenPrimitivesIDs = childrenPrimitivesIDs;
 
-        this.setup();
+        this.childrenPrimitives = [];
+        this.childrenComponents = [];
     }
 
     /**
@@ -28,7 +29,6 @@ class Component {
         }
 
         //Setup primitive nodes
-        this.childrenPrimitives = [];
         for (let i = 0; i < this.scene.graph.primitives.length; i++) {
             for (let j = 0; j < this.childrenPrimitivesIDs.length; j++) {
                 if (this.scene.graph.primitives[i].id == this.childrenPrimitivesIDs[j]) {
@@ -39,7 +39,6 @@ class Component {
         }
 
         //Setup component nodes
-        this.childrenComponents = [];
         for (let i = 0; i < this.scene.graph.components.length; i++) {
             for (let j = 0; j < this.childrenComponentsIDs.length; j++) {
                 if (this.scene.graph.components[i].id == this.childrenComponentsIDs[j]) {
@@ -58,15 +57,14 @@ class Component {
 
         //TODO apply transformations
 
+        
         //Draw primitives
-        for (let i = 0; i < this.childrenPrimitives.length; i++) {
+        for (let i = 0; i < this.childrenPrimitives.length; i++)
             this.childrenPrimitives[i].display();
-        }
 
         //Tell children nodes to draw
-        for (let i = 0; i < this.childrenComponents.length; i++) {
+        for (let i = 0; i < this.childrenComponents.length; i++)
             this.childrenComponents[i].display();
-        }
 
     }
 

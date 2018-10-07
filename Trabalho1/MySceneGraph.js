@@ -1335,7 +1335,7 @@ class MySceneGraph {
                             return "Invalid z3 value in triangle primitive with id: " + primitive.id;
 
                         //Add to primitive and break out of loop(only 1 "shape" per primitive)
-                        primitive.shape = triangle;
+                        primitive.shape = new Triangle(this.scene, triangle.x1, triangle.y1, triangle.z1, triangle.x2, triangle.y2, triangle.z2, triangle.x3, triangle.y3, triangle.z3);
                         break;
                     }
                     //Cylinder
@@ -1792,18 +1792,22 @@ class MySceneGraph {
                     this.tmpComponents[i].childrenComponents,
                     this.tmpComponents[i].childrenPrimitives));
             }
-
-            //Create root with fatherless components
-            this.root = new Component(
-                this.scene,
-                this.idRoot,
-                [],
-                null,
-                null,
-                fatherless,
-                []);
-
         }
+
+        //When all components are present it's ready to setup nodes
+        for (let i = 0; i < this.components.length; i++)
+            this.components[i].setup();
+
+        //Create root with fatherless components
+        this.root = new Component(
+            this.scene,
+            this.idRoot,
+            [],
+            null,
+            null,
+            fatherless,
+            []);
+        this.root.setup();
 
         //Parsing complete
         this.log("Parsed components");
