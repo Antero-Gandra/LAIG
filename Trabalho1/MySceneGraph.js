@@ -1656,7 +1656,7 @@ class MySceneGraph {
                         //Check texture ID exists
                         var found = false;
                         for (let v = 0; v < this.textures.length; v++) {
-                            if (this.textures[v].id == component.texture.id || component.textures.id == "none" || component.textures.id == "inherit") {
+                            if (this.textures[v].id == component.texture.id || component.texture.id == "none" || component.texture.id == "inherit") {
                                 found = true;
                                 break;
                             }
@@ -1664,15 +1664,18 @@ class MySceneGraph {
                         if (!found)
                             return "texture ID not found in textures array with id: " + component.texture.id;
 
-                        //length_s
-                        component.texture.length_s = this.reader.getFloat(grandChildren[j], 'length_s');
-                        if (component.texture.length_s == null || component.texture.length_s <= 0 || isNaN(component.texture.length_s))
-                            return "no length_s defined for component texture with id: " + component.id;
+                        //Don't read length_s or length_t if texture is "none"
+                        if (component.texture.id != "none") {
+                            //length_s
+                            component.texture.length_s = this.reader.getFloat(grandChildren[j], 'length_s');
+                            if (component.texture.length_s == null || component.texture.length_s <= 0 || isNaN(component.texture.length_s))
+                                return "no length_s defined for component texture with id: " + component.id;
 
-                        //length_t
-                        component.texture.length_t = this.reader.getFloat(grandChildren[j], 'length_t');
-                        if (component.texture.length_t == null || component.texture.length_t <= 0 || isNaN(component.texture.length_t))
-                            return "no length_t defined for component texture with id: " + component.id;
+                            //length_t
+                            component.texture.length_t = this.reader.getFloat(grandChildren[j], 'length_t');
+                            if (component.texture.length_t == null || component.texture.length_t <= 0 || isNaN(component.texture.length_t))
+                                return "no length_t defined for component texture with id: " + component.id;
+                        }
 
                     }
                     //Component Children
