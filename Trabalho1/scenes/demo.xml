@@ -243,7 +243,6 @@
             </children>
         </component>
 
-
         <!-- Court -->
         <component id="court">
             <transformation>
@@ -258,10 +257,8 @@
             <children>
                 <primitiveref id="rectangle" />
                 <componentref id="underCourt" />
-
             </children>
         </component>
-
 
         <!-- underCourt -->
         <component id="underCourt">
@@ -276,8 +273,6 @@
                 <primitiveref id="rectangle" />
             </children>
         </component>
-
-
 
         <!-- Ball -->
         <component id="ball">
