@@ -242,8 +242,27 @@
             <texture id="court" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="rectangle" />
+                <componentref id="underCourt" />
+
             </children>
         </component>
+
+
+        <!-- underCourt -->
+        <component id="underCourt">
+            <transformation>
+                <rotate axis="x" angle="180" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="court" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+
+
 
         <!-- Ball -->
         <component id="ball">
