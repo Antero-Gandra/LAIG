@@ -226,8 +226,23 @@
             <texture id="board" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="rectangle" />
+                <componentref id="backBackboard"/>
             </children>
         </component>
+
+        <component id="backBackboard">
+            <transformation>
+                <rotate axis="y" angle="180" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="board" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+
 
         <!-- Court -->
         <component id="court">
