@@ -34,10 +34,7 @@ class Rectangle extends CGFobject {
 
         this.indices = [
             0, 1, 2,
-            3, 2, 1,
-            //Double side
-            2, 1, 0,
-            1, 2, 3
+            3, 2, 1
         ];
 
         this.normals = [
