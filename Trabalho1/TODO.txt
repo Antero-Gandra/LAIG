@@ -1,0 +1,11 @@
+TODO/Bugs
+
+- Component children need to apply their transformations first (back court rotation is weird)
+(also noticeable in back of back boards, they rotate in Z too for some reason probably related)(?)
+- Don't generate a root component, root most be defined in xml, (allows unused components to be defined) (teacher verified)
+(we can still print in )
+- Texture scaling not done yet
+- Use materials list
+- Interface choose view
+- Interface light names
+- Update yas format to new class ortho(some values aren't given, use 0 or 1)
