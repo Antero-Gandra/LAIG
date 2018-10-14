@@ -1760,7 +1760,6 @@ class MySceneGraph {
         }
 
         //Check Components without father
-        var fatherless = [];
         for (let i = 0; i < this.tmpComponents.length; i++) {
             var hasFather = false;
             for (let j = 0; j < this.tmpComponents.length; j++) {
@@ -1774,14 +1773,15 @@ class MySceneGraph {
                     }
                 }
             }
-            //Doesn't have father, add to array
-            if (!hasFather)
-                fatherless.push(this.tmpComponents[i].id);
+            //Doesn't have father
+            if (!hasFather && this.tmpComponents[i].id != this.idRoot)
+                this.onXMLMinorError("component " + this.tmpComponents[i].id + " doesn't have a parent so it won't be displayed");
         }
 
         //Make proper components after all error checking
         for (let i = 0; i < this.tmpComponents.length; i++) {
             //Add to components array
+            
             //Explicit transformations
             if (this.tmpComponents[i].transformations_ref == null) {
                 this.components.push(new Component(
@@ -1810,17 +1810,13 @@ class MySceneGraph {
         for (let i = 0; i < this.components.length; i++)
             this.components[i].setup();
 
-        //Create root with fatherless components
-        this.root = new Component(
-            this.scene,
-            this.idRoot,
-            [],
-            [],
-            { id: "none" },
-            fatherless,
-            []);
-        this.root.setup();
-        this.root.appearences.push({appearence: new CGFappearance(this.scene)});
+        //Find root
+        for (let i = 0; i < this.components.length; i++) {
+            if(this.components[i].id == this.idRoot){
+                this.root = this.components[i];
+                break;
+            }
+        }
 
         //Parsing complete
         this.log("Parsed components");
@@ -1862,7 +1858,7 @@ class MySceneGraph {
 
         this.scene.pushMatrix();
 
-        //Call draw for root component(father of all components without a father)
+        //Call draw for root component
         this.root.display(this.root);
 
         this.scene.popMatrix();

@@ -1,6 +1,6 @@
 <yas>
 
-    <scene root="root" axis_length="0" />
+    <scene root="root" axis_length="5" />
 
     <views default="perspective">
         <perspective id="perspective" near="1" far="100" angle="0">
@@ -109,6 +109,27 @@
     </primitives>
 
     <components>
+
+        <!-- Root -->
+        <component id="root">
+
+            <transformation>                
+            </transformation>
+
+            <materials>
+                <material id="defMat"/>
+            </materials>
+
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <componentref id="board1"/>
+                <componentref id="board2"/>
+                <componentref id="court"/>
+                <componentref id="player1"/>
+                <componentref id="player2"/>
+                <componentref id="ball"/>
+            </children>
+        </component>
 
         <!-- Board with the base, post and the top for the backboard -->
         <component id="board1">
