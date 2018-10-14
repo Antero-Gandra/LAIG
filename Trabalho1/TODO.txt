@@ -6,3 +6,6 @@ TODO/Bugs
 - Interface choose view
 - Interface light names
 - Update yas format to new class ortho(some values aren't given, use 0 or 1)
+- Check orientation of base primitives is correct
+- Improve scene some more
+- Review all error checking
