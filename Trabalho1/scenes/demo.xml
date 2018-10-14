@@ -228,6 +228,7 @@
             </transformation>
             <materials>
                 <material id="ringMat" />
+                <material id="inherit" />
             </materials>
             <texture id="inherit" length_s="1" length_t="1" />
             <children>
@@ -344,6 +345,7 @@
             </transformation>
             <materials>
                 <material id="inherit" />
+                <material id="shirtMat" />
             </materials>
             <texture id="inherit" length_s="1" length_t="1" />
             <children>
@@ -359,7 +361,7 @@
                 <scale x="0.4" y="0.8" z="0.4" />
             </transformation>
             <materials>
-                <material id="shirtMat" />
+                <material id="shirtMat" />               
             </materials>
             <texture id="inherit" length_s="1" length_t="1" />
             <children>

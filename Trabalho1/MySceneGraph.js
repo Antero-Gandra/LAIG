@@ -1647,6 +1647,11 @@ class MySceneGraph {
                                 continue;
                             }
                         }
+
+                        //At least 1 material
+                        if (component.materials.length == 0)
+                            return "there needs to be at least 1 material for component: " + component.id;
+
                     }
                     //Texture
                     else if (grandChildren[j].nodeName == "texture") {
@@ -1781,7 +1786,7 @@ class MySceneGraph {
         //Make proper components after all error checking
         for (let i = 0; i < this.tmpComponents.length; i++) {
             //Add to components array
-            
+
             //Explicit transformations
             if (this.tmpComponents[i].transformations_ref == null) {
                 this.components.push(new Component(
@@ -1812,7 +1817,7 @@ class MySceneGraph {
 
         //Find root
         for (let i = 0; i < this.components.length; i++) {
-            if(this.components[i].id == this.idRoot){
+            if (this.components[i].id == this.idRoot) {
                 this.root = this.components[i];
                 break;
             }
@@ -1859,7 +1864,7 @@ class MySceneGraph {
         this.scene.pushMatrix();
 
         //Call draw for root component
-        this.root.display(this.root);
+        this.root.display(null);
 
         this.scene.popMatrix();
 

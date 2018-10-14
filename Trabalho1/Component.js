@@ -14,6 +14,8 @@ class Component {
         this.childrenComponentsIDs = childrenComponentsIDs;
         this.childrenPrimitivesIDs = childrenPrimitivesIDs;
 
+        this.currentMaterial = 0;
+
         this.childrenPrimitives = [];
         this.childrenComponents = [];
     }
@@ -23,11 +25,13 @@ class Component {
      */
     setup() {
 
-        //TODO Setup texture
-
         //Setup materials
         this.appearences = [];
         for (let i = 0; i < this.materials.length; i++) {
+            //Add inherit
+            if(this.materials[i] == "inherit")
+                this.appearences.push({id: "inherit"});
+            //Add custom appearence
             for (let j = 0; j < this.scene.graph.materials.length; j++) {
                 const m = this.scene.graph.materials[j];
                 if (this.materials[i] == m.id) {
@@ -85,21 +89,21 @@ class Component {
     /**
      * Displays children primitives and tells children components to do the same
      */
-    display(caller) {
+    display(callerMaterial) {
 
         //Get previous texture
         var tmpTex = null;
         if (this.texture.id == "inherit")
             tmpTex = this.scene.activeTexture;
 
-        //TODO Apply materials(only applies first one for now)
-        if (!(this.appearences[0] == undefined)) {
-            if (this.appearences[0].id != "inherit") {
-                this.appearences[0].appearence.apply();
-            }
-        } else {
-            this.appearences[0] = caller.appearences[0];
-            this.appearences[0].appearence.apply();
+        //Apply materials
+        var materialToPass;
+        if(this.appearences[this.currentMaterial].id == "inherit"){
+            callerMaterial.appearence.apply();
+            materialToPass = callerMaterial;
+        }else{
+            this.appearences[this.currentMaterial].appearence.apply();
+            materialToPass = this.appearences[this.currentMaterial];
         }
 
         //Apply texture
@@ -164,9 +168,18 @@ class Component {
         //Tell children nodes to draw
         for (let i = 0; i < this.childrenComponents.length; i++) {
             this.scene.pushMatrix();
-            this.childrenComponents[i].display(this);
+            this.childrenComponents[i].display(materialToPass);
             this.scene.popMatrix();
         }
+
+    }
+
+    //Selects next material
+    nextMaterial() {
+
+        this.currentMaterial++;
+        if (this.currentMaterial >= this.materials.length)
+            this.currentMaterial = 0;
 
     }
 
