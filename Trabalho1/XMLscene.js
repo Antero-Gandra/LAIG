@@ -85,12 +85,10 @@ class XMLscene extends CGFscene {
             };
             camera.id = this.graph.views[i].id
 
-            console.log(this.graph.views[i]);
-
             //Detect if perspective
             if (this.graph.views[i].angle != undefined) {
                 camera.camera = new CGFcamera(
-                    this.graph.views[i].angle,
+                    this.graph.views[i].angle * DEGREE_TO_RAD,
                     this.graph.views[i].near,
                     this.graph.views[i].far,
                     vec4.fromValues(this.graph.views[i].from.x, this.graph.views[i].from.y, this.graph.views[i].from.z, 0),
