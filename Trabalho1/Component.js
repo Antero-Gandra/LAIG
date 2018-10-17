@@ -29,8 +29,8 @@ class Component {
         this.appearences = [];
         for (let i = 0; i < this.materials.length; i++) {
             //Add inherit
-            if(this.materials[i] == "inherit")
-                this.appearences.push({id: "inherit"});
+            if (this.materials[i] == "inherit")
+                this.appearences.push({ id: "inherit" });
             //Add custom appearence
             for (let j = 0; j < this.scene.graph.materials.length; j++) {
                 const m = this.scene.graph.materials[j];
@@ -84,6 +84,38 @@ class Component {
             }
         }
 
+        //Setup matrix
+        this.transformationMat = mat4.create();
+        mat4.identity(this.transformationMat);
+
+        for (let t = 0; t < this.transformations.list.length; t++) {
+            switch (this.transformations.list[t].type) {
+                case "translate":
+                    mat4.translate(this.transformationMat,this.transformationMat,[this.transformations.list[t].x, this.transformations.list[t].y, this.transformations.list[t].z]);
+                    break;
+                case "rotate":
+                    switch (this.transformations.list[t].axis) {
+                        case "x":
+                            mat4.rotate(this.transformationMat,this.transformationMat,this.transformations.list[t].angle * DEGREE_TO_RAD, [1, 0, 0]);
+                            break;
+                        case "y":
+                            mat4.rotate(this.transformationMat,this.transformationMat,this.transformations.list[t].angle * DEGREE_TO_RAD, [0, 1, 0]);
+                            break;
+                        case "z":
+                            mat4.rotate(this.transformationMat,this.transformationMat,this.transformations.list[t].angle * DEGREE_TO_RAD, [0, 0, 1]);
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                case "scale":
+                    mat4.scale(this.transformationMat,this.transformationMat,[this.transformations.list[t].x, this.transformations.list[t].y, this.transformations.list[t].z]);
+                    break;
+                default:
+                    break;
+            }
+        }
+
     }
 
     /**
@@ -98,10 +130,10 @@ class Component {
 
         //Apply materials
         var materialToPass;
-        if(this.appearences[this.currentMaterial].id == "inherit"){
+        if (this.appearences[this.currentMaterial].id == "inherit") {
             callerMaterial.appearence.apply();
             materialToPass = callerMaterial;
-        }else{
+        } else {
             this.appearences[this.currentMaterial].appearence.apply();
             materialToPass = this.appearences[this.currentMaterial];
         }
@@ -133,33 +165,7 @@ class Component {
         }
 
         //Apply transformations
-        for (let t = this.transformations.list.length - 1; t >= 0; t--) {
-            switch (this.transformations.list[t].type) {
-                case "translate":
-                    this.scene.translate(this.transformations.list[t].x, this.transformations.list[t].y, this.transformations.list[t].z);
-                    break;
-                case "rotate":
-                    switch (this.transformations.list[t].axis) {
-                        case "x":
-                            this.scene.rotate(this.transformations.list[t].angle * DEGREE_TO_RAD, 1, 0, 0);
-                            break;
-                        case "y":
-                            this.scene.rotate(this.transformations.list[t].angle * DEGREE_TO_RAD, 0, 1, 0);
-                            break;
-                        case "z":
-                            this.scene.rotate(this.transformations.list[t].angle * DEGREE_TO_RAD, 0, 0, 1);
-                            break;
-                        default:
-                            break;
-                    }
-                    break;
-                case "scale":
-                    this.scene.scale(this.transformations.list[t].x, this.transformations.list[t].y, this.transformations.list[t].z);
-                    break;
-                default:
-                    break;
-            }
-        }
+        this.scene.multMatrix(this.transformationMat);
 
         //Draw primitives
         for (let i = 0; i < this.childrenPrimitives.length; i++)

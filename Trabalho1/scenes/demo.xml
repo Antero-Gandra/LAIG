@@ -113,7 +113,7 @@
         <!-- Root -->
         <component id="root">
 
-            <transformation>                
+            <transformation>
             </transformation>
 
             <materials>
@@ -150,7 +150,7 @@
         <component id="board2">
             <transformation>
                 <rotate axis="y" angle="180" />
-                <translate x="0" y="0" z="13.4" />
+                <translate x="0" y="0" z="-13.4" />
             </transformation>
             <texture id="metal" length_s="1" length_t="1" />
             <materials>
@@ -177,9 +177,9 @@
 
         <component id="post">
             <transformation>
-                <scale x="0.1" y="0.1" z="4" />
                 <rotate axis="x" angle="90" />
-                <translate x="0" y="2" z="0" />
+                <translate x="0" y="0" z="-2" />
+                <scale x="0.1" y="0.1" z="4" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -224,7 +224,7 @@
             <transformation>
                 <scale x="0.4" y="0.4" z="0.4" />
                 <rotate axis="x" angle="90" />
-                <translate x="0" y="0" z="1.4" />
+                <translate x="0" y="3" z="-0.4" />
             </transformation>
             <materials>
                 <material id="ringMat" />
@@ -239,8 +239,8 @@
         <component id="backboard">
             <transformation>
                 <rotate axis="z" angle="-90" />
-                <translate x="0" y="0.7" z="1" />
-                <scale x="1.5" y="1" z="1" />
+                <translate x="-1" y="0" z="0.8" />
+                <scale x="1" y="1.5" z="1" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -254,7 +254,7 @@
 
         <component id="backBackboard">
             <transformation>
-                <rotate axis="y" angle="180" />
+                <rotate axis="x" angle="180" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -268,9 +268,8 @@
         <!-- Court -->
         <component id="court">
             <transformation>
-                <rotate axis="x" angle="90" />
-                <rotate axis="z" angle="180" />
                 <scale x="8" y="1" z="14" />
+                <rotate axis="x" angle="90" />
             </transformation>
             <materials>
                 <material id="defMat" />
@@ -299,7 +298,7 @@
         <!-- Ball -->
         <component id="ball">
             <transformation>
-                <translate x="0" y="10" z="0" />
+                <translate x="0" y="3" z="0" />
                 <scale x="0.3" y="0.3" z="0.3" />
             </transformation>
             <materials>
@@ -314,7 +313,7 @@
         <!-- Player -->
         <component id="player1">
             <transformation>
-                <translate x="0" y="1.5" z="-2" />
+                <translate x="0" y="1.5" z="2" />
             </transformation>
             <materials>
                 <material id="skinMat" />
@@ -328,6 +327,7 @@
 
         <component id="player2">
             <transformation>
+            <rotate axis="y" angle= "180"/>
                 <translate x="0" y="1.5" z="2" />
             </transformation>
             <materials>
@@ -361,7 +361,7 @@
                 <scale x="0.4" y="0.8" z="0.4" />
             </transformation>
             <materials>
-                <material id="shirtMat" />               
+                <material id="shirtMat" />
             </materials>
             <texture id="inherit" length_s="1" length_t="1" />
             <children>
@@ -371,9 +371,10 @@
 
         <component id="arm1">
             <transformation>
-                <translate x="2.5" y="0" z="0" />
-                <scale x="0.2" y="0.6" z="0.2" />
+                <rotate axis="x" angle= "10"/>
                 <rotate axis="z" angle= "10"/>
+                <translate x="0.5" y="0" z="0" />
+                <scale x="0.2" y="0.6" z="0.2" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -387,9 +388,10 @@
 
         <component id="arm2">
             <transformation>
-                <translate x="-2.5" y="0" z="0" />
-                <scale x="0.2" y="0.6" z="0.2" />
+                <rotate axis="x" angle= "10"/>
                 <rotate axis="z" angle= "-10"/>
+                <translate x="-0.5" y="0" z="0" />
+                <scale x="0.2" y="0.6" z="0.2" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -403,7 +405,7 @@
 
         <component id="hand">
             <transformation>
-                <translate x="0" y="-5" z="0" />
+                <translate x="0" y="-1" z="0" />
                 <scale x="0.6" y="0.2" z="0.6" />
             </transformation>
             <materials>
@@ -417,7 +419,7 @@
 
         <component id="head">
             <transformation>
-                <translate x="0" y="3" z="0" />
+                <translate x="0" y="0.9" z="0" />
                 <scale x="0.3" y="0.3" z="0.3" />
             </transformation>
             <materials>
@@ -444,7 +446,7 @@
 
         <component id="leg1">
             <transformation>
-                <translate x="1" y="-0.5" z="0" />
+                <translate x="0.2" y="-0.5" z="0" />
                 <scale x="0.2" y="1" z="0.2" />
             </transformation>
             <materials>
@@ -458,7 +460,7 @@
 
         <component id="leg2">
             <transformation>
-                <translate x="-1" y="-0.5" z="0" />
+                <translate x="-0.2" y="-0.5" z="0" />
                 <scale x="0.2" y="1" z="0.2" />
             </transformation>
             <materials>
