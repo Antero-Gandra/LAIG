@@ -290,6 +290,11 @@ class MySceneGraph {
                 if (perspective.far < 0 || perspective.far == null || isNaN(perspective.far))
                     return "invalid far plane for perspective view with id: " + perspective.id;
 
+                //Angle
+                perspective.angle = this.reader.getFloat(children[i], 'angle');
+                if (perspective.angle < 0 || perspective.angle == null || isNaN(perspective.angle))
+                    return "invalid angle for perspective view with id: " + perspective.id;
+
                 //Children of Perspective
                 var grandChildren = children[i].children;
 
@@ -355,7 +360,17 @@ class MySceneGraph {
                     left: 0,
                     right: 0,
                     top: 0,
-                    bottom: 0
+                    bottom: 0,
+                    from: {
+                        x: 0,
+                        y: 0,
+                        z: 0
+                    },
+                    to: {
+                        x: 0,
+                        y: 0,
+                        z: 0
+                    }
                 };
 
                 //Id
@@ -398,6 +413,57 @@ class MySceneGraph {
                 orthographic.bottom = this.reader.getFloat(children[i], 'bottom');
                 if (orthographic.bottom == null || isNaN(orthographic.bottom))
                     return "no bottom defined for orthographic view with id: " + orthographic.id;
+
+                //Children of Ortho
+                var grandChildren = children[i].children;
+
+                for (let j = 0; j < grandChildren.length; j++) {
+
+                    var x, y, z;
+
+                    //From
+                    if (grandChildren[j].nodeName == "from") {
+                        //x
+                        x = this.reader.getFloat(grandChildren[j], 'x');
+                        if (x == null || isNaN(x))
+                            return "invalid x value for orthographic view from with id: " + orthographic.id;
+                        orthographic.from.x = x;
+                        //y
+                        y = this.reader.getFloat(grandChildren[j], 'y');
+                        if (y == null || isNaN(y))
+                            return "invalid y value for orthographic view from with id: " + orthographic.id;
+                        orthographic.from.y = y;
+                        //z
+                        z = this.reader.getFloat(grandChildren[j], 'z');
+                        if (z == null || isNaN(z))
+                            return "invalid z value for orthographic view from with id: " + orthographic.id;
+                        orthographic.from.z = z;
+                    }
+                    //To
+                    else if (grandChildren[j].nodeName == "to") {
+                        //x
+                        x = this.reader.getFloat(grandChildren[j], 'x');
+                        if (x == null || isNaN(x))
+                            return "invalid x value for orthographic view to with id: " + orthographic.id;
+                        orthographic.to.x = x;
+                        //y
+                        y = this.reader.getFloat(grandChildren[j], 'y');
+                        if (y == null || isNaN(y))
+                            return "invalid y value for orthographic view to with id: " + orthographic.id;
+                        orthographic.to.y = y;
+                        //z
+                        z = this.reader.getFloat(grandChildren[j], 'z');
+                        if (z == null || isNaN(z))
+                            return "invalid z value for orthographic view to with id: " + orthographic.id;
+                        orthographic.to.z = z;
+                    }
+                    //Unknown
+                    else {
+                        this.onXMLMinorError("unknown tag <" + grandChildren[j].nodeName + "> in orthographic view");
+                        continue;
+                    }
+
+                }
 
                 //Add to views array
                 this.views.push(orthographic);

@@ -2,9 +2,7 @@ TODO/Bugs
 
 - Update parser with new information about length_ with "none" and "inherit" (check email)
 - Texture scaling not done yet
-- Interface choose view
-- Interface light names
-- Update yas format to new class ortho(some values aren't given, use 0 or 1)
+- Interface light and views name
 - Check orientation of base primitives is correct
 - Improve scene some more
 - Review all error checking

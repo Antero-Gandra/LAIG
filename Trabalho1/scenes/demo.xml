@@ -3,12 +3,15 @@
     <scene root="root" axis_length="5" />
 
     <views default="perspective">
-        <perspective id="perspective" near="1" far="100" angle="0">
+        <perspective id="perspective" near="1" far="100" angle="120">
             <from x="20" y="20" z="20" />
             <to x="0" y="0" z="0" />
         </perspective>
 
-        <ortho id="ortho" near="1" far="100" left="-10" right="10" top="-10" bottom="10" />
+        <ortho id="ortho" near="1" far="100" left="-10" right="10" top="-10" bottom="10">
+            <from x="20" y="20" z="20" />
+            <to x="0" y="0" z="0" />
+        </ortho>
     </views>
 
     <ambient>
@@ -327,7 +330,7 @@
 
         <component id="player2">
             <transformation>
-            <rotate axis="y" angle= "180"/>
+                <rotate axis="y" angle= "180"/>
                 <translate x="0" y="1.5" z="2" />
             </transformation>
             <materials>

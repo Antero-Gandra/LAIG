@@ -25,7 +25,7 @@ class XMLscene extends CGFscene {
 
         this.sceneInited = false;
 
-        this.initCameras();
+        this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
 
         this.enableTextures(true);
 
@@ -37,12 +37,6 @@ class XMLscene extends CGFscene {
         this.axis = new CGFaxis(this);
     }
 
-    /**
-     * Initializes the scene cameras.
-     */
-    initCameras() {
-        this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
-    }
     /**
      * Initializes the scene lights with the values read from the XML file.
      */
@@ -59,7 +53,7 @@ class XMLscene extends CGFscene {
             this.lights[i].setSpecular(light.specular.r, light.specular.g, light.specular.b, light.specular.a);
 
             //Detect if it's spotlight
-            if(light.angle != undefined){
+            if (light.angle != undefined) {
                 this.lights[i].setSpotCutOff(light.angle);
                 this.lights[i].setSpotExponent(light.exponent);
                 //TODO doesn't seem right
@@ -78,12 +72,74 @@ class XMLscene extends CGFscene {
 
     }
 
+    initViews() {
+
+        //Clear cameras array
+        this.cameras = [];
+
+        //Setup views
+        for (let i = 0; i < this.graph.views.length; i++) {
+            var camera = {
+                id: "",
+                camera: null
+            };
+            camera.id = this.graph.views[i].id
+
+            console.log(this.graph.views[i]);
+
+            //Detect if perspective
+            if (this.graph.views[i].angle != undefined) {
+                camera.camera = new CGFcamera(
+                    this.graph.views[i].angle,
+                    this.graph.views[i].near,
+                    this.graph.views[i].far,
+                    vec4.fromValues(this.graph.views[i].from.x, this.graph.views[i].from.y, this.graph.views[i].from.z, 0),
+                    vec4.fromValues(this.graph.views[i].to.x, this.graph.views[i].to.y, this.graph.views[i].to.z, 0));
+            }
+            //Must be ortho then
+            else {
+                camera.camera = new CGFcameraOrtho(
+                    this.graph.views[i].left,
+                    this.graph.views[i].right,
+                    this.graph.views[i].bottom,
+                    this.graph.views[i].top,
+                    this.graph.views[i].near,
+                    this.graph.views[i].far,
+                    vec3.fromValues(this.graph.views[i].from.x, this.graph.views[i].from.y, this.graph.views[i].from.z),
+                    vec3.fromValues(this.graph.views[i].to.x, this.graph.views[i].to.y, this.graph.views[i].to.z),
+                    vec3.fromValues(0, 0, 1))
+            }
+
+            //Add to cameras array
+            this.cameras.push(camera);
+
+        }
+
+        //Set default camera
+        for (let i = 0; i < this.cameras.length; i++) {
+            if (this.cameras[i].id == this.graph.defaultView) {
+                this.camera = this.cameras[i].camera;
+                this.interface.setActiveCamera(this.camera);
+                break;
+            }
+        }
+
+    }
+
+    /**
+     * Initializes the views
+     */
+    selectView(id) {
+        this.camera = this.cameras[id].camera;
+        this.interface.setActiveCamera(this.camera);
+    }
+
     /* Handler called when the graph is finally loaded. 
      * As loading is asynchronous, this may be called already after the application has started the run loop
      */
     onGraphLoaded() {
 
-        //Load Textures
+        //Load texture files
         for (let i = 0; i < this.graph.textures.length; i++) {
             var loadedTexture = {
                 id: "",
@@ -105,14 +161,19 @@ class XMLscene extends CGFscene {
         //Change reference length according to parsed graph
         this.axis = new CGFaxis(this, this.graph.axisLength);
 
-        //TODO Load initial camera      
-
         //Initialize lights
         this.initLights();
 
-        // Adds lights group.
+        //Initialize views
+        this.initViews();
+
+        //Adds lights group.
         this.interface.addLightsGroup(this.graph.lights);
 
+        //Adds views group.
+        this.interface.addViewsGroup(this.graph.views);
+
+        //Mark scene as initialized
         this.sceneInited = true;
     }
 

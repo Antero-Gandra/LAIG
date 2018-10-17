@@ -46,6 +46,17 @@ class MyInterface extends CGFinterface {
 
     }
 
+    addViewsGroup(views) {
+
+        var group = this.gui.addFolder("Views");
+        group.open();
+
+        const cameras = Object.keys(views);
+        this.currentCam = this.scene.graph.defaultView;
+
+        group.add(this, 'currentCam', cameras).name('Camera').onChange(val => this.scene.selectView(val));
+    }
+
     //Process key down
     processKeyDown(event) {
         if(event.code == "KeyN"){
