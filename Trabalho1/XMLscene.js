@@ -105,7 +105,7 @@ class XMLscene extends CGFscene {
                     this.graph.views[i].far,
                     vec3.fromValues(this.graph.views[i].from.x, this.graph.views[i].from.y, this.graph.views[i].from.z),
                     vec3.fromValues(this.graph.views[i].to.x, this.graph.views[i].to.y, this.graph.views[i].to.z),
-                    vec3.fromValues(0, 0, 1))
+                    vec3.fromValues(0, -1, 0))
             }
 
             //Add to cameras array
@@ -128,8 +128,13 @@ class XMLscene extends CGFscene {
      * Initializes the views
      */
     selectView(id) {
-        this.camera = this.cameras[id].camera;
-        this.interface.setActiveCamera(this.camera);
+        //Search ID
+        for (let i = 0; i < this.cameras.length; i++) {
+            if (this.cameras[i].id == id) {
+                this.camera = this.cameras[i].camera;
+                this.interface.setActiveCamera(this.camera);
+            }
+        }
     }
 
     /* Handler called when the graph is finally loaded. 

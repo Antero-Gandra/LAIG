@@ -2,7 +2,6 @@ TODO/Bugs
 
 - Update parser with new information about length_ with "none" and "inherit" (check email)
 - Texture scaling not done yet
-- Interface light and views name
 - Check orientation of base primitives is correct
 - Improve scene some more
 - Review all error checking
