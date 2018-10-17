@@ -145,9 +145,6 @@ class Component {
                 for (let i = 0; i < this.scene.graph.loadedTextures.length; i++) {
                     if (this.scene.graph.loadedTextures[i].id == this.texture.id) {
                         if (this.scene.graph.loadedTextures[i].tex.bind()) {
-                            var a = this.scene.gl;
-                            a.texParameteri(a.TEXTURE_2D, a.TEXTURE_WRAP_S, this.texture.length_s);
-                            a.texParameteri(a.TEXTURE_2D, a.TEXTURE_WRAP_T, this.texture.length_t);
                             this.scene.activeTexture = this.scene.graph.loadedTextures[i].tex;
                         }
                     }
@@ -156,9 +153,6 @@ class Component {
             //Use inherited(previous texture)
             else {
                 if (tmpTex.bind()) {
-                    var a = this.scene.gl;
-                    a.texParameteri(a.TEXTURE_2D, a.TEXTURE_WRAP_S, this.texture.length_s);
-                    a.texParameteri(a.TEXTURE_2D, a.TEXTURE_WRAP_T, this.texture.length_t);
                     this.scene.activeTexture = tmpTex;
                 }
             }
@@ -168,6 +162,7 @@ class Component {
         this.scene.multMatrix(this.transformationMat);
 
         //Draw primitives
+        //TODO update texture coords in primitive or inherit (if we have length_* values here)        
         for (let i = 0; i < this.childrenPrimitives.length; i++)
             this.childrenPrimitives[i].display();
 

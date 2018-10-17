@@ -1740,15 +1740,22 @@ class MySceneGraph {
 
                         //Don't read length_s or length_t if texture is "none"
                         if (component.texture.id != "none") {
-                            //length_s
-                            component.texture.length_s = this.reader.getFloat(grandChildren[j], 'length_s');
-                            if (component.texture.length_s == null || component.texture.length_s <= 0 || isNaN(component.texture.length_s))
-                                return "no length_s defined for component texture with id: " + component.id;
 
-                            //length_t
-                            component.texture.length_t = this.reader.getFloat(grandChildren[j], 'length_t');
-                            if (component.texture.length_t == null || component.texture.length_t <= 0 || isNaN(component.texture.length_t))
-                                return "no length_t defined for component texture with id: " + component.id;
+                            //Checks if they exists before reading to avoid some console logs
+                            if (this.reader.hasAttribute(grandChildren[j], 'length_s') && this.reader.hasAttribute(grandChildren[j], 'length_t')) {
+
+                                //length_s
+                                component.texture.length_s = this.reader.getFloat(grandChildren[j], 'length_s');
+                                if ((component.texture.length_s == null || component.texture.length_s <= 0 || isNaN(component.texture.length_s)) && component.texture.id != "inherit")
+                                    return "no length_s defined for component texture with id: " + component.id;
+
+                                //length_t
+                                component.texture.length_t = this.reader.getFloat(grandChildren[j], 'length_t');
+                                if ((component.texture.length_t == null || component.texture.length_t <= 0 || isNaN(component.texture.length_t)) && component.texture.id != "inherit")
+                                    return "no length_t defined for component texture with id: " + component.id;
+                                    
+                            }
+
                         }
 
                     }

@@ -41,7 +41,7 @@ class MyInterface extends CGFinterface {
 
     }
 
-    addViewsGroup(views) {
+    addViewsGroup() {
 
         var group = this.gui.addFolder("Views");
         group.open();
