@@ -1,7 +1,5 @@
 TODO/Bugs
 
-- Component children need to apply their transformations first (back court rotation is weird)
-(also noticeable in back of back boards, they rotate in Z too for some reason probably related)(?)
 - Texture scaling not done yet
 - Interface choose view
 - Interface light names
