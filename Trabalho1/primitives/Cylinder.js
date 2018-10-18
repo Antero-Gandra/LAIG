@@ -95,7 +95,7 @@ class Circle extends CGFobject {
 
         this.indices.push(0, i - 1, count - 1);
 
-        this.initialTexCoords = this.texCoords;
+        this.initialTexCoords = this.texCoords.slice();
 
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();

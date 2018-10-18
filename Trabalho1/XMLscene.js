@@ -154,15 +154,7 @@ class XMLscene extends CGFscene {
                 //Generic to both
                 this.scene.camera.setPosition(vec3.fromValues(view.from.x, view.from.y, view.from.z));
                 this.scene.camera.setTarget(vec3.fromValues(view.to.x, view.to.y, view.to.z));
-                console.log(view);
-                //Detect if perspective
-                if (view.angle != undefined) {
-                    this.scene.camera._up = vec3.fromValues(0, 1, 0);
-                }
-                //Must be ortho then
-                else {
-                    this.scene.camera._up = vec3.fromValues(0, -1, 0);
-                }
+                this.scene.camera._up = vec3.fromValues(0, 1, 0);
             }
         }
     }

@@ -46,7 +46,6 @@ class Semisphere extends CGFobject {
         this.indices = [];
         this.normals = [];
         this.texCoords = [];
-        this.initialTexCoords = [];
 
         var ang = 2 * Math.PI / this.slices;
         var vert = 2 * Math.PI / (this.stacks);
@@ -84,7 +83,7 @@ class Semisphere extends CGFobject {
             t -= this.Tinc;
         }
 
-        this.initialTexCoords = this.texCoords;
+        this.initialTexCoords = this.texCoords.slice();
 
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();

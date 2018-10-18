@@ -17,7 +17,6 @@ class Torus extends CGFobject {
         this.indices = new Array();
         this.normals = new Array();
         this.texCoords = new Array();
-        this.initialTexCoords = new Array();
 
         var ang_circle = (2 * Math.PI) / this.slices;
         var ang_between_circles = (2 * Math.PI) / this.loops;
@@ -42,6 +41,8 @@ class Torus extends CGFobject {
                 this.texCoords.push(s, t);
             }
         }
+
+        this.initialTexCoords = this.texCoords.slice();
 
         for (var i = 0; i < this.loops; i++) {
             for (var j = 0; j < this.slices; j++) {

@@ -1549,8 +1549,8 @@ class MySceneGraph {
                     materials: [],
                     texture: {
                         id: "",
-                        length_s: 1,
-                        length_t: 1
+                        length_s: null,
+                        length_t: null
                     },
                     childrenComponents: [],
                     childrenPrimitives: []

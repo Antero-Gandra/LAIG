@@ -1,6 +1,5 @@
 TODO/Bugs
 
-- Texture scaling not done yet
 - Check orientation of base primitives is correct
 - Improve scene some more
 - Review all error checking

@@ -91,25 +91,25 @@ class Component {
         for (let t = 0; t < this.transformations.list.length; t++) {
             switch (this.transformations.list[t].type) {
                 case "translate":
-                    mat4.translate(this.transformationMat,this.transformationMat,[this.transformations.list[t].x, this.transformations.list[t].y, this.transformations.list[t].z]);
+                    mat4.translate(this.transformationMat, this.transformationMat, [this.transformations.list[t].x, this.transformations.list[t].y, this.transformations.list[t].z]);
                     break;
                 case "rotate":
                     switch (this.transformations.list[t].axis) {
                         case "x":
-                            mat4.rotate(this.transformationMat,this.transformationMat,this.transformations.list[t].angle * DEGREE_TO_RAD, [1, 0, 0]);
+                            mat4.rotate(this.transformationMat, this.transformationMat, this.transformations.list[t].angle * DEGREE_TO_RAD, [1, 0, 0]);
                             break;
                         case "y":
-                            mat4.rotate(this.transformationMat,this.transformationMat,this.transformations.list[t].angle * DEGREE_TO_RAD, [0, 1, 0]);
+                            mat4.rotate(this.transformationMat, this.transformationMat, this.transformations.list[t].angle * DEGREE_TO_RAD, [0, 1, 0]);
                             break;
                         case "z":
-                            mat4.rotate(this.transformationMat,this.transformationMat,this.transformations.list[t].angle * DEGREE_TO_RAD, [0, 0, 1]);
+                            mat4.rotate(this.transformationMat, this.transformationMat, this.transformations.list[t].angle * DEGREE_TO_RAD, [0, 0, 1]);
                             break;
                         default:
                             break;
                     }
                     break;
                 case "scale":
-                    mat4.scale(this.transformationMat,this.transformationMat,[this.transformations.list[t].x, this.transformations.list[t].y, this.transformations.list[t].z]);
+                    mat4.scale(this.transformationMat, this.transformationMat, [this.transformations.list[t].x, this.transformations.list[t].y, this.transformations.list[t].z]);
                     break;
                 default:
                     break;
@@ -149,11 +149,28 @@ class Component {
                         }
                     }
                 }
+                //Update texture coordinates from own
+                for (let p = 0; p < this.childrenPrimitives.length; p++) {
+                    this.updateTexCoords(this.childrenPrimitives[p], this.texture.length_s, this.texture.length_t);
+                }
             }
             //Use inherited(previous texture)
             else {
+                //Set texture
                 if (tmpTex.bind()) {
                     this.scene.activeTexture = tmpTex;
+                }
+                //Update texture coordinates from father
+                if (this.texture.length_s == null) {
+                    for (let p = 0; p < this.childrenPrimitives.length; p++) {
+                        this.updateTexCoords(this.childrenPrimitives[p]);
+                    }
+                }
+                //Update texture coordinates from own
+                else {
+                    for (let p = 0; p < this.childrenPrimitives.length; p++) {
+                        this.updateTexCoords(this.childrenPrimitives[p], this.texture.length_s, this.texture.length_t);
+                    }
                 }
             }
         }
@@ -161,8 +178,7 @@ class Component {
         //Apply transformations
         this.scene.multMatrix(this.transformationMat);
 
-        //Draw primitives
-        //TODO update texture coords in primitive or inherit (if we have length_* values here)        
+        //Draw primitives     
         for (let i = 0; i < this.childrenPrimitives.length; i++)
             this.childrenPrimitives[i].display();
 
@@ -181,6 +197,20 @@ class Component {
         this.currentMaterial++;
         if (this.currentMaterial >= this.materials.length)
             this.currentMaterial = 0;
+
+    }
+
+    //Update Texture Coordinates
+    updateTexCoords(primitive, length_s = this.texture.length_s, length_t = this.texture.length_t) {
+
+        if (primitive.initialTexCoords != undefined) {
+            for (let i = 0; i < primitive.initialTexCoords.length; i += 2) {
+                primitive.texCoords[i] = primitive.initialTexCoords[i] / length_s;
+                primitive.texCoords[i + 1] = primitive.initialTexCoords[i + 1] / length_t;
+            }
+        }
+
+        primitive.updateTexCoordsGLBuffers();
 
     }
 

@@ -36,6 +36,8 @@ class Triangle extends CGFobject {
             textCord5, textCord6
         ];
 
+        this.initialTexCoords = this.texCoords.slice();
+
         this.vertices = [
             this.x1, this.y1, this.z1,
             this.x2, this.y2, this.z2,

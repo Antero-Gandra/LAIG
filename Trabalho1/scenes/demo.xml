@@ -8,7 +8,7 @@
             <to x="0" y="0" z="0" />
         </perspective>
 
-        <ortho id="ortho" near="1" far="100" left="-10" right="10" top="-10" bottom="10">
+        <ortho id="ortho" near="1" far="100" left="-10" right="10" top="10" bottom="-10">
             <from x="20" y="20" z="20" />
             <to x="0" y="0" z="0" />
         </ortho>
@@ -127,7 +127,7 @@
             <children>
                 <componentref id="board1"/>
                 <componentref id="board2"/>
-                <componentref id="court"/>
+                <componentref id="underCourt"/>
                 <componentref id="player1"/>
                 <componentref id="player2"/>
                 <componentref id="ball"/>
@@ -268,8 +268,8 @@
             </children>
         </component>
 
-        <!-- Court -->
-        <component id="court">
+        <!-- Under Court -->
+        <component id="underCourt">
             <transformation>
                 <scale x="8" y="1" z="14" />
                 <rotate axis="x" angle="90" />
@@ -277,15 +277,15 @@
             <materials>
                 <material id="defMat" />
             </materials>
-            <texture id="court" length_s="1" length_t="1" />
+            <texture id="court" length_s="10" length_t="10" />
             <children>
                 <primitiveref id="rectangle" />
-                <componentref id="underCourt" />
+                <componentref id="court" />
             </children>
         </component>
 
-        <!-- underCourt -->
-        <component id="underCourt">
+        <!-- Court -->
+        <component id="court">
             <transformation>
                 <rotate axis="x" angle="180" />
             </transformation>

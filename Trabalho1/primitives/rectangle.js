@@ -25,6 +25,8 @@ class Rectangle extends CGFobject {
             this.minS, this.maxT
         ];
 
+        this.initialTexCoords = this.texCoords.slice();
+
         this.vertices = [
             this.minX, this.minY, 0,
             this.maxX, this.minY, 0,
