@@ -72,6 +72,9 @@ class XMLscene extends CGFscene {
 
     }
 
+    /**
+     * Initializes the views
+     */
     initViews() {
 
         //Clear cameras array
@@ -116,6 +119,7 @@ class XMLscene extends CGFscene {
         //Set default camera
         for (let i = 0; i < this.cameras.length; i++) {
             if (this.cameras[i].id == this.graph.defaultView) {
+                this.activeCameraID = this.graph.defaultView;
                 this.camera = this.cameras[i].camera;
                 this.interface.setActiveCamera(this.camera);
                 break;
@@ -125,14 +129,40 @@ class XMLscene extends CGFscene {
     }
 
     /**
-     * Initializes the views
+     * Set active
      */
     selectView(id) {
         //Search ID
         for (let i = 0; i < this.cameras.length; i++) {
             if (this.cameras[i].id == id) {
+                this.activeCameraID = id;
                 this.camera = this.cameras[i].camera;
                 this.interface.setActiveCamera(this.camera);
+                break;
+            }
+        }
+    }
+
+    /**
+     * Reset current view. Called from Interface
+     */
+    resetView() {
+        //Search ID
+        for (let i = 0; i < this.scene.graph.views.length; i++) {
+            const view = this.scene.graph.views[i];
+            if (view.id == this.scene.activeCameraID) {
+                //Generic to both
+                this.scene.camera.setPosition(vec3.fromValues(view.from.x, view.from.y, view.from.z));
+                this.scene.camera.setTarget(vec3.fromValues(view.to.x, view.to.y, view.to.z));
+                console.log(view);
+                //Detect if perspective
+                if (view.angle != undefined) {
+                    this.scene.camera._up = vec3.fromValues(0, 1, 0);
+                }
+                //Must be ortho then
+                else {
+                    this.scene.camera._up = vec3.fromValues(0, -1, 0);
+                }
             }
         }
     }

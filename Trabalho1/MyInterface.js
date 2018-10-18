@@ -54,6 +54,11 @@ class MyInterface extends CGFinterface {
         this.currentCam = this.scene.graph.defaultView;
 
         group.add(this, 'currentCam', cameras).name('Camera').onChange(val => this.scene.selectView(val));
+
+        //Add reset button
+        this.resetView = this.scene.resetView;
+        group.add(this, 'resetView').name('Reset current view');
+
     }
 
     //Process key down
