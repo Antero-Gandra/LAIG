@@ -131,13 +131,16 @@ class Component {
         //Apply materials
         var materialToPass;
         if (this.appearences[this.currentMaterial].id == "inherit") {
+            //Check if caller material was null (happens when root has inherit material)
             if (callerMaterial == null) {
                 var a = {
                     appearence: new CGFappearance(this.scene)
                 }
                 a.appearence.apply();
                 materialToPass = a;
-            } else {
+            } 
+            //Apply caller material
+            else {
                 callerMaterial.appearence.apply();
                 materialToPass = callerMaterial;
             }
@@ -211,6 +214,25 @@ class Component {
     //Update Texture Coordinates
     updateTexCoords(primitive, length_s = this.texture.length_s, length_t = this.texture.length_t) {
 
+        var a = this.scene.gl;
+
+        //Apply wrap to length_s
+        if(length_s < 1){
+            a.texParameteri(a.TEXTURE_2D, a.TEXTURE_WRAP_S, this.scene.gl['REPEAT']);
+        }
+        else{
+            a.texParameteri(a.TEXTURE_2D, a.TEXTURE_WRAP_S, this.scene.gl['CLAMP_TO_EDGE']);
+        }
+
+        //Apply wrap to length_t
+        if(length_t < 1){
+            a.texParameteri(a.TEXTURE_2D, a.TEXTURE_WRAP_T, this.scene.gl['REPEAT']);
+        }
+        else{
+            a.texParameteri(a.TEXTURE_2D, a.TEXTURE_WRAP_T, this.scene.gl['CLAMP_TO_EDGE']);
+        }
+
+        //Update tex coords of basic primitives
         if (primitive.initialTexCoords != undefined) {
             for (let i = 0; i < primitive.initialTexCoords.length; i += 2) {
                 primitive.texCoords[i] = primitive.initialTexCoords[i] / length_s;

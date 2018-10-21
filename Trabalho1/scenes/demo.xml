@@ -282,7 +282,7 @@
             <materials>
                 <material id="defMat" />
             </materials>
-            <texture id="court" length_s="10" length_t="10" />
+            <texture id="court" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="rectangle" />
                 <componentref id="court" />
