@@ -19,10 +19,10 @@ class Rectangle extends CGFobject {
     initBuffers() {
 
         this.texCoords = [
-            this.maxS, this.minT,
-            this.maxS, this.maxT,
-            this.minS, this.minT,
-            this.minS, this.maxT
+            this.minS, this.maxT,
+			this.maxS, this.maxT,
+			this.minS, this.minT,
+			this.maxS, this.minT
         ];
 
         this.initialTexCoords = this.texCoords.slice();

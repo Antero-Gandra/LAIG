@@ -107,7 +107,7 @@
         </primitive>
 
         <primitive id="torus">
-            <torus inner="1" outer="1.2" slices="20" loops="20" />
+            <torus inner="0.1" outer="1" slices="20" loops="20" />
         </primitive>
     </primitives>
 
@@ -225,9 +225,9 @@
 
         <component id="ring">
             <transformation>
-                <scale x="0.4" y="0.4" z="0.4" />
+                <scale x="0.5" y="0.5" z="0.5" />
                 <rotate axis="x" angle="90" />
-                <translate x="0" y="3" z="-0.4" />
+                <translate x="0" y="2.5" z="0" />
             </transformation>
             <materials>
                 <material id="ringMat" />
@@ -240,10 +240,9 @@
         </component>
 
         <component id="backboard">
-            <transformation>
-                <rotate axis="z" angle="-90" />
-                <translate x="-1" y="0" z="0.8" />
-                <scale x="1" y="1.5" z="1" />
+            <transformation>                
+                <translate x="0" y="1" z="0.8" />
+                <scale x="1.5" y="1" z="1" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -257,7 +256,7 @@
 
         <component id="backBackboard">
             <transformation>
-                <rotate axis="x" angle="180" />
+                <rotate axis="y" angle="180" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -272,6 +271,7 @@
         <component id="underCourt">
             <transformation>
                 <scale x="8" y="1" z="14" />
+                <rotate axis="y" angle="90" />
                 <rotate axis="x" angle="90" />
             </transformation>
             <materials>
