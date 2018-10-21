@@ -45,6 +45,8 @@
         <texture id="board" file="images/board.jpg" />
         <texture id="metal" file="images/metal.jpg" />
         <texture id="court" file="images/court.jpg" />
+        <texture id="wood" file="images/wood.jpg" />
+        <texture id="crowd" file="images/crowd.jpg" />
     </textures>
 
     <materials>
@@ -136,6 +138,85 @@
                 <componentref id="player1"/>
                 <componentref id="player2"/>
                 <componentref id="ball"/>
+                <componentref id="stand"/>
+            </children>
+        </component>
+
+        <!-- Crowd Stand -->
+        <component id="stand">
+            <transformation>
+                <translate x="-11" y="1" z="0" />
+            </transformation>
+            <texture id="wood" length_s="1" length_t="1" />
+            <materials>
+                <material id="defMat" />
+            </materials>
+            <children>
+                <componentref id="back" />
+                <componentref id="side1" />
+                <componentref id="side2" />
+                <componentref id="crowd" />
+            </children>
+        </component>
+
+        <component id="back">
+            <transformation>
+                <scale x="1" y="2" z="10" />
+                <translate x="-1" y="0.5" z="0" />
+                <rotate axis="y" angle="-90" />
+            </transformation>
+            <texture id="inherit" length_s="0.2" length_t="0.2" />
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+
+        <component id="side1">
+            <transformation>
+                <translate x="0.4" y="1" z="10" />
+                <scale x="2" y="2.85" z="1" />
+                <rotate axis="z" angle="135" />
+            </transformation>
+            <texture id="inherit" length_s="0.2" length_t="0.2" />
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <children>
+                <primitiveref id="triangle" />
+            </children>
+        </component>
+
+        <component id="side2">
+            <transformation>
+                <translate x="0.4" y="1" z="-10" />
+                <scale x="2" y="2.85" z="1" />
+                <rotate axis="z" angle="135" />
+            </transformation>
+            <texture id="inherit" length_s="0.2" length_t="0.2" />
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <children>
+                <primitiveref id="triangle" />
+            </children>
+        </component>
+
+        <component id="crowd">
+            <transformation>
+                <translate x="0.4" y="1" z="0" />
+                <scale x="2.4" y="2.4" z="10" />
+                <rotate axis="y" angle="90" />
+                <rotate axis="x" angle="-35" />
+            </transformation>
+            <texture id="crowd" length_s="0.2" length_t="0.5" />
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <children>
+                <primitiveref id="rectangle" />
             </children>
         </component>
 
@@ -245,7 +326,7 @@
         </component>
 
         <component id="backboard">
-            <transformation>                
+            <transformation>
                 <translate x="0" y="1" z="0.8" />
                 <scale x="1.5" y="1" z="1" />
             </transformation>

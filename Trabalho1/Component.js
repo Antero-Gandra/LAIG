@@ -171,17 +171,9 @@ class Component {
                 if (tmpTex.bind()) {
                     this.scene.activeTexture = tmpTex;
                 }
-                //Update texture coordinates from father
-                if (this.texture.length_s == null) {
-                    for (let p = 0; p < this.childrenPrimitives.length; p++) {
-                        this.updateTexCoords(this.childrenPrimitives[p]);
-                    }
-                }
-                //Update texture coordinates from own
-                else {
-                    for (let p = 0; p < this.childrenPrimitives.length; p++) {
-                        this.updateTexCoords(this.childrenPrimitives[p], this.texture.length_s, this.texture.length_t);
-                    }
+                //Update texture coordinates
+                for (let p = 0; p < this.childrenPrimitives.length; p++) {
+                    this.updateTexCoords(this.childrenPrimitives[p]);
                 }
             }
         }
