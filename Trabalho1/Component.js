@@ -131,8 +131,16 @@ class Component {
         //Apply materials
         var materialToPass;
         if (this.appearences[this.currentMaterial].id == "inherit") {
-            callerMaterial.appearence.apply();
-            materialToPass = callerMaterial;
+            if(callerMaterial == null){
+                var a = {
+                    appearence: new CGFappearance(this.scene)
+                }
+                a.appearence.apply();
+                materialToPass = a;
+            }else{
+                callerMaterial.appearence.apply();
+                materialToPass = callerMaterial;
+            }            
         } else {
             this.appearences[this.currentMaterial].appearence.apply();
             materialToPass = this.appearences[this.currentMaterial];
