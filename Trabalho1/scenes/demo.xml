@@ -47,6 +47,7 @@
         <texture id="court" file="images/court.jpg" />
         <texture id="wood" file="images/wood.jpg" />
         <texture id="crowd" file="images/crowd.jpg" />
+        <texture id="concrete" file="images/concrete.jpg" />
     </textures>
 
     <materials>
@@ -86,6 +87,12 @@
             <diffuse r="0.1" g="0.1" b="0.1" a="0" />
             <specular r="0.1" g="0.1" b="0.1" a="0" />
         </material>
+        <material id="backBackboard" shininess = "1">
+            <emission r="0" g="0" b="0" a="0" />
+            <ambient r="0.5" g="0.5" b="0.5" a="0" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="0" />
+            <specular r="0.5" g="0.5" b="0.5" a="0" />
+        </material>        
     </materials>
 
     <transformations>
@@ -134,18 +141,53 @@
             <children>
                 <componentref id="board1"/>
                 <componentref id="board2"/>
-                <componentref id="underCourt"/>
+                <componentref id="court"/>
                 <componentref id="player1"/>
                 <componentref id="player2"/>
                 <componentref id="ball"/>
-                <componentref id="stand"/>
+                <componentref id="stand1"/>
+                <componentref id="stand2"/>
+                <componentref id="ground"/>
+            </children>
+        </component>
+
+        <!-- Concrete Ground -->
+        <component id="ground">
+            <transformation>
+                <translate x="0" y="-0.01" z="0" />
+                <scale x="13" y="1" z="17" />
+                <rotate axis="x" angle="-90" />
+            </transformation>
+            <texture id="concrete" length_s="0.2" length_t="0.2" />
+            <materials>
+                <material id="defMat" />
+            </materials>
+            <children>
+                <primitiveref id="rectangle" />
             </children>
         </component>
 
         <!-- Crowd Stand -->
-        <component id="stand">
+        <component id="stand1">
             <transformation>
                 <translate x="-11" y="1" z="0" />
+            </transformation>
+            <texture id="wood" length_s="1" length_t="1" />
+            <materials>
+                <material id="defMat" />
+            </materials>
+            <children>
+                <componentref id="back" />
+                <componentref id="side1" />
+                <componentref id="side2" />
+                <componentref id="crowd" />
+            </children>
+        </component>
+
+        <component id="stand2">
+            <transformation>
+                <translate x="11" y="1" z="0" />
+                <rotate axis="y" angle="-180" />
             </transformation>
             <texture id="wood" length_s="1" length_t="1" />
             <materials>
@@ -345,20 +387,20 @@
                 <rotate axis="y" angle="180" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="backBackboard" />
             </materials>
-            <texture id="board" length_s="1" length_t="1" />
+            <texture id="wood" length_s="0.2" length_t="0.2" />
             <children>
                 <primitiveref id="rectangle" />
             </children>
         </component>
 
-        <!-- Under Court -->
-        <component id="underCourt">
+        <!-- Court -->
+        <component id="court">
             <transformation>
                 <scale x="8" y="1" z="14" />
                 <rotate axis="y" angle="90" />
-                <rotate axis="x" angle="90" />
+                <rotate axis="x" angle="270" />
             </transformation>
             <materials>
                 <material id="defMat" />
@@ -366,23 +408,8 @@
             <texture id="court" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="rectangle" />
-                <componentref id="court" />
             </children>
-        </component>
-
-        <!-- Court -->
-        <component id="court">
-            <transformation>
-                <rotate axis="x" angle="180" />
-            </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="court" length_s="1" length_t="1" />
-            <children>
-                <primitiveref id="rectangle" />
-            </children>
-        </component>
+        </component>        
 
         <!-- Ball -->
         <component id="ball">
