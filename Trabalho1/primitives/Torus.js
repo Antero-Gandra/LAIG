@@ -1,19 +1,19 @@
 
 class Torus extends CGFobject {
-    constructor(scene, inner, outer, slices = 20, loops = 20) {
-        super(scene);
-        this.inner = inner;
-        this.outer = outer;
-        this.slices = slices;
-        this.loops = loops;
+	constructor(scene, inner, outer, slices = 20, loops = 20) {
+		super(scene);
+		this.inner = outer - inner;
+		this.outer = outer + inner;
+		this.slices = slices;
+		this.loops = loops;
 
-        this.initBuffers();
+		this.initBuffers();
 
-    };
+	};
 
-    initBuffers() {
+	initBuffers() {
 
-        this.vertices = [];
+		this.vertices = [];
 		this.indices = [];
 		this.normals = [];
 		this.texCoords = [];
@@ -27,15 +27,15 @@ class Torus extends CGFobject {
 			for (var j = 0; j <= this.slices; j++) {
 				var phi = j * 2 * Math.PI / this.slices;
 				var sinPhi = Math.sin(phi);
-                var cosPhi = Math.cos(phi);
+				var cosPhi = Math.cos(phi);
 
-                var r = (this.outer - this.inner) / 2;
-                var R = this.inner + r;
+				var r = (this.outer - this.inner) / 2;
+				var R = this.inner + r;
 
 				var x = (R + r * cosTheta) * cosPhi;
 				var y = (R + r * cosTheta) * sinPhi;
-                var z = r * sinTheta;
-                
+				var z = r * sinTheta;
+
 				var s = 1 - (i / this.loops);
 				var t = 1 - (j / this.slices);
 
@@ -45,9 +45,9 @@ class Torus extends CGFobject {
 			}
 		}
 
-        this.initialTexCoords = this.texCoords.slice();
+		this.initialTexCoords = this.texCoords.slice();
 
-        for (var i = 0; i < this.loops; i++) {
+		for (var i = 0; i < this.loops; i++) {
 			for (var j = 0; j < this.slices; j++) {
 
 				var first = (i * (this.slices + 1)) + j;
@@ -56,9 +56,9 @@ class Torus extends CGFobject {
 				this.indices.push(first, second + 1, second);
 				this.indices.push(first, first + 1, second + 1);
 			}
-        }
-        this.primitiveType = this.scene.gl.TRIANGLES;
- 	    this.initGLBuffers();
-    };
+		}
+		this.primitiveType = this.scene.gl.TRIANGLES;
+		this.initGLBuffers();
+	};
 
 };
