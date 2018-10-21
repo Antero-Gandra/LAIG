@@ -48,58 +48,72 @@ class Cylinder extends CGFobject {
 };
 
 class Circle extends CGFobject {
-    constructor(scene, slices = 6, size) {
+    constructor(scene, slices = 6) {
         super(scene);
-
-        this.minS = 0;
-        this.maxS = 1;
-        this.minT = 0;
-        this.maxT = 1;
-
         this.slices = slices;
-        this.size = size;
 
-        this.initBuffers();
+		this.initBuffers();
     };
 
     initBuffers() {
 
-        this.vertices = new Array();
-        this.indices = new Array();
-        this.normals = new Array();
-        this.texCoords = new Array();
-        this.initialTexCoords = new Array();
+         var i;
 
-        var ang = Math.PI * 2 / this.slices;
+        this.vertices = [];
+        this.indices = [];
+        this.normals = [];
+        this.texCoords = [];
+        
+        var ang = 2*Math.PI / this.slices;
+        var i, j, x, y;
+        var n_vertices = 0;
 
-        var count = 0;
+        for(j = 0; j < this.slices; j++)
+        {
+            x = Math.cos(j * ang);
+            y = Math.sin(j * ang);
 
-        for (var i = 0; i < this.slices; i++) {
-            this.vertices.push(Math.cos(ang * i), Math.sin(ang * i), 0);
-            this.texCoords.push(-.5 * Math.cos((i) * ang) + .5, .5 * Math.sin((i) * ang) + .5);
-            this.texCoords.push(-.5 * Math.cos((i + 1) * ang) + .5, .5 * Math.sin((i + 1) * ang) + .5);
-            count++;
+            this.vertices.push(x, y, 0);
+            this.normals.push(0, 0, 1);
+            this.texCoords.push(x / 2 + 0.5, - y / 2 + 0.5);
+            n_vertices++;
+        }
+        
+        this.vertices.push(0,0,0);
+        this.normals.push(0,0,1);
+        this.texCoords.push(0.5,0.5);
+        this.initialTexCoords = this.texCoords.slice();
+        n_vertices++;
+
+        for(i = 0; i < n_vertices - 1; i++)
+        {
+            this.indices.push(n_vertices - 1);
+
+            if(i == this.slices - 1)
+                this.indices.push(0);
+            else
+                this.indices.push(i + 1);
+            
+           this.indices.push(i);
+        }
+        
+        for(i = 0; i < n_vertices - 1; i++)
+        {
+            this.indices.push(n_vertices - 1);
+
+            this.indices.push(i);
+            
+            if(i == this.slices - 1)
+                this.indices.push(0);
+            else
+                this.indices.push(i + 1);
         }
 
-        for (var i = 0; i < this.slices; i++)
-            this.normals.push(0, 0, 1);
-
-        this.vertices.push(0, 0, 0);
-
-        var i = 1;
-        for (; i < this.slices - 1; i++)
-            this.indices.push(count - 1, i - 1, i);
-
-        this.indices.push(0, i - 1, count - 1);
-
-        this.initialTexCoords = this.texCoords.slice();
-
-        this.primitiveType = this.scene.gl.TRIANGLES;
-        this.initGLBuffers();
+		this.primitiveType=this.scene.gl.TRIANGLES;
+		
+		this.initGLBuffers();
 
     };
-
-    //TODO function to update texCoords if needed
 
 };
 
@@ -126,7 +140,6 @@ class CoreCylinder extends CGFobject {
         this.normals = [];
         this.indices = [];
         this.texCoords = [];
-        this.initialTexCoords = [];
 
         var patchLengthx = 1 / this.slices;
         var patchLengthy = 1 / this.stacks;
@@ -135,7 +148,6 @@ class CoreCylinder extends CGFobject {
 
         for (var q = 0; q < this.stacks + 1; q++) {
 
-            var z = (q * this.deltaHeight / this.stacks);
             var inc = (q * this.delta) + this.base;
 
             for (var i = 0; i < this.slices; i++) {
@@ -146,8 +158,9 @@ class CoreCylinder extends CGFobject {
             }
             xCoord = 0;
             yCoord += patchLengthy;
-
         }
+
+        this.initialTexCoords = this.texCoords.slice();
 
         for (var q = 0; q < this.stacks; q++) {
             for (var i = 0; i < this.slices; i++) {
@@ -167,7 +180,5 @@ class CoreCylinder extends CGFobject {
 
         this.initGLBuffers();
     };
-
-    //TODO function to update texCoords if needed
 
 };

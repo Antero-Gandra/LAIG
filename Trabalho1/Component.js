@@ -131,16 +131,16 @@ class Component {
         //Apply materials
         var materialToPass;
         if (this.appearences[this.currentMaterial].id == "inherit") {
-            if(callerMaterial == null){
+            if (callerMaterial == null) {
                 var a = {
                     appearence: new CGFappearance(this.scene)
                 }
                 a.appearence.apply();
                 materialToPass = a;
-            }else{
+            } else {
                 callerMaterial.appearence.apply();
                 materialToPass = callerMaterial;
-            }            
+            }
         } else {
             this.appearences[this.currentMaterial].appearence.apply();
             materialToPass = this.appearences[this.currentMaterial];
@@ -215,6 +215,27 @@ class Component {
             for (let i = 0; i < primitive.initialTexCoords.length; i += 2) {
                 primitive.texCoords[i] = primitive.initialTexCoords[i] / length_s;
                 primitive.texCoords[i + 1] = primitive.initialTexCoords[i + 1] / length_t;
+            }
+        } 
+        //Cylinder has multiple primitives
+        else {
+            if (primitive.coreCylinder != undefined) {
+                for (let i = 0; i < primitive.coreCylinder.initialTexCoords.length; i += 2) {
+                    primitive.coreCylinder.texCoords[i] = primitive.coreCylinder.initialTexCoords[i] / length_s;
+                    primitive.coreCylinder.texCoords[i + 1] = primitive.coreCylinder.initialTexCoords[i + 1] / length_t;
+                }
+            }
+            if (primitive.baseCircle != undefined) {
+                for (let i = 0; i < primitive.baseCircle.initialTexCoords.length; i += 2) {
+                    primitive.baseCircle.texCoords[i] = primitive.baseCircle.initialTexCoords[i] / length_s;
+                    primitive.baseCircle.texCoords[i + 1] = primitive.baseCircle.initialTexCoords[i + 1] / length_t;
+                }
+            }
+            if (primitive.topCirlce != undefined) {
+                for (let i = 0; i < primitive.topCirlce.initialTexCoords.length; i += 2) {
+                    primitive.topCirlce.texCoords[i] = primitive.topCirlce.initialTexCoords[i] / length_s;
+                    primitive.topCirlce.texCoords[i + 1] = primitive.topCirlce.initialTexCoords[i + 1] / length_t;
+                }
             }
         }
 
