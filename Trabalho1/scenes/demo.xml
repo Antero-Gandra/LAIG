@@ -131,6 +131,7 @@
                 <componentref id="player1"/>
                 <componentref id="player2"/>
                 <componentref id="ball"/>
+                <primitiveref id="rectangle" />
             </children>
         </component>
 
@@ -181,7 +182,7 @@
         <component id="post">
             <transformation>
                 <rotate axis="x" angle="90" />
-                <translate x="0" y="0" z="-2" />
+                <translate x="0" y="0" z="-4" />
                 <scale x="0.1" y="0.1" z="4" />
             </transformation>
             <materials>
@@ -212,7 +213,7 @@
         <component id="connector">
             <transformation>
                 <scale x="0.1" y="0.1" z="0.8" />
-                <translate x="0" y="0" z="0.5" />
+                <translate x="0" y="0" z="0" />
             </transformation>
             <materials>
                 <material id="inherit" />

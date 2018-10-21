@@ -24,7 +24,7 @@ class Cylinder extends CGFobject {
 
             //Core Cylinder
             this.scene.pushMatrix();
-                this.scene.translate(0, 0, -this.height/2);
+                this.scene.translate(0, 0, -this.height);
                 this.coreCylinder.display();
             this.scene.popMatrix();
 
@@ -32,14 +32,14 @@ class Cylinder extends CGFobject {
             this.scene.pushMatrix();
                 this.scene.scale(this.base, this.base, 1);
                 this.scene.rotate(Math.PI, 0, 1, 0);
-                this.scene.translate(0, 0, this.height/2);
+                this.scene.translate(0, 0, this.height);
                 this.baseCircle.display();
             this.scene.popMatrix();
 
             //Draw top
             this.scene.pushMatrix();
                 this.scene.scale(this.top, this.top, 1);
-                this.scene.translate(0, 0, this.height/2);
+                this.scene.translate(0, 0, 0);
                 this.topCirlce.display();
             this.scene.popMatrix();
 
