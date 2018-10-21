@@ -1,4 +1,0 @@
-TODO/Bugs
-
-- Improve scene some more
-- Review all error checking
