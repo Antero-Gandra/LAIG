@@ -89,9 +89,9 @@
         </material>
         <material id="backBackboard" shininess = "1">
             <emission r="0" g="0" b="0" a="0" />
-            <ambient r="0.5" g="0.5" b="0.5" a="0" />
-            <diffuse r="0.5" g="0.5" b="0.5" a="0" />
-            <specular r="0.5" g="0.5" b="0.5" a="0" />
+            <ambient r="0.3" g="0.3" b="0.3" a="0" />
+            <diffuse r="0.3" g="0.3" b="0.3" a="0" />
+            <specular r="0.3" g="0.3" b="0.3" a="0" />
         </material>        
     </materials>
 
