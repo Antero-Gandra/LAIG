@@ -1,63 +1,64 @@
 
 class Torus extends CGFobject {
-    constructor(scene, inner, outter, slices = 20, loops = 20) {
+    constructor(scene, inner, outer, slices = 20, loops = 20) {
         super(scene);
-
-        this.r = (outter - inner) / 2;
-        this.R = inner + this.r;
+        this.inner = inner;
+        this.outer = outer;
         this.slices = slices;
         this.loops = loops;
 
         this.initBuffers();
+
     };
 
     initBuffers() {
 
-        this.vertices = new Array();
-        this.indices = new Array();
-        this.normals = new Array();
-        this.texCoords = new Array();
+        this.vertices = [];
+		this.indices = [];
+		this.normals = [];
+		this.texCoords = [];
 
-        var ang_circle = (2 * Math.PI) / this.slices;
-        var ang_between_circles = (2 * Math.PI) / this.loops;
-        var texS = 1 / this.loops;
-        var texT = 1 / this.slices;
+		for (var i = 0; i <= this.loops; i++) {
 
-        for (var i = 0; i <= this.loops; i++) {
-            for (var j = 0; j <= this.slices; j++) {
-                var v = i * ang_between_circles;//theta
-                var u = j * ang_circle;//phi
+			var theta = i * 2 * Math.PI / this.loops;
+			var sinTheta = Math.sin(theta);
+			var cosTheta = Math.cos(theta);
 
-                var x = (this.R + this.r * Math.cos(v)) * Math.cos(u);
-                var y = (this.R + this.r * Math.cos(v)) * Math.sin(u);
-                var z = this.r * Math.sin(v);
+			for (var j = 0; j <= this.slices; j++) {
+				var phi = j * 2 * Math.PI / this.slices;
+				var sinPhi = Math.sin(phi);
+                var cosPhi = Math.cos(phi);
 
-                var s = 1 - i * texS;
-                var t = 1 - j * texT;
+                var r = (this.outer - this.inner) / 2;
+                var R = this.inner + r;
 
-                this.vertices.push(x, y, z);
-                this.normals.push(x, y, z);
+				var x = (R + r * cosTheta) * cosPhi;
+				var y = (R + r * cosTheta) * sinPhi;
+                var z = r * sinTheta;
+                
+				var s = 1 - (i / this.loops);
+				var t = 1 - (j / this.slices);
 
-                this.texCoords.push(s, t);
-            }
-        }
+				this.vertices.push(x, y, z);
+				this.normals.push(x, y, z);
+				this.texCoords.push(s, t);
+			}
+		}
 
         this.initialTexCoords = this.texCoords.slice();
 
         for (var i = 0; i < this.loops; i++) {
-            for (var j = 0; j < this.slices; j++) {
-                var first = i * (this.slices + 1) + j;
-                var second = first + this.slices;
+			for (var j = 0; j < this.slices; j++) {
 
-                this.indices.push(first, second + 2, second + 1);
-                this.indices.push(first, first + 1, second + 2);
-            }
+				var first = (i * (this.slices + 1)) + j;
+				var second = first + this.slices + 1;
+
+				this.indices.push(first, second + 1, second);
+				this.indices.push(first, first + 1, second + 1);
+			}
         }
-
         this.primitiveType = this.scene.gl.TRIANGLES;
-        this.initGLBuffers();
+ 	    this.initGLBuffers();
     };
-
-    //TODO function to update texCoords if needed
 
 };

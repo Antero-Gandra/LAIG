@@ -60,6 +60,4 @@ class Triangle extends CGFobject {
         this.initGLBuffers();
     };
 
-    //TODO function to update texCoords if needed
-
 };

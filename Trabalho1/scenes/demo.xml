@@ -131,7 +131,6 @@
                 <componentref id="player1"/>
                 <componentref id="player2"/>
                 <componentref id="ball"/>
-                <primitiveref id="rectangle" />
             </children>
         </component>
 

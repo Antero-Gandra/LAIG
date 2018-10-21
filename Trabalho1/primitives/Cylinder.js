@@ -46,8 +46,6 @@ class Cylinder extends CGFobject {
         this.scene.popMatrix();
     }
 
-    //TODO function to update texCoords if needed
-
 };
 
 class Circle extends CGFobject {
