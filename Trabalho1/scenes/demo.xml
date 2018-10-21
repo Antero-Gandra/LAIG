@@ -2,14 +2,19 @@
 
     <scene root="root" axis_length="5" />
 
-    <views default="perspective">
-        <perspective id="perspective" near="1" far="100" angle="30">
+    <views default="full_P">
+        <perspective id="full_P" near="1" far="100" angle="30">
             <from x="20" y="20" z="20" />
             <to x="0" y="0" z="0" />
         </perspective>
 
-        <ortho id="ortho" near="1" far="100" left="-10" right="10" top="10" bottom="-10">
-            <from x="20" y="20" z="20" />
+        <perspective id="players_closeup_P" near="1" far="100" angle="30">
+            <from x="2" y="1" z="5" />
+            <to x="0" y="2" z="0" />
+        </perspective>
+
+        <ortho id="front_O" near="1" far="100" left="-10" right="10" top="10" bottom="-10">
+            <from x="0" y="0" z="20" />
             <to x="0" y="0" z="0" />
         </ortho>
     </views>

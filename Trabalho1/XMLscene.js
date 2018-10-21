@@ -108,7 +108,7 @@ class XMLscene extends CGFscene {
                     this.graph.views[i].far,
                     vec3.fromValues(this.graph.views[i].from.x, this.graph.views[i].from.y, this.graph.views[i].from.z),
                     vec3.fromValues(this.graph.views[i].to.x, this.graph.views[i].to.y, this.graph.views[i].to.z),
-                    vec3.fromValues(0, -1, 0))
+                    vec3.fromValues(0, 1, 0))
             }
 
             //Add to cameras array
