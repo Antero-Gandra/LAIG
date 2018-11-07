@@ -5,7 +5,10 @@ class CiruclarAnimation extends Animation {
     /**
      * @constructor
      */
-    constructor(center, radius, angleI, angleRot, time) {
+    constructor(scene, center, radius, angleI, angleRot, time) {
+        super(scene);
+        this.scene = scene;
+
         this.center = center;
         this.radius = radius;
         this.angleI = angleI;
@@ -14,10 +17,6 @@ class CiruclarAnimation extends Animation {
     }
 
     update(){
-        
-    }
-
-    apply(){
         
     }
 
