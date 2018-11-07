@@ -35,6 +35,11 @@ class LinearAnimation extends Animation {
         //Magnitude
         var mag = Math.sqrt(vec.x * vec.x + vec.y * vec.y);
 
+        //If magnitude is 0 what to do?
+        //Just use magnitude 1 for simplicity, still shouldn't happen
+        if(mag == 0)
+            mag = 1;
+
         //Normalize
         vec.x /= mag;
         vec.y /= mag;
