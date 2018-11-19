@@ -1363,6 +1363,12 @@ class MySceneGraph {
 
                     linear.points.push(point);
                 }
+
+                //Check minimum control points (2)
+                if(linear.points.length < 2){
+                    return "not enough control points in linear animation with id: " + linear.id;
+                }
+
                 //Add to animations
                 this.animations.push(linear);
             }
@@ -1420,6 +1426,11 @@ class MySceneGraph {
 
                 //Add to animations
                 this.animations.push(circular);
+            }
+            //Unknown
+            else {
+                this.onXMLMinorError("unknown tag <" + children[i].nodeName + "> in animations");
+                continue;
             }
         }
 
