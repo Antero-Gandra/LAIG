@@ -15,25 +15,26 @@ class LinearAnimation extends Animation {
     update(time) {
 
         //Scale time
-        var scaledT = time % this.time;
+        let scaledT = time % this.time;
 
         //Next control point
-        var nextPoint = Math.ceil(scaledT * this.pts.length / this.time);
+        let nextPoint = Math.ceil(scaledT * this.pts.length / this.time);
 
         //Previous control point
-        var previousPoint = nextPoint - 1;
+        let previousPoint = nextPoint - 1;
         if (previousPoint < 0) {
             previousPoint = 0;
         }
 
         //Vector from previous to next
-        var vec = {
+        let vec = {
             x: pts[nextPoint].x - pts[previousPoint].x,
-            y: pts[nextPoint].y - pts[previousPoint].y
+            y: pts[nextPoint].y - pts[previousPoint].y,
+            z: pts[nextPoint].z - pts[previousPoint].z
         }
 
         //Magnitude
-        var mag = Math.sqrt(vec.x * vec.x + vec.y * vec.y);
+        let mag = Math.sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
 
         //If magnitude is 0 what to do?
         //Just use magnitude 1 for simplicity, still shouldn't happen
@@ -43,36 +44,37 @@ class LinearAnimation extends Animation {
         //Normalize
         vec.x /= mag;
         vec.y /= mag;
+        vec.z /= mag;
 
         //Time per transition
-        var transitionT = this.time / this.pts.length;
+        let transitionT = this.time / this.pts.length;
 
         //Time at next control point
-        var timeNext = transitionT * nextPoint;
+        let timeNext = transitionT * nextPoint;
 
         //Time at previous control point
-        var timePrevious = transitionT * previousPoint;
+        let timePrevious = transitionT * previousPoint;
 
         //Current time percentage of time difference between control points
         scaledT -= timePrevious;
         timeNext -= timePrevious;
-        var percentageT = scaledT / timeNext;
+        let percentageT = scaledT / timeNext;
 
         //Desired magnitude
-        var desiredMag = mag * percentageT;
+        let desiredMag = mag * percentageT;
 
         //Apply magnitude
         vec.x *= desiredMag;
         vec.y *= desiredMag;
+        vec.z *= desiredMag;
+
+        //http://glmatrix.net/docs/
 
         //Final position
-        var pos = {
-            x: pts[previousPoint].x + vec.x,
-            y: pts[previousPoint].y + vec.y
-        }
+        let pos = vec3.fromValues(pts[previousPoint].x + vec.x, pts[previousPoint].y + vec.y, pts[previousPoint].z + vec.z);
 
-        //TODO create a matrix transformation from this
-        //use transformationMat from Animation.js
+        //Apply to matrix;
+        mat4.translate(this.transformationMat, this.transformationMat, pos);
 
     }
 

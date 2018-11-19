@@ -16,7 +16,7 @@ class CiruclarAnimation extends Animation {
         this.time = time;
     }
 
-    update(){
+    update(time){
         
     }
 

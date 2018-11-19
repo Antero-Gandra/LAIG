@@ -6,8 +6,9 @@ const LIGHTS_INDEX = 3;
 const TEXTURES_INDEX = 4;
 const MATERIALS_INDEX = 5;
 const TRANSFORMATIONS_INDEX = 6;
-const PRIMITIVES_INDEX = 7;
-const COMPONENTS_INDEX = 8;
+const ANIMATIONS_INDEX = 7;
+const PRIMITIVES_INDEX = 8;
+const COMPONENTS_INDEX = 9;
 
 /**
  * MySceneGraph class, representing the scene graph.
@@ -197,6 +198,18 @@ class MySceneGraph {
 
             //Parse primitives block
             if ((error = this.parsePrimitives(nodes[index])) != null)
+                return error;
+        }
+
+        // <animations>
+        if ((index = nodeNames.indexOf("animations")) == -1)
+            return "tag <animations> missing";
+        else {
+            if (index != ANIMATIONS_INDEX)
+                this.onXMLMinorError("tag <animations> out of order");
+
+            //Parse animations block
+            if ((error = this.parseAnimations(nodes[index])) != null)
                 return error;
         }
 
@@ -1290,8 +1303,130 @@ class MySceneGraph {
     }
 
     /**
+     * @param {animations block element} animationsNode
+     */
+    parseAnimations(animationsNode) {
+
+        //Clear animations array
+        this.animations = [];
+
+        //Children
+        var children = animationsNode.children;
+
+        for (let i = 0; i < children.length; i++) {
+
+            //Linear
+            if (children[i].nodeName == "linear") {
+                var linear = {
+                    id: "",
+                    span: 0,
+                    points: []
+                };
+
+                //Id
+                linear.id = this.reader.getString(children[i], 'id');
+                if (linear.id == null)
+                    return "no ID defined for linear animation";
+
+                //Check unique ID
+                for (let v = 0; v < this.animations.length; v++) {
+                    if (this.animations[v].id == linear.id)
+                        return "linear animation ID duplicate found for id: " + linear.id;
+                }
+
+                //Span
+                linear.span = this.reader.getFloat(children[i], 'span');
+                if (linear.span < 0 || linear.span == null || isNaN(linear.span))
+                    return "invalid span for linear animation with id: " + linear.id;
+
+                //Grandchildren of Linear
+                var grandChildren = children[i].children;
+
+                //Control points
+                for (let j = 0; j < grandChildren.length; j++) {
+                    var point = {
+                        x: 0,
+                        y: 0,
+                        z: 0,
+                    }
+                    point.x = this.reader.getFloat(grandChildren[j], 'xx');
+                    if (point.x == null || isNaN(point.x))
+                        return "invalid x value for linear animation control point with id: " + linear.id;
+
+                    point.y = this.reader.getFloat(grandChildren[j], 'yy');
+                    if (point.y == null || isNaN(point.y))
+                        return "invalid y value for linear animation control point with id: " + linear.id;
+
+                    point.z = this.reader.getFloat(grandChildren[j], 'zz');
+                    if (point.z == null || isNaN(point.z))
+                        return "invalid z value for linear animation control point with id: " + linear.id;
+
+                    linear.points.push(point);
+                }
+                //Add to animations
+                this.animations.push(linear);
+            }
+            //Circular
+            else if (children[i].nodeName == "circular") {
+                var circular = {
+                    id: "",
+                    span: 0,
+                    center: {
+                        x: 0,
+                        y: 0,
+                        z: 0
+                    },
+                    radius: 0,
+                    startang: 0,
+                    rotang: 0
+                };
+
+                //Id
+                circular.id = this.reader.getString(children[i], 'id');
+                if (circular.id == null)
+                    return "no ID defined for circular animation";
+
+                //Check unique ID
+                for (let v = 0; v < this.animations.length; v++) {
+                    if (this.animations[v].id == circular.id)
+                        return "circular animation ID duplicate found for id: " + circular.id;
+                }
+
+                //Span
+                circular.span = this.reader.getFloat(children[i], 'span');
+                if (circular.span < 0 || circular.span == null || isNaN(circular.span))
+                    return "invalid span for circular animation with id: " + circular.id;
+
+                //Center
+                var center = this.reader.getVector3(children[i], 'center');
+                circular.center.x = center[0];
+                circular.center.y = center[1];
+                circular.center.z = center[2];
+
+                //Radius
+                circular.radius = this.reader.getFloat(children[i], 'radius');
+                if (circular.radius < 0 || circular.radius == null || isNaN(circular.radius))
+                    return "invalid radius for circular animation with id: " + circular.id;
+
+                //Start Angle
+                circular.startang = this.reader.getFloat(children[i], 'startang');
+                if (circular.startang < 0 || circular.startang == null || isNaN(circular.startang))
+                    return "invalid startang for circular animation with id: " + circular.id;
+
+                //Rotation Angle
+                circular.rotang = this.reader.getFloat(children[i], 'rotang');
+                if (circular.rotang < 0 || circular.rotang == null || isNaN(circular.rotang))
+                    return "invalid rotang for circular animation with id: " + circular.id;
+
+                //Add to animations
+                this.animations.push(circular);
+            }
+        }
+
+    }
+
+    /**
      * @param {primitives block element} primitivesNode
-     * TODO update array to have shape as a CGF Object (like rectangle already)
      */
     parsePrimitives(primitivesNode) {
 
@@ -1753,7 +1888,7 @@ class MySceneGraph {
                                 component.texture.length_t = this.reader.getFloat(grandChildren[j], 'length_t');
                                 if ((component.texture.length_t == null || component.texture.length_t <= 0 || isNaN(component.texture.length_t)) && component.texture.id != "inherit")
                                     return "no length_t defined for component texture with id: " + component.id;
-                                    
+
                             }
 
                         }
