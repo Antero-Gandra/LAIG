@@ -38,6 +38,7 @@ class MySceneGraph {
         this.materials = [];
         this.transformations = [];
         this.primitives = [];
+        this.animations = [];
         this.components = [];
 
         //Loaded textures after all data loaded
@@ -2049,6 +2050,7 @@ class MySceneGraph {
                     this.scene,
                     this.tmpComponents[i].id,
                     this.tmpComponents[i].transformations_list,
+                    this.tmpComponents[i].animations,
                     this.tmpComponents[i].materials,
                     this.tmpComponents[i].texture,
                     this.tmpComponents[i].childrenComponents,
@@ -2060,6 +2062,7 @@ class MySceneGraph {
                     this.scene,
                     this.tmpComponents[i].id,
                     this.tmpComponents[i].transformations_ref,
+                    this.tmpComponents[i].animations,
                     this.tmpComponents[i].materials,
                     this.tmpComponents[i].texture,
                     this.tmpComponents[i].childrenComponents,

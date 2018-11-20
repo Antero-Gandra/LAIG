@@ -5,10 +5,11 @@ class Component {
     /**
      * @constructor
      */
-    constructor(scene, id, transformations, materials, texture, childrenComponentsIDs, childrenPrimitivesIDs) {
+    constructor(scene, id, transformations, animations, materials, texture, childrenComponentsIDs, childrenPrimitivesIDs) {
         this.scene = scene;
         this.id = id;
         this.transformations = transformations;
+        this.animations = animations;
         this.materials = materials;
         this.texture = texture;
         this.childrenComponentsIDs = childrenComponentsIDs;
