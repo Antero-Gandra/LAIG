@@ -5,11 +5,11 @@ class Component {
     /**
      * @constructor
      */
-    constructor(scene, id, transformations, animations, materials, texture, childrenComponentsIDs, childrenPrimitivesIDs) {
+    constructor(scene, id, transformations, animationsRaw, materials, texture, childrenComponentsIDs, childrenPrimitivesIDs) {
         this.scene = scene;
         this.id = id;
         this.transformations = transformations;
-        this.animations = animations;
+        this.animationsRaw = animationsRaw;
         this.materials = materials;
         this.texture = texture;
         this.childrenComponentsIDs = childrenComponentsIDs;
@@ -117,6 +117,32 @@ class Component {
             }
         }
 
+        //Setup animations
+        this.animations = [];
+        for (let i = 0; i < this.animationsRaw.length; i++) {
+            //Search for id
+            for (let j = 0; j < this.scene.graph.animations.length; j++) {
+                //Found
+                if (this.animationsRaw[i] == this.scene.graph.animations[j].id) {
+                    //Distinguish between linear and circular
+                    if (this.scene.graph.animations[j].radius == undefined) {
+                        let linearAnimation = new LinearAnimation(this.scene.graph,
+                            this.scene.graph.animations[j].points,
+                            this.scene.graph.animations[j].span);
+                        this.animations.push(linearAnimation);
+                    } else {
+                        let circularAnimation = new CircularAnimation(this.scene.graph,
+                            this.scene.graph.animations[j].center,
+                            this.scene.graph.animations[j].radius,
+                            this.scene.graph.animations[j].startang,
+                            this.scene.graph.animations[j].rotang,
+                            this.scene.graph.animations[j].span);
+                        this.animations.push(circularAnimation);
+                    }
+                }
+            }
+        }
+
     }
 
     /**
@@ -139,7 +165,7 @@ class Component {
                 }
                 a.appearence.apply();
                 materialToPass = a;
-            } 
+            }
             //Apply caller material
             else {
                 callerMaterial.appearence.apply();
@@ -210,18 +236,18 @@ class Component {
         var a = this.scene.gl;
 
         //Apply wrap to length_s
-        if(length_s < 1){
+        if (length_s < 1) {
             a.texParameteri(a.TEXTURE_2D, a.TEXTURE_WRAP_S, this.scene.gl['REPEAT']);
         }
-        else{
+        else {
             a.texParameteri(a.TEXTURE_2D, a.TEXTURE_WRAP_S, this.scene.gl['CLAMP_TO_EDGE']);
         }
 
         //Apply wrap to length_t
-        if(length_t < 1){
+        if (length_t < 1) {
             a.texParameteri(a.TEXTURE_2D, a.TEXTURE_WRAP_T, this.scene.gl['REPEAT']);
         }
-        else{
+        else {
             a.texParameteri(a.TEXTURE_2D, a.TEXTURE_WRAP_T, this.scene.gl['CLAMP_TO_EDGE']);
         }
 
@@ -231,7 +257,7 @@ class Component {
                 primitive.texCoords[i] = primitive.initialTexCoords[i] / length_s;
                 primitive.texCoords[i + 1] = primitive.initialTexCoords[i + 1] / length_t;
             }
-        } 
+        }
         //Cylinder has multiple primitives
         else {
             if (primitive.coreCylinder != undefined) {
