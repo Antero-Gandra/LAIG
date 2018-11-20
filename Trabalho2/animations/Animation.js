@@ -10,7 +10,7 @@ class Animation {
     }
 
     apply(){
-        this.scene.multMatrix(this.transformationMat)
+        this.scene.multMatrix(this.transformationMat);
     }
 
 }

@@ -34,7 +34,9 @@ main=function()
 
 	// create and load graph, and associate it to scene. 
 	// Check console for loading errors
-	var myGraph = new MySceneGraph(filename, xmlScene);
+    var myGraph = new MySceneGraph(filename, xmlScene);
+    
+    xmlScene.first = true;
 	
 	// start
     app.run();

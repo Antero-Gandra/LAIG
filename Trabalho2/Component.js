@@ -126,12 +126,12 @@ class Component {
                 if (this.animationsRaw[i] == this.scene.graph.animations[j].id) {
                     //Distinguish between linear and circular
                     if (this.scene.graph.animations[j].radius == undefined) {
-                        let linearAnimation = new LinearAnimation(this.scene.graph,
+                        let linearAnimation = new LinearAnimation(this.scene,
                             this.scene.graph.animations[j].points,
                             this.scene.graph.animations[j].span);
                         this.animations.push(linearAnimation);
                     } else {
-                        let circularAnimation = new CircularAnimation(this.scene.graph,
+                        let circularAnimation = new CircularAnimation(this.scene,
                             this.scene.graph.animations[j].center,
                             this.scene.graph.animations[j].radius,
                             this.scene.graph.animations[j].startang,
@@ -203,6 +203,14 @@ class Component {
                     this.updateTexCoords(this.childrenPrimitives[p]);
                 }
             }
+        }
+
+        //TODO elapsed time can be passed as argument (same for all components)
+        let elapsed = new Date().getTime()/1000 - this.scene.startTime;
+        //TODO need to apply animations in sequence, looking at the time to know which animation is playing right now
+        if (this.animations.length > 0) {
+            this.animations[0].update(elapsed);
+            this.animations[0].apply();
         }
 
         //Apply transformations

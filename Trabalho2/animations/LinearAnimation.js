@@ -14,23 +14,36 @@ class LinearAnimation extends Animation {
 
     update(time) {
 
+        //Reset matrix
+        mat4.identity(this.transformationMat);
+
         //Scale time
         let scaledT = time % this.time;
 
         //Next control point
-        let nextPoint = Math.ceil(scaledT * this.pts.length / this.time);
+        let nextPoint = Math.ceil(scaledT / (this.time / this.pts.length));
+        if (nextPoint > this.pts.length - 1) {
+            //TODO This value alters order of behaviour (0 or this.pts.length - 1)
+            nextPoint = 0;
+        }
 
         //Previous control point
         let previousPoint = nextPoint - 1;
         if (previousPoint < 0) {
-            previousPoint = 0;
+            //TODO This value alters order of behaviour (0 or this.pts.length - 1)
+            previousPoint = this.pts.length - 1;
         }
+
+        console.log("===================");
+        console.log("Scalled time: " + scaledT);
+        console.log("Previous point: " + previousPoint);
+        console.log("Next point: " + nextPoint);
 
         //Vector from previous to next
         let vec = {
-            x: pts[nextPoint].x - pts[previousPoint].x,
-            y: pts[nextPoint].y - pts[previousPoint].y,
-            z: pts[nextPoint].z - pts[previousPoint].z
+            x: this.pts[nextPoint].x - this.pts[previousPoint].x,
+            y: this.pts[nextPoint].y - this.pts[previousPoint].y,
+            z: this.pts[nextPoint].z - this.pts[previousPoint].z
         }
 
         //Magnitude
@@ -38,7 +51,7 @@ class LinearAnimation extends Animation {
 
         //If magnitude is 0 what to do?
         //Just use magnitude 1 for simplicity, still shouldn't happen
-        if(mag == 0)
+        if (mag == 0)
             mag = 1;
 
         //Normalize
@@ -47,7 +60,7 @@ class LinearAnimation extends Animation {
         vec.z /= mag;
 
         //Time per transition
-        let transitionT = this.time / this.pts.length;
+        let transitionT = (this.time / this.pts.length);
 
         //Time at next control point
         let timeNext = transitionT * nextPoint;
@@ -71,7 +84,7 @@ class LinearAnimation extends Animation {
         //http://glmatrix.net/docs/
 
         //Final position
-        let pos = vec3.fromValues(pts[previousPoint].x + vec.x, pts[previousPoint].y + vec.y, pts[previousPoint].z + vec.z);
+        let pos = vec3.fromValues(this.pts[previousPoint].x + vec.x, this.pts[previousPoint].y + vec.y, this.pts[previousPoint].z + vec.z);
 
         //Apply to matrix;
         mat4.translate(this.transformationMat, this.transformationMat, pos);

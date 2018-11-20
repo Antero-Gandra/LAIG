@@ -18,6 +18,8 @@ class CiruclarAnimation extends Animation {
 
     update(time){
         
+        
+
     }
 
 }

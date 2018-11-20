@@ -224,6 +224,12 @@ class XMLscene extends CGFscene {
         //Was the graph loaded already?
         if (this.sceneInited) {
 
+            //Scene start time
+            if(this.first == true){
+                this.startTime = new Date().getTime()/1000;
+                this.first = false;
+            }
+
             // Draw axis
             this.axis.display();
 
