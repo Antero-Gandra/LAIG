@@ -1434,6 +1434,9 @@ class MySceneGraph {
             }
         }
 
+        //Parsing complete
+        this.log("Parsed animations");
+
     }
 
     /**
@@ -1692,6 +1695,7 @@ class MySceneGraph {
                     id: "",
                     transformations_ref: null,
                     transformations_list: [],
+                    animations: [],
                     materials: [],
                     texture: {
                         id: "",
@@ -1824,6 +1828,39 @@ class MySceneGraph {
                                 continue;
                             }
 
+                        }
+                    }
+                    //Animations
+                    else if (grandChildren[j].nodeName == "animations") {
+
+                        //Animations Grandgrandchildren
+                        var grandGrandChildren = grandChildren[j].children;
+                        for (let h = 0; h < grandGrandChildren.length; h++) {
+                            if (grandGrandChildren[h].nodeName == "animationref") {
+                                //ID
+                                var tmp = this.reader.getString(grandGrandChildren[h], 'id');
+                                if (tmp == null)
+                                    return "no ID defined for component material with id: " + component.id;
+
+                                //Check material ID exists
+                                var found = false;
+                                for (let v = 0; v < this.animations.length; v++) {
+                                    if (this.animations[v].id == tmp || tmp == "inherit") {
+                                        found = true;
+                                        break;
+                                    }
+                                }
+                                if (!found)
+                                    return "animation ID not found in animations array with id: " + tmp;
+
+                                //Add to material list
+                                component.animations.push(tmp);
+                            }
+                            //Unknown
+                            else {
+                                this.onXMLMinorError("unknown tag <" + grandGrandChildren[h].nodeName + "> in animations for component with id: " + component.id);
+                                continue;
+                            }
                         }
                     }
                     //Materials
