@@ -1730,6 +1730,41 @@ class MySceneGraph {
                         primitive.shape = new Patch(this.scene, patch.npointsU, patch.npointsV, patch.pts, patch.npartsU, patch.npartsV);
                         break;
                     }
+                    //Cylinder2
+                    else if (grandChildren[j].nodeName == "cylinder2") {
+                        var cylinder2 = {
+                            base: 0,
+                            top: 0,
+                            height: 0,
+                            slices: 0,
+                            stacks: 0
+                        }
+
+                        //base
+                        cylinder2.base = this.reader.getFloat(grandChildren[j], 'base');
+                        if (cylinder2.base == null || isNaN(cylinder2.base) || cylinder2.base < 0)
+                            return "Invalid base value in cylinder2 primitive with id: " + primitive.id;
+                        //top
+                        cylinder2.top = this.reader.getFloat(grandChildren[j], 'top');
+                        if (cylinder2.top == null || isNaN(cylinder2.top) || cylinder2.top < 0)
+                            return "Invalid top value in cylinder2 primitive with id: " + primitive.id;
+                        //height
+                        cylinder2.height = this.reader.getFloat(grandChildren[j], 'height');
+                        if (cylinder2.height == null || isNaN(cylinder2.height) || cylinder2.height < 0)
+                            return "Invalid height value in cylinder2 primitive with id: " + primitive.id;
+                        //slices
+                        cylinder2.slices = this.reader.getFloat(grandChildren[j], 'slices');
+                        if (cylinder2.slices == null || isNaN(cylinder2.slices) || cylinder2.slices < 0)
+                            return "Invalid slices value in cylinder2 primitive with id: " + primitive.id;
+                        //stacks
+                        cylinder2.stacks = this.reader.getFloat(grandChildren[j], 'stacks');
+                        if (cylinder2.stacks == null || isNaN(cylinder2.stacks) || cylinder2.stacks < 0)
+                            return "Invalid stacks value in cylinder2 primitive with id: " + primitive.id;
+
+                        //Add to primitive and break out of loop(only 1 "shape" per primitive)
+                        primitive.shape = new Cylinder2(this.scene, cylinder2.base, cylinder2.top, cylinder2.height, cylinder2.slices, cylinder2.stacks);
+                        break;
+                    }
                     //Unknown
                     else {
                         this.onXMLMinorError("unknown tag <" + grandChildren[j].nodeName + "> in primitive with id: " + primitive.id);

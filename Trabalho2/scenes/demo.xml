@@ -159,13 +159,17 @@
         <!-- primitiva patch é npointsU * npointsV -->
         <primitive id="patch">
             <patch npointsU="3" npointsV="2" npartsU="20" npartsV="20">
-                <controlpoint xx="-1.5" yy="-1.5" zz="0"/>
-                <controlpoint xx="-1.5" yy="1.5" zz="0"/>
-                <controlpoint xx="0" yy="-1.5" zz="3"/>
-                <controlpoint xx="0" yy="1.5" zz="3"/>
-                <controlpoint xx="1.5" yy="-1.5" zz="0"/>
-                <controlpoint xx="1.5" yy="1.5" zz="0"/>
+                <controlpoint xx="-1" yy="-1" zz="0"/>
+                <controlpoint xx="-1" yy="1" zz="0"/>
+                <controlpoint xx="0" yy="-1" zz="3"/>
+                <controlpoint xx="0" yy="1" zz="3"/>
+                <controlpoint xx="1" yy="-1" zz="0"/>
+                <controlpoint xx="1" yy="1" zz="0"/>
             </patch>
+        </primitive>
+
+        <primitive id="cylinder2">
+            <cylinder2 base="2" top="1" height="2" slices="20" stacks="20" />
         </primitive>
 
     </primitives>
@@ -197,11 +201,13 @@
 
                 <componentref id="plane"/>
                 <componentref id="patch"/>
+                <componentref id="cylinder2"/>
             </children>
         </component>
 
         <component id="plane">
             <transformation>
+                <translate x="0" y="1" z="0" />
             </transformation>
             <materials>
                 <material id="defMat"/>
@@ -214,6 +220,7 @@
 
         <component id="patch">
             <transformation>
+                <translate x="3" y="1" z="0" />
             </transformation>
             <materials>
                 <material id="defMat"/>
@@ -221,6 +228,19 @@
             <texture id="none" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="patch" />
+            </children>
+        </component>
+
+        <component id="cylinder2">
+            <transformation>
+                <translate x="6" y="2" z="0" />
+            </transformation>
+            <materials>
+                <material id="defMat"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="cylinder2" />
             </children>
         </component>
 
