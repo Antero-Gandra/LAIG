@@ -20,8 +20,6 @@ class Patch extends CGFobject {
             control.push(uArray);
         }
 
-        console.log(control);
-
         //Surface
         var surf = new CGFnurbsSurface(degree1 - 1, degree2 - 1, control);
 

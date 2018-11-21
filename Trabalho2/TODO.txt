@@ -2,7 +2,7 @@
 - Circular animation
 - Sequence animations
 - Test Plane primitive
-- Load Patch primitive
+- Test Patch primitive
 - Test Terrain shader
 - Water shader
 - Cylinder2
