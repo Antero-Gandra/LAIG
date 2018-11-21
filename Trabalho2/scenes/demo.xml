@@ -146,8 +146,26 @@
         </primitive>
 
         <primitive id="plane">
-            <plane  npartsU="5" npartsV="5" />
+            <plane npartsU="5" npartsV="5" />
         </primitive>
+
+        <!-- Nova primitiva: patch, gerada por NURBS -->
+        <!-- — parâmetros: -->
+        <!-- — npartsU: divisão em partes no domínio U a -->
+        <!-- ser usada para o cálculo da superfície -->
+        <!-- — npartsV: divisão em partes no domínio V -->
+        <!-- a ser usada para o cálculo da superficie -->
+        <!-- - o número de pontos de controlo dentro da -->
+        <!-- primitiva patch é npointsU * npointsV -->
+        <primitive id="patch">
+            <patch npointsU="2" npointsV="2" npartsU="10" npartsV="10">
+                <controlpoint xx="0" yy="0" zz="0"/>
+                <controlpoint xx="0" yy="1" zz="0"/>
+                <controlpoint xx="0" yy="2" zz="0"/>
+                <controlpoint xx="0" yy="3" zz="0"/>
+            </patch>
+        </primitive>
+
     </primitives>
 
     <components>

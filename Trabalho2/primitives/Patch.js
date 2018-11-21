@@ -3,12 +3,13 @@ class Patch extends CGFobject {
 
     constructor(scene, degree1, degree2, control, divX, divY) {
         super(scene);
+        this.scene = scene;
 
-        //Linear
+        //Surface
         var surf = new CGFnurbsSurface(degree1, degree2, control);
 
         //Object
-        this.obj = new CGFnurbsObject(this, divX, divY, surf);
+        this.obj = new CGFnurbsObject(this.scene, divX, divY, surf);
 
     };
 
