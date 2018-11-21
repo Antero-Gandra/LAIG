@@ -18,11 +18,11 @@ class LinearAnimation extends Animation {
         let scaledT = time % this.time;
 
         //Time per transition
-        let transitionT = (this.time / (this.pts.length-1));
+        let transitionT = (this.time / (this.pts.length - 1));
 
         //Next control point
         let nextPoint = Math.ceil(scaledT / transitionT);
-        if (nextPoint == 0 || nextPoint > this.pts.length-1) {
+        if (nextPoint == 0 || nextPoint > this.pts.length - 1) {
             nextPoint = 1;
         }
 
@@ -72,13 +72,14 @@ class LinearAnimation extends Animation {
         vec.x *= desiredMag;
         vec.y *= desiredMag;
         vec.z *= desiredMag;
+
         //http://glmatrix.net/docs/
 
         //Final position
         let pos = vec3.fromValues(this.pts[previousPoint].x + vec.x, this.pts[previousPoint].y + vec.y, this.pts[previousPoint].z + vec.z);
 
         //Reset matrix
-        mat4.identity(this.transformationMat);        
+        mat4.identity(this.transformationMat);
 
         //Apply to matrix;
         mat4.translate(this.transformationMat, this.transformationMat, pos);

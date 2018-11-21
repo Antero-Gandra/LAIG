@@ -205,9 +205,11 @@ class Component {
             }
         }
 
+        //TODO rotate towards next point
         //TODO elapsed time can be passed as argument (same for all components)
         let elapsed = new Date().getTime()/1000 - this.scene.startTime;
         //TODO need to apply animations in sequence, looking at the time to know which animation is playing right now
+        //TODO need to work from last position of previous animation
         if (this.animations.length > 0) {
             this.animations[0].update(elapsed);
             this.animations[0].apply();
