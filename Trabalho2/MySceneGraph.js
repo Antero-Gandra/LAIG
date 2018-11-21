@@ -1670,6 +1670,66 @@ class MySceneGraph {
                         primitive.shape = new Plane(this.scene, plane.npartsU, plane.npartsV);
                         break;
                     }
+                    //Patch
+                    else if (grandChildren[j].nodeName == "patch") {
+                        var patch = {
+                            npointsU: 0,
+                            npointsV: 0,
+                            npartsU: 0,
+                            npartsV: 0,
+                            pts: []
+                        }
+
+                        //npointsU
+                        patch.npointsU = this.reader.getFloat(grandChildren[j], 'npointsU');
+                        if (patch.npointsU == null || isNaN(patch.npointsU) || patch.npointsU < 0)
+                            return "Invalid npointsU value in patch primitive with id: " + primitive.id;
+                        //npointsV
+                        patch.npointsV = this.reader.getFloat(grandChildren[j], 'npointsV');
+                        if (patch.npointsV == null || isNaN(patch.npointsV) || patch.npointsV < 0)
+                            return "Invalid npointsV value in patch primitive with id: " + primitive.id;
+                        //npartsU
+                        patch.npartsU = this.reader.getFloat(grandChildren[j], 'npartsU');
+                        if (patch.npartsU == null || isNaN(patch.npartsU) || patch.npartsU < 0)
+                            return "Invalid npartsU value in patch primitive with id: " + primitive.id;
+                        //npartsV
+                        patch.npartsV = this.reader.getFloat(grandChildren[j], 'npartsV');
+                        if (patch.npartsV == null || isNaN(patch.npartsV) || patch.npartsV < 0)
+                            return "Invalid npartsV value in patch primitive with id: " + primitive.id;
+
+                        //Grand-grand children (pts)
+                        var grandGrandChildren = grandChildren[j].children;
+                        for (let h = 0; h < grandGrandChildren.length; h++) {
+                            var point = {
+                                x: 0,
+                                y: 0,
+                                z: 0
+                            }
+
+                            point.x = this.reader.getFloat(grandGrandChildren[j], 'xx');
+                            if (point.x == null || isNaN(point.x))
+                                return "invalid x value for patch control point with id: " + primitive.id;
+
+                            point.y = this.reader.getFloat(grandGrandChildren[j], 'yy');
+                            if (point.y == null || isNaN(point.y))
+                                return "invalid y value for patch control point with id: " + primitive.id;
+
+                            point.z = this.reader.getFloat(grandGrandChildren[j], 'zz');
+                            if (point.z == null || isNaN(point.z))
+                                return "invalid z value for patch control point with id: " + primitive.id;
+
+                            patch.pts.push(point);
+                        }
+
+                        //Check point count is correct
+                        if (patch.pts.length < patch.npointsU * patch.npointsV) {
+                            return "number of control points found doesn't match npointsU * npointsV for patch with id: " + primitive.id;
+                        }
+
+                        //Add to primitive and break out of loop(only 1 "shape" per primitive)
+                        primitive.shape = new Patch(this.scene, patch.npointsU, patch.npointsV, patch.pts, patch.npartsU, patch.npartsV);
+                        break;
+                    }
                     //Unknown
                     else {
                         this.onXMLMinorError("unknown tag <" + grandChildren[j].nodeName + "> in primitive with id: " + primitive.id);
