@@ -34,7 +34,7 @@ class Vehicle extends CGFobject {
             ]);
         this.wingObjUp = new CGFnurbsObject(this.scene, 20, 20, this.wingSurfaceUp);
 
-        //Wing lower side
+        //Wing lower side (like upper but order of points reversed)
         this.wingSurfaceDown = new CGFnurbsSurface(4,1,
             [
                 [

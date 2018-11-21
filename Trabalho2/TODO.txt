@@ -1,9 +1,5 @@
 - Linear animation rotate in direction of next point
 - Circular animation
 - Sequence animations
-- Test Plane primitive
-- Test Patch primitive
 - Test Terrain shader
 - Water shader
-- Cylinder2
-- Vehicle
