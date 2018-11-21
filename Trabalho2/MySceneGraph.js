@@ -2122,8 +2122,11 @@ class MySceneGraph {
 
         this.scene.pushMatrix();
 
+        //Elapsed time;
+        let elapsed = new Date().getTime()/1000 - this.scene.startTime;
+
         //Call draw for root component
-        this.root.display(null);
+        this.root.display(null, elapsed);
 
         this.scene.popMatrix();
 
