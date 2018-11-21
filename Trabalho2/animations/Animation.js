@@ -6,6 +6,7 @@ class Animation {
     constructor(scene) {
         this.scene = scene;
         this.transformationMat = mat4.create();
+        mat4.identity(this.transformationMat);
         this.time = 0;
     }
 

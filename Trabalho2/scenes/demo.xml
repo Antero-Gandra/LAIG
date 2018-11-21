@@ -107,10 +107,10 @@
         <!-- O bloco animations pode ser vazio, isto é, pode -->
         <!-- não ser declarada qualquer animação, linear ou circular -->
         <!-- Span é o tempo, em segundos, que a animação deve demorar -->
-        <linear id="l1" span="1">
+        <linear id="l1" span="0.7">
             <!-- devem existir pelo menos dois pontos de controlo -->
             <controlpoint xx="0" yy="0" zz="0" />
-            <controlpoint xx="0" yy="-2" zz="0" />
+            <controlpoint xx="0" yy="-2.8" zz="0" />
             <controlpoint xx="0" yy="0" zz="0" />
         </linear>
 
