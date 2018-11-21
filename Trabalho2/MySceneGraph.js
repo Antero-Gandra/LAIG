@@ -1706,15 +1706,15 @@ class MySceneGraph {
                                 z: 0
                             }
 
-                            point.x = this.reader.getFloat(grandGrandChildren[j], 'xx');
+                            point.x = this.reader.getFloat(grandGrandChildren[h], 'xx');
                             if (point.x == null || isNaN(point.x))
                                 return "invalid x value for patch control point with id: " + primitive.id;
 
-                            point.y = this.reader.getFloat(grandGrandChildren[j], 'yy');
+                            point.y = this.reader.getFloat(grandGrandChildren[h], 'yy');
                             if (point.y == null || isNaN(point.y))
                                 return "invalid y value for patch control point with id: " + primitive.id;
 
-                            point.z = this.reader.getFloat(grandGrandChildren[j], 'zz');
+                            point.z = this.reader.getFloat(grandGrandChildren[h], 'zz');
                             if (point.z == null || isNaN(point.z))
                                 return "invalid z value for patch control point with id: " + primitive.id;
 

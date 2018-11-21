@@ -158,11 +158,13 @@
         <!-- - o número de pontos de controlo dentro da -->
         <!-- primitiva patch é npointsU * npointsV -->
         <primitive id="patch">
-            <patch npointsU="2" npointsV="2" npartsU="10" npartsV="10">
-                <controlpoint xx="0" yy="0" zz="0"/>
-                <controlpoint xx="0" yy="1" zz="0"/>
-                <controlpoint xx="0" yy="2" zz="0"/>
-                <controlpoint xx="0" yy="3" zz="0"/>
+            <patch npointsU="3" npointsV="2" npartsU="20" npartsV="20">
+                <controlpoint xx="-1.5" yy="-1.5" zz="0"/>
+                <controlpoint xx="-1.5" yy="1.5" zz="0"/>
+                <controlpoint xx="0" yy="-1.5" zz="3"/>
+                <controlpoint xx="0" yy="1.5" zz="3"/>
+                <controlpoint xx="1.5" yy="-1.5" zz="0"/>
+                <controlpoint xx="1.5" yy="1.5" zz="0"/>
             </patch>
         </primitive>
 
@@ -182,6 +184,7 @@
 
             <texture id="none" length_s="1" length_t="1" />
             <children>
+
                 <componentref id="board1"/>
                 <componentref id="board2"/>
                 <componentref id="court"/>
@@ -191,6 +194,33 @@
                 <componentref id="stand1"/>
                 <componentref id="stand2"/>
                 <componentref id="ground"/>
+
+                <componentref id="plane"/>
+                <componentref id="patch"/>
+            </children>
+        </component>
+
+        <component id="plane">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="defMat"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="plane" />
+            </children>
+        </component>
+
+        <component id="patch">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="defMat"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="patch" />
             </children>
         </component>
 

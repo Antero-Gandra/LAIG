@@ -5,15 +5,15 @@ class Patch extends CGFobject {
         super(scene);
         this.scene = scene;
 
+        console.log(pointsRAW);
+
         //Format points
         var control = [];
         var pointId = 0;
         for (let u = 0; u < degree1; u++) {
             var uArray = [];
-            console.log("u");
             for (let v = 0; v < degree2; v++) {
-                console.log("v");
-                var point = [pointsRAW[pointId].x, pointsRAW[pointId].y, pointsRAW[pointId].z, 1.0];
+                var point = [pointsRAW[pointId].x, pointsRAW[pointId].y, pointsRAW[pointId].z, 1];
                 uArray.push(point);
                 pointId++;
             }
@@ -27,5 +27,9 @@ class Patch extends CGFobject {
         this.obj = new CGFnurbsObject(this.scene, divX, divY, surf);
 
     };
+
+    display(){
+        this.obj.display();
+    }
 
 }
