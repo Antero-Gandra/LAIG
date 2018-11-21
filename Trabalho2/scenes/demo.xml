@@ -144,6 +144,10 @@
         <primitive id="torus">
             <torus inner="0.1" outer="1" slices="20" loops="20" />
         </primitive>
+
+        <primitive id="plane">
+            <plane  npartsU="5" npartsV="5" />
+        </primitive>
     </primitives>
 
     <components>

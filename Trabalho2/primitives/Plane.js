@@ -3,6 +3,7 @@ class Plane extends CGFobject {
 
     constructor(scene, divX, divY) {
         super(scene);
+        this.scene = scene;
 
         //Linear
         var surf = new CGFnurbsSurface(1, 1,
@@ -18,7 +19,7 @@ class Plane extends CGFobject {
             ])
 
         //Object
-        this.obj = new CGFnurbsObject(this, divX, divY, surf);
+        this.obj = new CGFnurbsObject(this.scene, divX, divY, surf);
 
     };
 

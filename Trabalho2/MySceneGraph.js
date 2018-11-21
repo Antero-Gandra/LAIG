@@ -1366,7 +1366,7 @@ class MySceneGraph {
                 }
 
                 //Check minimum control points (2)
-                if(linear.points.length < 2){
+                if (linear.points.length < 2) {
                     return "not enough control points in linear animation with id: " + linear.id;
                 }
 
@@ -1648,6 +1648,26 @@ class MySceneGraph {
 
                         //Add to primitive and break out of loop(only 1 "shape" per primitive)
                         primitive.shape = new Torus(this.scene, torus.inner, torus.outer, torus.slices, torus.loops);
+                        break;
+                    }
+                    //Plane
+                    else if (grandChildren[j].nodeName == "plane") {
+                        var plane = {
+                            npartsU: 0,
+                            npartsV: 0
+                        }
+
+                        //npartsU
+                        plane.npartsU = this.reader.getFloat(grandChildren[j], 'npartsU');
+                        if (plane.npartsU == null || isNaN(plane.npartsU) || plane.npartsU < 0)
+                            return "Invalid npartsU value in plane primitive with id: " + primitive.id;
+                        //npartsV
+                        plane.npartsV = this.reader.getFloat(grandChildren[j], 'npartsV');
+                        if (plane.npartsV == null || isNaN(plane.npartsV) || plane.npartsV < 0)
+                            return "Invalid npartsV value in plane primitive with id: " + primitive.id;
+
+                        //Add to primitive and break out of loop(only 1 "shape" per primitive)
+                        primitive.shape = new Plane(this.scene, plane.npartsU, plane.npartsV);
                         break;
                     }
                     //Unknown
@@ -2123,7 +2143,7 @@ class MySceneGraph {
         this.scene.pushMatrix();
 
         //Elapsed time;
-        let elapsed = new Date().getTime()/1000 - this.scene.startTime;
+        let elapsed = new Date().getTime() / 1000 - this.scene.startTime;
 
         //Call draw for root component
         this.root.display(null, elapsed);

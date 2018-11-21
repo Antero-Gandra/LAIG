@@ -207,7 +207,7 @@ class Component {
 
         //TODO rotate towards next point
         //TODO need to apply animations in sequence, looking at the time to know which animation is playing right now
-        //TODO need to work from last position of previous animation
+        //TODO need to apply on top of last position of previous animation
         if (this.animations.length > 0) {
             this.animations[0].update(elapsedTime);
             this.animations[0].apply();
