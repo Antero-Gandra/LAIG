@@ -13,12 +13,37 @@ class CiruclarAnimation extends Animation {
         this.radius = radius;
         this.angleI = angleI;
         this.angleRot = angleRot;
-        this.span = span;
+        this.span = span; // rotation time
     }
 
     update(time){
         
+        //Scale time
+        let scale = time % this.span;
+
+        //Delta Angle
+       let deltaAngle = scale * this.angleRot / this.span;
+    
+        //Positions
+        let x = Math.cos(this.angleI + deltaAngle) * this.radius;
+        let y = Math.sin(this.angleI + deltaAngle) * this.radius;
+         
         
+
+
+        
+        translate
+
+
+
+
+
+
+
+        
+
+
+            
 
     }
 
