@@ -1765,6 +1765,11 @@ class MySceneGraph {
                         primitive.shape = new Cylinder2(this.scene, cylinder2.base, cylinder2.top, cylinder2.height, cylinder2.slices, cylinder2.stacks);
                         break;
                     }
+                    else if (grandChildren[j].nodeName == "vehicle") {
+                        //Add to primitive and break out of loop(only 1 "shape" per primitive)
+                        primitive.shape = new Vehicle(this.scene);
+                        break;
+                    }
                     //Unknown
                     else {
                         this.onXMLMinorError("unknown tag <" + grandChildren[j].nodeName + "> in primitive with id: " + primitive.id);
