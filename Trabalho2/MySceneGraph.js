@@ -1765,9 +1765,65 @@ class MySceneGraph {
                         primitive.shape = new Cylinder2(this.scene, cylinder2.base, cylinder2.top, cylinder2.height, cylinder2.slices, cylinder2.stacks);
                         break;
                     }
+                    //Vehicle
                     else if (grandChildren[j].nodeName == "vehicle") {
                         //Add to primitive and break out of loop(only 1 "shape" per primitive)
                         primitive.shape = new Vehicle(this.scene);
+                        break;
+                    }
+                    //Terrain
+                    else if (grandChildren[j].nodeName == "terrain") {
+                        var terrain = {
+                            idtexture: 0,
+                            idheightmap: 0,
+                            parts: 0,
+                            heightscale: 0
+                        }
+
+                        //idtexture
+                        terrain.idtexture = this.reader.getString(grandChildren[j], 'idtexture');
+                        if (terrain.idtexture == null)
+                            return "no ID defined for terrain idtexture with id: " + primitive.id;
+
+                        //Check texture ID exists
+                        var found = false;
+                        for (let v = 0; v < this.textures.length; v++) {
+                            if (this.textures[v].id == terrain.idtexture) {
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (!found)
+                            return "texture ID not found in textures array with id: " + terrain.idtexture;
+
+                        //idheightmap
+                        terrain.idheightmap = this.reader.getString(grandChildren[j], 'idheightmap');
+                        if (terrain.idheightmap == null)
+                            return "no ID defined for terrain idheightmap with id: " + primitive.id;
+
+                        //Check texture ID exists
+                        var found = false;
+                        for (let v = 0; v < this.textures.length; v++) {
+                            if (this.textures[v].id == terrain.idheightmap) {
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (!found)
+                            return "texture ID not found in textures array with id: " + terrain.idheightmap;
+
+                        //parts
+                        terrain.parts = this.reader.getFloat(grandChildren[j], 'parts');
+                        if (terrain.parts == null || isNaN(terrain.parts) || terrain.parts < 0)
+                            return "Invalid parts value in terrain primitive with id: " + primitive.id;
+
+                        //heightscale
+                        terrain.heightscale = this.reader.getFloat(grandChildren[j], 'heightscale');
+                        if (terrain.heightscale == null || isNaN(terrain.heightscale) || terrain.heightscale < 0)
+                            return "Invalid heightscale value in terrain primitive with id: " + primitive.id;
+
+                        //Add to primitive and break out of loop(only 1 "shape" per primitive)
+                        primitive.shape = new Terrain(this.scene, terrain.idtexture, terrain.idheightmap, terrain.parts, terrain.heightscale);
                         break;
                     }
                     //Unknown

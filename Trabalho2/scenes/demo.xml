@@ -48,6 +48,8 @@
         <texture id="wood" file="images/wood.jpg" />
         <texture id="crowd" file="images/crowd.jpg" />
         <texture id="concrete" file="images/concrete.jpg" />
+        <texture id="terrain" file="images/terrain.jpg" />
+        <texture id="height" file="images/height.jpg" />
     </textures>
 
     <materials>
@@ -168,12 +170,16 @@
             </patch>
         </primitive>
 
+        <primitive id="vehicle">
+            <vehicle/>
+        </primitive>
+
         <primitive id="cylinder2">
             <cylinder2 base="2" top="1" height="2" slices="20" stacks="20" />
         </primitive>
 
-        <primitive id="vehicle">
-            <vehicle/>
+        <primitive id="terrain">
+            <terrain idtexture="terrain" idheightmap="height" parts="10" heightscale="1.5"/>
         </primitive>
 
     </primitives>
@@ -207,6 +213,7 @@
                 <componentref id="patch"/>
                 <componentref id="cylinder2"/>
                 <componentref id="vehicle"/>
+                <componentref id="terrain"/>
             </children>
         </component>
 
@@ -259,6 +266,19 @@
             <texture id="none" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="vehicle" />
+            </children>
+        </component>
+
+        <component id="terrain">
+            <transformation>
+                <translate x="0" y="5" z="0" />
+            </transformation>
+            <materials>
+                <material id="defMat"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="terrain" />
             </children>
         </component>
 
