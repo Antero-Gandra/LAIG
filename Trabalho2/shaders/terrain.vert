@@ -10,17 +10,19 @@ uniform mat4 uPMatrix;
 uniform mat4 uNMatrix;
 
 uniform float normScale;
+
 varying vec4 coords;
 varying vec4 normal;
 
 
 void main() {
-	vec4 vertex = aVertexPosition;
-	vertex += aVertexNormal * normScale;
 
-	gl_Position = uPMatrix * uMVMatrix * vertex;
+	vec3 tmp = vec3(aVertexPosition);
+	
+	tmp += aVertexNormal * normScale;
 
-	normal = vec4(aVertexNormal, 1.0);
+	vec4 vertex = uMVMatrix * vec4(tmp, 1.0);
 
-	coords=vertex/10.0;
+	gl_Position = uPMatrix * vertex;
+
 }

@@ -5,5 +5,5 @@ precision highp float;
 varying vec4 coords;
 
 void main() {
-	gl_FragColor.rgb = coords;
+	gl_FragColor = coords;
 }
