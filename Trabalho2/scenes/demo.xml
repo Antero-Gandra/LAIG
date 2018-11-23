@@ -3,7 +3,7 @@
     <scene root="root" axis_length="5" />
 
     <views default="full_P">
-        <perspective id="full_P" near="1" far="100" angle="30">
+        <perspective id="full_P" near="1" far="1000" angle="30">
             <from x="20" y="20" z="20" />
             <to x="0" y="0" z="0" />
         </perspective>
@@ -179,7 +179,7 @@
         </primitive>
 
         <primitive id="terrain">
-            <terrain idtexture="terrain" idheightmap="height" parts="10" heightscale="1.5"/>
+            <terrain idtexture="terrain" idheightmap="height" parts="100" heightscale="4"/>
         </primitive>
 
     </primitives>
@@ -197,8 +197,7 @@
             </materials>
 
             <texture id="none" length_s="1" length_t="1" />
-            <children>
-
+            <children>                
                 <componentref id="board1"/>
                 <componentref id="board2"/>
                 <componentref id="court"/>
@@ -271,7 +270,8 @@
 
         <component id="terrain">
             <transformation>
-                <translate x="0" y="5" z="0" />
+                <rotate axis="x" angle="-90" />
+                <scale x="40" y="20" z="1" />
             </transformation>
             <materials>
                 <material id="defMat"/>
