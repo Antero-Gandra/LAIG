@@ -1,0 +1,52 @@
+
+class Water extends Plane {
+
+    constructor(scene, idtexture, idheightmap, parts, heightscale, texscale) {
+        super(scene, parts, parts);
+        this.scene = scene;
+        this.idtexture = idtexture;
+        this.idheightmap = idheightmap;
+        this.heightscale = heightscale;
+
+        this.shader = new CGFshader(this.scene.gl, "shaders/water.vert", "shaders/texture.frag");
+
+        //Textures binded to 2 and 3
+        this.shader.setUniformsValues({ colormap: 1, heightmap: 2, factor: this.heightscale });
+
+        this.appearance = new CGFappearance(this.scene);
+        this.appearance.setAmbient(0.3, 0.3, 0.3, 1);
+        this.appearance.setDiffuse(0.7, 0.7, 0.7, 1);
+        this.appearance.setSpecular(0.0, 0.0, 0.0, 1);
+        this.appearance.setShininess(120);
+
+    };
+
+    display() {
+
+        //Check if loaded yet
+        if (this.terrainTex == undefined || this.heightTex == undefined) {
+            //Search textures
+            for (let i = 0; i < this.scene.graph.loadedTextures.length; i++) {
+                if (this.scene.graph.loadedTextures[i].id == this.idtexture) {
+                    this.terrainTex = this.scene.graph.loadedTextures[i].tex;
+                }
+                if (this.scene.graph.loadedTextures[i].id == this.idheightmap) {
+                    this.heightTex = this.scene.graph.loadedTextures[i].tex;
+                }
+            }
+            this.appearance.setTexture(this.terrainTex);
+	        this.appearance.setTextureWrap ('REPEAT', 'REPEAT');
+        } else {
+            this.appearance.apply();
+            this.scene.setActiveShader(this.shader);
+            this.scene.pushMatrix();
+            this.terrainTex.bind(1);
+            this.heightTex.bind(2);
+            super.display();
+            this.scene.popMatrix();
+            this.scene.setActiveShader(this.scene.defaultShader);
+        }
+
+    }
+
+}

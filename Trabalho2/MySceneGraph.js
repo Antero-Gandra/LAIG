@@ -1826,6 +1826,67 @@ class MySceneGraph {
                         primitive.shape = new Terrain(this.scene, terrain.idtexture, terrain.idheightmap, terrain.parts, terrain.heightscale);
                         break;
                     }
+                    //Water
+                    else if (grandChildren[j].nodeName == "water") {
+                        var water = {
+                            idtexture: 0,
+                            idwavemap: 0,
+                            parts: 0,
+                            heightscale: 0,
+                            texscale: 0
+                        }
+
+                        //idtexture
+                        water.idtexture = this.reader.getString(grandChildren[j], 'idtexture');
+                        if (water.idtexture == null)
+                            return "no ID defined for water idtexture with id: " + primitive.id;
+
+                        //Check texture ID exists
+                        var found = false;
+                        for (let v = 0; v < this.textures.length; v++) {
+                            if (this.textures[v].id == water.idtexture) {
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (!found)
+                            return "texture ID not found in textures array with id: " + water.idtexture;
+
+                        //idwavemap
+                        water.idwavemap = this.reader.getString(grandChildren[j], 'idwavemap');
+                        if (water.idwavemap == null)
+                            return "no ID defined for water idwavemap with id: " + primitive.id;
+
+                        //Check texture ID exists
+                        var found = false;
+                        for (let v = 0; v < this.textures.length; v++) {
+                            if (this.textures[v].id == water.idwavemap) {
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (!found)
+                            return "texture ID not found in textures array with id: " + water.idheightmap;
+
+                        //parts
+                        water.parts = this.reader.getFloat(grandChildren[j], 'parts');
+                        if (water.parts == null || isNaN(water.parts) || water.parts < 0)
+                            return "Invalid parts value in water primitive with id: " + primitive.id;
+
+                        //heightscale
+                        water.heightscale = this.reader.getFloat(grandChildren[j], 'heightscale');
+                        if (water.heightscale == null || isNaN(water.heightscale) || water.heightscale < 0)
+                            return "Invalid heightscale value in water primitive with id: " + primitive.id;
+
+                        //texscale
+                        water.texscale = this.reader.getFloat(grandChildren[j], 'texscale');
+                        if (water.texscale == null || isNaN(water.texscale) || water.texscale < 0)
+                            return "Invalid texscale value in water primitive with id: " + primitive.id;
+
+                        //Add to primitive and break out of loop(only 1 "shape" per primitive)
+                        primitive.shape = new Water(this.scene, water.idtexture, water.idwavemap, water.parts, water.heightscale, water.texscale);
+                        break;
+                    }
                     //Unknown
                     else {
                         this.onXMLMinorError("unknown tag <" + grandChildren[j].nodeName + "> in primitive with id: " + primitive.id);

@@ -182,6 +182,10 @@
             <terrain idtexture="terrain" idheightmap="height" parts="100" heightscale="10"/>
         </primitive>
 
+        <primitive id="water">
+            <water idtexture="terrain" idwavemap="height" parts="100" heightscale="5" texscale="5" />
+        </primitive>
+
     </primitives>
 
     <components>
@@ -213,6 +217,7 @@
                 <componentref id="cylinder2"/>
                 <componentref id="vehicle"/>
                 <componentref id="terrain"/>
+                <componentref id="water"/>
             </children>
         </component>
 
@@ -280,6 +285,21 @@
             <texture id="none" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="terrain" />
+            </children>
+        </component>
+
+        <component id="water">
+            <transformation>
+                <translate x="0" y="-20" z="0" />
+                <rotate axis="x" angle="-90" />
+                <scale x="40" y="40" z="1" />
+            </transformation>
+            <materials>
+                <material id="defMat"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="water" />
             </children>
         </component>
 
