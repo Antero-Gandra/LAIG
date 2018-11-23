@@ -179,7 +179,7 @@
         </primitive>
 
         <primitive id="terrain">
-            <terrain idtexture="terrain" idheightmap="height" parts="100" heightscale="4"/>
+            <terrain idtexture="terrain" idheightmap="height" parts="100" heightscale="10"/>
         </primitive>
 
     </primitives>
@@ -270,8 +270,9 @@
 
         <component id="terrain">
             <transformation>
+                <translate x="0" y="-10" z="0" />
                 <rotate axis="x" angle="-90" />
-                <scale x="40" y="20" z="1" />
+                <scale x="40" y="40" z="1" />
             </transformation>
             <materials>
                 <material id="defMat"/>
