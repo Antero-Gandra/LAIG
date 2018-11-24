@@ -1,5 +1,2 @@
-- Linear animation rotate in direction of next point
 - Circular animation
 - Sequence animations
-- Test Terrain shader
-- Water shader

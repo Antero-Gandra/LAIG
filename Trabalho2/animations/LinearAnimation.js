@@ -10,6 +10,9 @@ class LinearAnimation extends Animation {
 
         this.pts = pts;
         this.time = time;
+
+        //Hardcoded front in direction of positive Z axis
+        this.forward = vec2.fromValues(0, 1);
     }
 
     update(time) {
@@ -28,6 +31,10 @@ class LinearAnimation extends Animation {
 
         //Previous control point
         let previousPoint = nextPoint - 1;
+
+        //Rotation
+        let vecLine = vec2.fromValues(this.pts[nextPoint].x - this.pts[previousPoint].x, this.pts[nextPoint].z - this.pts[previousPoint].z);
+        let rotation =  Math.atan2(this.forward[1], this.forward[0]) - Math.atan2(vecLine[1], vecLine[0]);
 
         //console.log("===================");
         //console.log("Scalled time: " + scaledT);
@@ -81,8 +88,9 @@ class LinearAnimation extends Animation {
         //Reset matrix
         mat4.identity(this.transformationMat);
 
-        //Apply to matrix;
+        //Apply to matrix;    
         mat4.translate(this.transformationMat, this.transformationMat, pos);
+        mat4.rotate(this.transformationMat, this.transformationMat, rotation, vec3.fromValues(0, 1, 0));
 
     }
 

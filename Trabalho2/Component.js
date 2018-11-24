@@ -203,18 +203,16 @@ class Component {
                     this.updateTexCoords(this.childrenPrimitives[p]);
                 }
             }
-        }
+        }        
 
-        //TODO rotate towards next point
+        //Apply transformations
+        this.scene.multMatrix(this.transformationMat);
+
         //TODO need to apply animations in sequence, looking at the time to know which animation is playing right now
-        //TODO need to apply on top of last position of previous animation
         if (this.animations.length > 0) {
             this.animations[0].update(elapsedTime);
             this.animations[0].apply();
         }
-
-        //Apply transformations
-        this.scene.multMatrix(this.transformationMat);
 
         //Draw primitives     
         for (let i = 0; i < this.childrenPrimitives.length; i++)

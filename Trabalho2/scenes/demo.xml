@@ -111,11 +111,17 @@
         <!-- O bloco animations pode ser vazio, isto é, pode -->
         <!-- não ser declarada qualquer animação, linear ou circular -->
         <!-- Span é o tempo, em segundos, que a animação deve demorar -->
-        <linear id="l1" span="0.7">
+        <linear id="l1" span="10">
             <!-- devem existir pelo menos dois pontos de controlo -->
             <controlpoint xx="0" yy="0" zz="0" />
-            <controlpoint xx="0" yy="-2.8" zz="0" />
-            <controlpoint xx="0" yy="0" zz="0" />
+            <controlpoint xx="5" yy="0" zz="0" />
+            <controlpoint xx="5" yy="0" zz="-5" />
+            <controlpoint xx="-5" yy="0" zz="-5" />
+            <controlpoint xx="-5" yy="0" zz="0" />
+            <controlpoint xx="2" yy="0" zz="4" />
+            <controlpoint xx="0" yy="3" zz="0" />
+            <controlpoint xx="5" yy="5" zz="0" />
+            <controlpoint xx="1" yy="0" zz="2" />
         </linear>
 
         <!-- center corresponde ao ponto que serve -->
@@ -571,9 +577,6 @@
                 <translate x="0" y="3" z="0" />
                 <scale x="0.3" y="0.3" z="0.3" />
             </transformation>
-            <animations>
-                <animationref id="l1" />
-            </animations>
             <materials>
                 <material id="ballMat" />
             </materials>
@@ -588,6 +591,9 @@
             <transformation>
                 <translate x="0" y="1.5" z="2" />
             </transformation>
+            <animations>
+                <animationref id="l1" />
+            </animations>
             <materials>
                 <material id="skinMat" />
             </materials>
