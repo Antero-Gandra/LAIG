@@ -34,16 +34,27 @@ class Terrain extends Plane {
                     this.heightTex = this.scene.graph.loadedTextures[i].tex;
                 }
             }
+            //Set texture
             this.appearance.setTexture(this.terrainTex);
 	        this.appearance.setTextureWrap ('REPEAT', 'REPEAT');
         } else {
+            //Appy material
             this.appearance.apply();
+
+            //Activate shader
             this.scene.setActiveShader(this.shader);
+
             this.scene.pushMatrix();
+            
+            //Bind textures
             this.terrainTex.bind(1);
             this.heightTex.bind(2);
+
             super.display();
+
             this.scene.popMatrix();
+
+            //Reset to default shader
             this.scene.setActiveShader(this.scene.defaultShader);
         }
 

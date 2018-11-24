@@ -50,6 +50,8 @@
         <texture id="concrete" file="images/concrete.jpg" />
         <texture id="terrain" file="images/terrain.jpg" />
         <texture id="height" file="images/height.jpg" />
+        <texture id="water" file="images/water.jpg" />
+        <texture id="waterheight" file="images/heightwater.jpg" />
     </textures>
 
     <materials>
@@ -179,11 +181,11 @@
         </primitive>
 
         <primitive id="terrain">
-            <terrain idtexture="terrain" idheightmap="height" parts="100" heightscale="10"/>
+            <terrain idtexture="terrain" idheightmap="height" parts="100" heightscale="20"/>
         </primitive>
 
         <primitive id="water">
-            <water idtexture="terrain" idwavemap="height" parts="100" heightscale="5" texscale="5" />
+            <water idtexture="water" idwavemap="waterheight" parts="100" heightscale="2" texscale="1" />
         </primitive>
 
     </primitives>
@@ -275,7 +277,7 @@
 
         <component id="terrain">
             <transformation>
-                <translate x="0" y="-10" z="0" />
+                <translate x="0" y="-20" z="0" />
                 <rotate axis="x" angle="-90" />
                 <scale x="40" y="40" z="1" />
             </transformation>
@@ -290,7 +292,7 @@
 
         <component id="water">
             <transformation>
-                <translate x="0" y="-20" z="0" />
+                <translate x="0" y="-9.5" z="0" />
                 <rotate axis="x" angle="-90" />
                 <scale x="40" y="40" z="1" />
             </transformation>

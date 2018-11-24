@@ -218,7 +218,7 @@ class Component {
 
         //Draw primitives     
         for (let i = 0; i < this.childrenPrimitives.length; i++)
-            this.childrenPrimitives[i].display();
+            this.childrenPrimitives[i].display(elapsedTime);
 
         //Tell children nodes to draw
         for (let i = 0; i < this.childrenComponents.length; i++) {
