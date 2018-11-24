@@ -21,10 +21,9 @@ class Water extends Plane {
         this.appearance.setShininess(120);
 
         //Setup tex coordinates
-        var properScaling = 1.0/texscale;
         for (let i = 0; i < this.obj.texCoords.length; i += 2) {
-            this.obj.texCoords[i] = this.obj.texCoords[i] / properScaling;
-            this.obj.texCoords[i + 1] = this.obj.texCoords[i + 1] / properScaling;
+            this.obj.texCoords[i] = this.obj.texCoords[i] / texscale;
+            this.obj.texCoords[i + 1] = this.obj.texCoords[i + 1] / texscale;
         }
         this.obj.updateTexCoordsGLBuffers();
 
