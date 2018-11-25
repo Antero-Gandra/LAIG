@@ -4,12 +4,12 @@ class LinearAnimation extends Animation {
     /**
      * @constructor
      */
-    constructor(scene, pts, time) {
+    constructor(scene, pts, span) {
         super(scene);
         this.scene = scene;
 
         this.pts = pts;
-        this.time = time;
+        this.span = span;
 
         //Hardcoded front in direction of positive Z axis
         this.forward = vec2.fromValues(0, 1);
@@ -18,10 +18,10 @@ class LinearAnimation extends Animation {
     update(time) {
 
         //Scale time
-        let scaledT = time % this.time;
+        let scaledT = time % this.span;
 
         //Time per transition
-        let transitionT = (this.time / (this.pts.length - 1));
+        let transitionT = (this.span / (this.pts.length - 1));
 
         //Next control point
         let nextPoint = Math.ceil(scaledT / transitionT);

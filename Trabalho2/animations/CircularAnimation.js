@@ -19,6 +19,9 @@ class CircularAnimation extends Animation {
         this.angleI = this.angleI * convertAngle;
         this.angleRot = this.angleRot * convertAngle;
 
+        //Hardcoded front in direction of positive Z axis
+        this.forward = vec2.fromValues(0, 1);
+
     }
 
     update(time) {
@@ -33,13 +36,25 @@ class CircularAnimation extends Animation {
 
         //Positions
         let x = Math.cos(angle) * this.radius + this.center.x;
-        let z = Math.sin(angle) * this.radius + this.center.y;
+        let y = Math.sin(angle) * this.radius + this.center.z;
+
+        //Vector to point
+        let vec = vec3.fromValues(x - this.center.x, y - this.center.z);
+        let tmp = vec.x;
+        vec.x = vec.y;
+        vec.y = -tmp;
+
+        //Rotation
+        let rotation =  Math.atan2(this.forward[1], this.forward[0]) - Math.atan2(vec[1], vec[0]);
+        rotation -= Math.PI/2;
 
         //Reset Matrix
         mat4.identity(this.transformationMat);
+
         //Apply to matrix
-        let t = vec3.fromValues(x, 0, z);
-        mat4.translate(this.transformationMat, this.transformationMat, t);
+        let v = vec3.fromValues(x, this.center.y, y);
+        mat4.translate(this.transformationMat, this.transformationMat, v);
+        mat4.rotate(this.transformationMat, this.transformationMat, rotation, vec3.fromValues(0, 1, 0));
 
     }
 
