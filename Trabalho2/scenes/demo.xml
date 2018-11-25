@@ -113,9 +113,9 @@
         <linear id="l2" span="5">
             <!-- devem existir pelo menos dois pontos de controlo -->
             <controlpoint xx="10" yy="0" zz="-40" />
-            <controlpoint xx="10" yy="3" zz="-30" />
+            <controlpoint xx="15" yy="3" zz="-30" />
             <controlpoint xx="10" yy="-3" zz="-20" />
-            <controlpoint xx="10" yy="3" zz="-10" />
+            <controlpoint xx="15" yy="3" zz="-10" />
             <controlpoint xx="10" yy="0" zz="0" />
         </linear>
 

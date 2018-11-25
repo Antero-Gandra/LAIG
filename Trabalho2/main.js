@@ -44,8 +44,8 @@ serialInclude(['../lib/CGF.js',
 
         myInterface.setActiveCamera(xmlScene.camera);
 
-        // get file name provided in URL, e.g. http://localhost/myproj/?file=myfile.xml 
-        // or use "demo.xml" as default (assumes files in subfolder "scenes", check MySceneGraph constructor) 
+        //Load specific scene
+        //http://192.168.56.1:8080/Trabalho2/?file=demo.xml 
 
         var filename = getUrlVars()['file'] || "demo.xml";
 
