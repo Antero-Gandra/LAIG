@@ -98,11 +98,8 @@
     </transformations>
 
     <animations>
-        <!-- O bloco animations pode ser vazio, isto é, pode -->
-        <!-- não ser declarada qualquer animação, linear ou circular -->
-        <!-- Span é o tempo, em segundos, que a animação deve demorar -->
+
         <linear id="l1" span="5">
-            <!-- devem existir pelo menos dois pontos de controlo -->
             <controlpoint xx="0" yy="0" zz="0" />
             <controlpoint xx="0" yy="3" zz="-10" />
             <controlpoint xx="0" yy="-3" zz="-20" />
@@ -111,24 +108,17 @@
         </linear>
 
         <linear id="l2" span="5">
-            <!-- devem existir pelo menos dois pontos de controlo -->
             <controlpoint xx="10" yy="0" zz="-40" />
-            <controlpoint xx="15" yy="3" zz="-30" />
-            <controlpoint xx="10" yy="-3" zz="-20" />
-            <controlpoint xx="15" yy="3" zz="-10" />
+            <controlpoint xx="15" yy="0" zz="-30" />
+            <controlpoint xx="10" yy="0" zz="-20" />
+            <controlpoint xx="15" yy="0" zz="-10" />
             <controlpoint xx="10" yy="0" zz="0" />
         </linear>
 
-        <!-- center corresponde ao ponto que serve -->
-        <!-- de centro da animação circular -->
-        <!-- radius corresponde ao raio da rotacao -->
-        <!-- para a animação circular -->
-        <!-- startang e rotang correspondem, nomeadamente, -->
-        <!-- ao angulo inicial (em graus) e -->
-        <!-- total de rotação (em graus) -->
         <circular id="c1" span="3" center="5 0 -40" radius="5" startang="180" rotang="180" />
 
         <circular id="c2" span="3" center="5 0 0" radius="5" startang="0" rotang="180" />
+
     </animations>
 
     <primitives>
@@ -156,14 +146,6 @@
             <plane npartsU="5" npartsV="5" />
         </primitive>
 
-        <!-- Nova primitiva: patch, gerada por NURBS -->
-        <!-- — parâmetros: -->
-        <!-- — npartsU: divisão em partes no domínio U a -->
-        <!-- ser usada para o cálculo da superfície -->
-        <!-- — npartsV: divisão em partes no domínio V -->
-        <!-- a ser usada para o cálculo da superficie -->
-        <!-- - o número de pontos de controlo dentro da -->
-        <!-- primitiva patch é npointsU * npointsV -->
         <primitive id="patch">
             <patch npointsU="3" npointsV="2" npartsU="20" npartsV="20">
                 <controlpoint xx="-1" yy="-1" zz="0"/>
