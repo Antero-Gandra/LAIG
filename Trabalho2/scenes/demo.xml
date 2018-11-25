@@ -131,7 +131,7 @@
         <!-- startang e rotang correspondem, nomeadamente, -->
         <!-- ao angulo inicial (em graus) e -->
         <!-- total de rotação (em graus) -->
-        <circular id="c1" span="20" center="0 0 0" radius="1" startang="0" rotang="90" />
+        <circular id="c1" span="1" center="0 0 0" radius="2" startang="0" rotang="90" />
     </animations>
 
     <primitives>

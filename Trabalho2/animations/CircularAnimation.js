@@ -1,3 +1,6 @@
+
+const convertAngle = Math.PI / 180
+
 class CircularAnimation extends Animation {
 
     /**
@@ -8,38 +11,35 @@ class CircularAnimation extends Animation {
         this.scene = scene;
         this.center = center;
         this.radius = radius;
-        this.angleI = angleI; // Initial Angle 
-        this.angleRot = angleRot; // Rotation Angle
-        this.span = span; // Rotation time
-     
+        this.angleI = angleI;
+        this.angleRot = angleRot;
+        this.span = span;
+
+        //Convert to Radians
+        this.angleI = this.angleI * convertAngle;
+        this.angleRot = this.angleRot * convertAngle;
+
     }
 
     update(time) {
-          //Scale time
+        //Scale time
         let scale = time % this.span;
 
         //Delta Angle
         let deltaAngle = scale * this.angleRot / this.span;
 
-        //Angle to Rad 
-        let convertAngle = Math.PI / 180;
-
-        //Converting 
-        this.angleI = this.angleI * convertAngle;
-        this.angleRot = this.angleRot * convertAngle;
-
         //Final angle
         let angle = this.angleI + deltaAngle;
 
         //Positions
-        let x = Math.cos(angle) * this.radius + this.center;
-        let y = Math.sin(angle) * this.radius + this.center;
+        let x = Math.cos(angle) * this.radius + this.center.x;
+        let z = Math.sin(angle) * this.radius + this.center.y;
 
-        //Transfortmations
         //Reset Matrix
         mat4.identity(this.transformationMat);
         //Apply to matrix
-        mat4.translate(this.transformationMat, this.transformationMat,vec3.fromValues(x,y,0));
+        let t = vec3.fromValues(x, 0, z);
+        mat4.translate(this.transformationMat, this.transformationMat, t);
 
     }
 
