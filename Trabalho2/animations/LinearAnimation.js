@@ -31,7 +31,7 @@ class LinearAnimation extends Animation {
 
         //Rotation
         let vecLine = vec2.fromValues(this.pts[nextPoint].x - this.pts[previousPoint].x, this.pts[nextPoint].z - this.pts[previousPoint].z);
-        let rotation =  Math.atan2(this.forward[1], this.forward[0]) - Math.atan2(vecLine[1], vecLine[0]);
+        let rotation = Math.atan2(this.forward[1], this.forward[0]) - Math.atan2(vecLine[1], vecLine[0]);
 
         //console.log("===================");
         //console.log("Scalled time: " + scaledTime);

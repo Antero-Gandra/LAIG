@@ -205,7 +205,7 @@ class Component {
                     this.updateTexCoords(this.childrenPrimitives[p]);
                 }
             }
-        }        
+        }
 
         //Apply transformations
         this.scene.multMatrix(this.transformationMat);
@@ -216,7 +216,7 @@ class Component {
         let countTPrev = 0;
         for (let i = 0; i < this.animations.length; i++) {
             countT += this.animations[i].span;
-            if(scaledT <= countT && scaledT > countTPrev){
+            if (scaledT <= countT && scaledT > countTPrev) {
                 this.animations[i].update(scaledT - countTPrev);
                 this.animations[i].apply();
                 break;

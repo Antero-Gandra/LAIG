@@ -45,8 +45,8 @@ class CircularAnimation extends Animation {
         vec.y = -tmp;
 
         //Rotation
-        let rotation =  Math.atan2(this.forward[1], this.forward[0]) - Math.atan2(vec[1], vec[0]);
-        rotation -= Math.PI/2;
+        let rotation = Math.atan2(this.forward[1], this.forward[0]) - Math.atan2(vec[1], vec[0]);
+        rotation -= Math.PI / 2;
 
         //Reset Matrix
         mat4.identity(this.transformationMat);
