@@ -16,8 +16,8 @@ class CircularAnimation extends Animation {
         this.span = span;
 
         //Convert to Radians
-        this.angleI = this.angleI * convertAngle;
-        this.angleRot = this.angleRot * convertAngle;
+        this.angleI *= convertAngle;
+        this.angleRot *= convertAngle;
 
         //Hardcoded front in direction of positive Z axis
         this.forward = vec2.fromValues(0, 1);

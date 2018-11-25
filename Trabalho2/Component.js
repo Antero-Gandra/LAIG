@@ -210,7 +210,7 @@ class Component {
         //Apply transformations
         this.scene.multMatrix(this.transformationMat);
 
-        //TODO need to apply animations in sequence, looking at the time to know which animation is playing right now
+        //Animations in sequence
         let scaledT = elapsedTime % this.totalTime;
         let countT = 0;
         let countTPrev = 0;
