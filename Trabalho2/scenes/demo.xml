@@ -4,19 +4,9 @@
 
     <views default="full_P">
         <perspective id="full_P" near="1" far="1000" angle="30">
-            <from x="20" y="20" z="20" />
-            <to x="0" y="0" z="0" />
+            <from x="80" y="80" z="80" />
+            <to x="0" y="-20" z="0" />
         </perspective>
-
-        <perspective id="players_closeup_P" near="1" far="100" angle="30">
-            <from x="2" y="1" z="5" />
-            <to x="0" y="2" z="0" />
-        </perspective>
-
-        <ortho id="front_O" near="1" far="100" left="-10" right="10" top="10" bottom="-10">
-            <from x="0" y="0" z="20" />
-            <to x="0" y="0" z="0" />
-        </ortho>
     </views>
 
     <ambient>
@@ -114,11 +104,19 @@
         <linear id="l1" span="5">
             <!-- devem existir pelo menos dois pontos de controlo -->
             <controlpoint xx="0" yy="0" zz="0" />
-            <controlpoint xx="5" yy="0" zz="0" />
-            <controlpoint xx="5" yy="0" zz="-5" />
-            <controlpoint xx="-5" yy="0" zz="-5" />
-            <controlpoint xx="-5" yy="0" zz="0" />
-            <controlpoint xx="0" yy="0" zz="0" />
+            <controlpoint xx="0" yy="3" zz="-10" />
+            <controlpoint xx="0" yy="-3" zz="-20" />
+            <controlpoint xx="0" yy="3" zz="-30" />
+            <controlpoint xx="0" yy="0" zz="-40" />
+        </linear>
+
+        <linear id="l2" span="5">
+            <!-- devem existir pelo menos dois pontos de controlo -->
+            <controlpoint xx="10" yy="0" zz="-40" />
+            <controlpoint xx="10" yy="3" zz="-30" />
+            <controlpoint xx="10" yy="-3" zz="-20" />
+            <controlpoint xx="10" yy="3" zz="-10" />
+            <controlpoint xx="10" yy="0" zz="0" />
         </linear>
 
         <!-- center corresponde ao ponto que serve -->
@@ -128,8 +126,9 @@
         <!-- startang e rotang correspondem, nomeadamente, -->
         <!-- ao angulo inicial (em graus) e -->
         <!-- total de rotação (em graus) -->
-        <circular id="c1" span="2" center="0 0 0" radius="5" startang="0" rotang="90" />
-        <circular id="c2" span="2" center="0 0 0" radius="8" startang="90" rotang="180" />
+        <circular id="c1" span="3" center="5 0 -40" radius="5" startang="180" rotang="180" />
+
+        <circular id="c2" span="3" center="5 0 0" radius="5" startang="0" rotang="180" />
     </animations>
 
     <primitives>
@@ -207,7 +206,8 @@
             </materials>
 
             <texture id="none" length_s="1" length_t="1" />
-            <children>                
+            <children>       
+                <!--         
                 <componentref id="board1"/>
                 <componentref id="board2"/>
                 <componentref id="court"/>
@@ -221,6 +221,8 @@
                 <componentref id="plane"/>
                 <componentref id="patch"/>
                 <componentref id="cylinder2"/>
+                -->
+
                 <componentref id="vehicle"/>
                 <componentref id="terrain"/>
                 <componentref id="water"/>
@@ -268,10 +270,14 @@
 
         <component id="vehicle">
             <transformation>                               
-                <translate x="-5" y="0" z="0" />   
-                <rotate axis="y" angle="180" />
-                <rotate axis="x" angle="-90" />              
+                <translate x="-5" y="0" z="20" />          
             </transformation>
+            <animations>
+                <animationref id="l1" />
+                <animationref id="c1" />
+                <animationref id="l2" />
+                <animationref id="c2" />
+            </animations>
             <materials>
                 <material id="defMat"/>
             </materials>
@@ -591,11 +597,6 @@
             <transformation>
                 <translate x="0" y="1.5" z="2" />
             </transformation>
-            <animations>
-                <animationref id="l1" />
-                <animationref id="c1" />
-                <animationref id="c2" />
-            </animations>
             <materials>
                 <material id="skinMat" />
             </materials>
