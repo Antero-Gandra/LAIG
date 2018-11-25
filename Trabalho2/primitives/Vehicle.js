@@ -52,7 +52,10 @@ class Vehicle extends CGFobject {
     display() {
 
         //Use hardcoded texture
-        this.appearance.setTexture(this.scene.graph.loadedTextures[1].tex);
+        if(this.appearance.texture == null){
+            if(this.scene.graph.loadedTextures.length >= 2)
+                this.appearance.setTexture(this.scene.graph.loadedTextures[1].tex);
+        }        
         this.appearance.apply();
 
         this.scene.pushMatrix();
