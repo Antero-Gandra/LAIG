@@ -119,6 +119,7 @@ class Component {
 
         //Setup animations
         this.animations = [];
+        this.totalTime = 0;
         for (let i = 0; i < this.animationsRaw.length; i++) {
             //Search for id
             for (let j = 0; j < this.scene.graph.animations.length; j++) {
@@ -139,6 +140,7 @@ class Component {
                             this.scene.graph.animations[j].span);
                         this.animations.push(circularAnimation);
                     }
+                    this.totalTime += this.scene.graph.animations[j].span;
                 }
             }
         }
@@ -209,9 +211,17 @@ class Component {
         this.scene.multMatrix(this.transformationMat);
 
         //TODO need to apply animations in sequence, looking at the time to know which animation is playing right now
-        if (this.animations.length > 0) {
-            this.animations[0].update(elapsedTime);
-            this.animations[0].apply();
+        let scaledT = elapsedTime % this.totalTime;
+        let countT = 0;
+        let countTPrev = 0;
+        for (let i = 0; i < this.animations.length; i++) {
+            countT += this.animations[i].span;
+            if(scaledT <= countT && scaledT > countTPrev){
+                this.animations[i].update(scaledT - countTPrev);
+                this.animations[i].apply();
+                break;
+            }
+            countTPrev += this.animations[i].span;
         }
 
         //Draw primitives     

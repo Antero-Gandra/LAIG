@@ -111,17 +111,14 @@
         <!-- O bloco animations pode ser vazio, isto é, pode -->
         <!-- não ser declarada qualquer animação, linear ou circular -->
         <!-- Span é o tempo, em segundos, que a animação deve demorar -->
-        <linear id="l1" span="10">
+        <linear id="l1" span="5">
             <!-- devem existir pelo menos dois pontos de controlo -->
             <controlpoint xx="0" yy="0" zz="0" />
             <controlpoint xx="5" yy="0" zz="0" />
             <controlpoint xx="5" yy="0" zz="-5" />
             <controlpoint xx="-5" yy="0" zz="-5" />
             <controlpoint xx="-5" yy="0" zz="0" />
-            <controlpoint xx="2" yy="0" zz="4" />
-            <controlpoint xx="0" yy="3" zz="0" />
-            <controlpoint xx="5" yy="5" zz="0" />
-            <controlpoint xx="1" yy="0" zz="2" />
+            <controlpoint xx="0" yy="0" zz="0" />
         </linear>
 
         <!-- center corresponde ao ponto que serve -->
@@ -132,6 +129,7 @@
         <!-- ao angulo inicial (em graus) e -->
         <!-- total de rotação (em graus) -->
         <circular id="c1" span="2" center="0 0 0" radius="5" startang="0" rotang="90" />
+        <circular id="c2" span="2" center="0 0 0" radius="8" startang="90" rotang="180" />
     </animations>
 
     <primitives>
@@ -269,8 +267,10 @@
         </component>
 
         <component id="vehicle">
-            <transformation>
-                <translate x="-5" y="3" z="0" />
+            <transformation>                               
+                <translate x="-5" y="0" z="0" />   
+                <rotate axis="y" angle="180" />
+                <rotate axis="x" angle="-90" />              
             </transformation>
             <materials>
                 <material id="defMat"/>
@@ -592,7 +592,9 @@
                 <translate x="0" y="1.5" z="2" />
             </transformation>
             <animations>
+                <animationref id="l1" />
                 <animationref id="c1" />
+                <animationref id="c2" />
             </animations>
             <materials>
                 <material id="skinMat" />

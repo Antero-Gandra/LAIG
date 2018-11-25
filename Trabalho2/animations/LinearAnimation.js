@@ -15,16 +15,13 @@ class LinearAnimation extends Animation {
         this.forward = vec2.fromValues(0, 1);
     }
 
-    update(time) {
-
-        //Scale time
-        let scaledT = time % this.span;
+    update(scaledTime) {
 
         //Time per transition
         let transitionT = (this.span / (this.pts.length - 1));
 
         //Next control point
-        let nextPoint = Math.ceil(scaledT / transitionT);
+        let nextPoint = Math.ceil(scaledTime / transitionT);
         if (nextPoint == 0 || nextPoint > this.pts.length - 1) {
             nextPoint = 1;
         }
@@ -37,7 +34,7 @@ class LinearAnimation extends Animation {
         let rotation =  Math.atan2(this.forward[1], this.forward[0]) - Math.atan2(vecLine[1], vecLine[0]);
 
         //console.log("===================");
-        //console.log("Scalled time: " + scaledT);
+        //console.log("Scalled time: " + scaledTime);
         //console.log("Previous point: " + previousPoint);
         //console.log("Next point: " + nextPoint);
 
@@ -68,9 +65,9 @@ class LinearAnimation extends Animation {
         let timePrevious = transitionT * previousPoint;
 
         //Current time percentage of time difference between control points
-        scaledT -= timePrevious;
+        scaledTime -= timePrevious;
         timeNext -= timePrevious;
-        let percentageT = scaledT / timeNext;
+        let percentageT = scaledTime / timeNext;
 
         //Desired magnitude
         let desiredMag = mag * percentageT;

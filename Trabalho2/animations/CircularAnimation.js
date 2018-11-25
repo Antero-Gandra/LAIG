@@ -24,12 +24,10 @@ class CircularAnimation extends Animation {
 
     }
 
-    update(time) {
-        //Scale time
-        let scale = time % this.span;
+    update(scaledTime) {
 
         //Delta Angle
-        let deltaAngle = scale * this.angleRot / this.span;
+        let deltaAngle = scaledTime * this.angleRot / this.span;
 
         //Final angle
         let angle = this.angleI + deltaAngle;
@@ -40,6 +38,8 @@ class CircularAnimation extends Animation {
 
         //Vector to point
         let vec = vec3.fromValues(x - this.center.x, y - this.center.z);
+
+        //Perpendicular
         let tmp = vec.x;
         vec.x = vec.y;
         vec.y = -tmp;
