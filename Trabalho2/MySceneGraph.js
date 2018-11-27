@@ -1417,12 +1417,12 @@ class MySceneGraph {
 
                 //Start Angle
                 circular.startang = this.reader.getFloat(children[i], 'startang');
-                if (circular.startang < 0 || circular.startang == null || isNaN(circular.startang))
+                if (circular.startang == null || isNaN(circular.startang))
                     return "invalid startang for circular animation with id: " + circular.id;
 
                 //Rotation Angle
                 circular.rotang = this.reader.getFloat(children[i], 'rotang');
-                if (circular.rotang < 0 || circular.rotang == null || isNaN(circular.rotang))
+                if (circular.rotang == null || isNaN(circular.rotang))
                     return "invalid rotang for circular animation with id: " + circular.id;
 
                 //Add to animations
