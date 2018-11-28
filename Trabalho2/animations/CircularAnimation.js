@@ -48,6 +48,11 @@ class CircularAnimation extends Animation {
         let rotation = Math.atan2(this.forward[1], this.forward[0]) - Math.atan2(vec[1], vec[0]);
         rotation -= Math.PI / 2;
 
+        //Face forward in inverse rotations
+        if(this.angleRot < 0){
+            rotation += Math.PI;
+        }
+
         //Reset Matrix
         mat4.identity(this.transformationMat);
 
