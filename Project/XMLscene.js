@@ -214,6 +214,7 @@ class XMLscene extends CGFscene {
 
         // Initialize Model-View matrix as identity (no transformation
         this.updateProjectionMatrix();
+
         this.loadIdentity();
 
         // Apply transformations corresponding to the camera position relative to the origin
@@ -248,6 +249,11 @@ class XMLscene extends CGFscene {
                     i++;
                 }
             }
+
+            //TODO raycast
+            //http://schabby.de/picking-opengl-ray-tracing/
+            console.log(this.camera.position);
+            console.log(this.camera.direction);
 
             // Displays the scene (MySceneGraph function).
             this.graph.displayScene();
