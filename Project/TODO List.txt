@@ -1,0 +1,12 @@
+- Game scenes
+- Proper Illumination
+- Board and pieces
+- Prolog connection
+- Piece placement (raycast or z-buffer)
+- Piece movement animation (arc over the board)
+- Difficulty levels (if we have)
+- Game modes (PvP, PvC, CvC)
+- Undo/Replay movie (save game states with a stack)
+- Multiple cameras with transition
+- Score board/Game time
+- Shaders to highlight
