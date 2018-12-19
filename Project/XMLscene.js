@@ -225,9 +225,11 @@ class XMLscene extends CGFscene {
         //Was the graph loaded already?
         if (this.sceneInited) {
 
-            //Scene start time
+            //Things done once
             if(this.first == true){
                 this.startTime = new Date().getTime()/1000;
+                //TODO add pieces here
+                this.raycast = new Raycast(null,null,null);
                 this.first = false;
             }
 
@@ -252,8 +254,11 @@ class XMLscene extends CGFscene {
 
             //TODO raycast
             //http://schabby.de/picking-opengl-ray-tracing/
-            console.log(this.camera.position);
-            console.log(this.camera.direction);
+            //console.log(this.camera.position);
+            //console.log(this.camera.direction);
+            //console.log(this.interface.mouse[0]);
+            //console.log(this.interface.mouse[1]);
+            this.raycast.process(this, this.camera);
 
             // Displays the scene (MySceneGraph function).
             this.graph.displayScene();
