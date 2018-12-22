@@ -5,7 +5,7 @@
     <views default="full_P">
         <perspective id="full_P" near="1" far="1000" angle="30">
             <from x="80" y="80" z="80" />
-            <to x="0" y="-20" z="0" />
+            <to x="0" y="20" z="0" />
         </perspective>
     </views>
 
@@ -203,11 +203,12 @@
                 <componentref id="plane"/>
                 <componentref id="patch"/>
                 <componentref id="cylinder2"/>
-                -->
+                
 
                 <componentref id="vehicle"/>
                 <componentref id="terrain"/>
                 <componentref id="water"/>
+                -->
             </children>
         </component>
 

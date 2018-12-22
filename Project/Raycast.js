@@ -61,9 +61,11 @@ class Raycast {
         this.eyeUp = camera._up;
 
         //Mouse position
+        this.viewport = scene.gl.canvas;
         this.mousePos = {
             x: scene.interface.mouse[0],
-            y: scene.interface.mouse[1]
+            //Y increases up
+            y: this.viewport.height - scene.interface.mouse[1]
         }
 
         //View
@@ -81,7 +83,6 @@ class Raycast {
 
         //h & v length
         this.vLength = Math.tan(camera.fov / 2) * camera.near;
-        this.viewport = scene.gl.canvas;
         this.hLength = this.vLength * (this.viewport.width / this.viewport.height);
         vec3.scale(this.h, this.h, this.hLength);
         vec3.scale(this.v, this.v, this.vLength);
@@ -105,9 +106,33 @@ class Raycast {
 
         //TODO intersections
 
-        console.log(this.pos);
-        console.log(this.dir);
+        //console.log(this.pos);
+        //console.log(this.dir);
 
+        if(this.hitSphere(this.pos,this.dir, vec3.fromValues(0,0,0), 5))
+            console.log("hit");
+
+    }
+
+    /*
+        Checks intersection between a sphere and a ray
+        http://viclw17.github.io/2018/07/16/raytracing-ray-sphere-intersection/
+    */
+    hitSphere(origin, direction, center, radius) {
+
+        //Vector from ray origin to center of sphere
+        var oc = vec3.create();
+        vec3.subtract(oc, origin, center);        
+
+        //Discriminant
+        var a = vec3.dot(direction, direction);
+        var b = 2.0 * vec3.dot(oc, direction);
+        var c = vec3.dot(oc, oc) - radius * radius;
+        var discriminant = b * b - 4 * a * c;
+        console.log(discriminant);
+
+        //Conclusion
+        return (discriminant > 0);
     }
 
 }
