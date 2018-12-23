@@ -57,14 +57,14 @@ class Raycast {
 
         //Camera info
         this.eyePos = vec3.fromValues(camera.position[0], camera.position[1], camera.position[2]);
-        this.eyeDir = vec3.fromValues(camera.direction[0], camera.direction[1], camera.direction[2]);
+        this.eyeDir = vec3.fromValues(camera.target[0], camera.target[1], camera.target[2]);
         this.eyeUp = camera._up;
 
         //Mouse position
         this.viewport = scene.gl.canvas;
         this.mousePos = {
             x: scene.interface.mouse[0],
-            //Y increases up
+            //Flip Y to increase up
             y: this.viewport.height - scene.interface.mouse[1]
         }
 
@@ -109,7 +109,7 @@ class Raycast {
         //console.log(this.pos);
         //console.log(this.dir);
 
-        if(this.hitSphere(this.pos,this.dir, vec3.fromValues(0,0,0), 5))
+        if (this.hitSphere(this.pos, this.dir, vec3.fromValues(0, 0, 0), 5))
             console.log("hit");
 
     }
@@ -122,14 +122,13 @@ class Raycast {
 
         //Vector from ray origin to center of sphere
         var oc = vec3.create();
-        vec3.subtract(oc, origin, center);        
+        vec3.subtract(oc, origin, center);
 
         //Discriminant
         var a = vec3.dot(direction, direction);
         var b = 2.0 * vec3.dot(oc, direction);
         var c = vec3.dot(oc, oc) - radius * radius;
         var discriminant = b * b - 4 * a * c;
-        console.log(discriminant);
 
         //Conclusion
         return (discriminant > 0);
