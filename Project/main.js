@@ -48,7 +48,7 @@ serialInclude(['../lib/CGF.js',
         //Load specific scene
         //http://192.168.56.1:8080/Trabalho2/?file=demo.xml 
 
-        var filename = getUrlVars()['file'] || "demo.xml";
+        var filename = getUrlVars()['file'] || "scene.xml";
 
         // create and load graph, and associate it to scene. 
         // Check console for loading errors
