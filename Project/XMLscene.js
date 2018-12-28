@@ -253,11 +253,6 @@ class XMLscene extends CGFscene {
             }
 
             //TODO raycast
-            //http://schabby.de/picking-opengl-ray-tracing/
-            //console.log(this.camera.position);
-            //console.log(this.camera.direction);
-            //console.log(this.interface.mouse[0]);
-            //console.log(this.interface.mouse[1]);
             this.raycast.process(this, this.camera);
 
             // Displays the scene (MySceneGraph function).
