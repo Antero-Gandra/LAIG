@@ -4,8 +4,8 @@
 
     <views default="full_P">
         <perspective id="full_P" near="1" far="1000" angle="30">
-            <from x="80" y="80" z="80" />
-            <to x="0" y="20" z="0" />
+            <from x="10" y="10" z="10" />
+            <to x="0" y="0" z="0" />
         </perspective>
     </views>
 
@@ -32,12 +32,7 @@
     </lights>
 
     <textures>
-        <texture id="board" file="images/board.jpg" />
-        <texture id="metal" file="images/metal.jpg" />
-        <texture id="court" file="images/court.jpg" />
-        <texture id="wood" file="images/wood.jpg" />
-        <texture id="crowd" file="images/crowd.jpg" />
-        <texture id="concrete" file="images/concrete.jpg" />
+        <texture id="tile" file="images/tile.png" />
         <texture id="terrain" file="images/terrain.jpg" />
         <texture id="height" file="images/height.jpg" />
         <texture id="water" file="images/water.jpg" />
@@ -50,42 +45,6 @@
             <ambient r="1" g="1" b="1" a="0" />
             <diffuse r="1" g="1" b="1" a="0" />
             <specular r="1" g="1" b="1" a="0" />
-        </material>
-        <material id="baseMat" shininess = "1">
-            <emission r="0" g="0" b="0" a="0" />
-            <ambient r="0.6" g="0.2" b="0.1" a="0" />
-            <diffuse r="0.6" g="0.2" b="0.1" a="0" />
-            <specular r="0.6" g="0.2" b="0.1" a="0" />
-        </material>
-        <material id="ringMat" shininess = "1">
-            <emission r="0" g="0" b="0" a="0" />
-            <ambient r="1" g="0.2" b="0.2" a="0" />
-            <diffuse r="1" g="0.2" b="0.2" a="0" />
-            <specular r="1" g="0.2" b="0.2" a="0" />
-        </material>
-        <material id="ballMat" shininess = "1">
-            <emission r="0" g="0" b="0" a="0" />
-            <ambient r="1" g="0.3" b="0" a="0" />
-            <diffuse r="1" g="0.3" b="0" a="0" />
-            <specular r="1" g="0.3" b="0" a="0" />
-        </material>
-        <material id="skinMat" shininess = "1">
-            <emission r="0" g="0" b="0" a="0" />
-            <ambient r="0.9" g="0.8" b="0.5" a="0" />
-            <diffuse r="0.9" g="0.8" b="0.5" a="0" />
-            <specular r="0.9" g="0.8" b="0.5" a="0" />
-        </material>
-        <material id="shirtMat" shininess = "1">
-            <emission r="0" g="0" b="0" a="0" />
-            <ambient r="0.1" g="0.1" b="0.1" a="0" />
-            <diffuse r="0.1" g="0.1" b="0.1" a="0" />
-            <specular r="0.1" g="0.1" b="0.1" a="0" />
-        </material>
-        <material id="backBackboard" shininess = "1">
-            <emission r="0" g="0" b="0" a="0" />
-            <ambient r="0.3" g="0.3" b="0.3" a="0" />
-            <diffuse r="0.3" g="0.3" b="0.3" a="0" />
-            <specular r="0.3" g="0.3" b="0.3" a="0" />
         </material>
     </materials>
 
