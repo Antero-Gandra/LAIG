@@ -173,6 +173,10 @@
             <water idtexture="water" idwavemap="waterheight" parts="100" heightscale="1" texscale="0.5" />
         </primitive>
 
+        <primitive id="board">
+            <board />
+        </primitive>
+
     </primitives>
 
     <components>
@@ -188,11 +192,28 @@
             </materials>
 
             <texture id="none" length_s="1" length_t="1" />
-            <children>
-                <!--         
-                <componentref id="board1"/>
-                -->
+
+            <children>    
+                <componentref id="board"/>
             </children>
+            
+        </component>
+
+        <component id="board">
+
+            <transformation>
+            </transformation>
+
+            <materials>
+                <material id="defMat"/>
+            </materials>
+
+            <texture id="none" length_s="1" length_t="1" />
+
+            <children>     
+                <primitiveref id="board"/>
+            </children>
+
         </component>
 
     </components>

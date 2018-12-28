@@ -1887,6 +1887,12 @@ class MySceneGraph {
                         primitive.shape = new Water(this.scene, water.idtexture, water.idwavemap, water.parts, water.heightscale, water.texscale);
                         break;
                     }
+                    //Board
+                    else if (grandChildren[j].nodeName == "board") {
+                        //Add to primitive and break out of loop(only 1 "shape" per primitive)
+                        primitive.shape = new Board(this.scene);
+                        break;
+                    }
                     //Unknown
                     else {
                         this.onXMLMinorError("unknown tag <" + grandChildren[j].nodeName + "> in primitive with id: " + primitive.id);
