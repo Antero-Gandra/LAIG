@@ -5,7 +5,11 @@ class Board extends CGFobject {
         super(scene);
         this.scene = scene;
 
+        //TODO Hardcoded size
         this.size = 8;
+
+        //Setup raycast
+        this.raycast = new Raycast(null,null,null);
 
         //Setup material
         this.appearance = new CGFappearance(this.scene);
@@ -19,12 +23,15 @@ class Board extends CGFobject {
         for (var i = 0; i < this.size; i++)
             this.matrix[i] = new Array(this.size);
 
-        //Places
+        //Tile
         this.tile = new Rectangle(scene, -1, -1, 1, 1);
 
     };
 
     display() {
+
+        //TODO raycast processing will be called on mouse press/held/released
+        this.raycast.process(this.scene, this.scene.camera);
 
         //Use hardcoded tile texture
         if (this.appearance.texture == null) {
