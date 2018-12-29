@@ -110,7 +110,10 @@ class Raycast {
         //console.log(this.dir);
 
         if (this.hitSphere(this.pos, this.dir, vec3.fromValues(0, 0, 0), 5))
-            console.log("hit");
+            console.log("hit sphere");
+
+        if (this.hitPlane(this.pos, this.dir, vec3.fromValues(0, 0, 0)))
+            console.log(this.hitPlane(this.pos, this.dir, vec3.fromValues(0, 0, 0)));
 
     }
 
@@ -132,6 +135,24 @@ class Raycast {
 
         //Conclusion
         return (discriminant > 0);
+    }
+
+    /*
+        Calculates intersection point between a plane and a ray
+    */
+    hitPlane(origin, direction, point, normal = vec3.fromValues(0, 1, 0)) {
+        var diff = vec3.create();
+        vec3.subtract(diff,origin,point);
+
+        var prod1 = vec3.dot(diff,normal);
+        var prod2 = vec3.dot(direction, normal);
+        var prod3 = prod1 / prod2;
+
+        vec3.scale(direction,direction,prod3);
+
+        var ret = vec3.create();
+
+        return vec3.subtract(ret, origin, direction);
     }
 
 }
