@@ -4,7 +4,7 @@
 
     <views default="full_P">
         <perspective id="full_P" near="1" far="1000" angle="30">
-            <from x="30" y="30" z="0" />
+            <from x="0" y="45" z="30" />
             <to x="0" y="0" z="0" />
         </perspective>
     </views>

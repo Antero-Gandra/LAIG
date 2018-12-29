@@ -5,7 +5,7 @@ class Board extends CGFobject {
         super(scene);
         this.scene = scene;
 
-        //TODO Hardcoded size
+        //Board size
         this.size = 8;
 
         //Setup raycast
@@ -19,15 +19,54 @@ class Board extends CGFobject {
         this.appearance.setShininess(120);
 
         //Data
+        //TODO piece must be set when a piece is placed in that location
         this.matrix = [];
-        for (var i = 0; i < this.size; i++)
-            this.matrix[i] = new Array(this.size);
+        for (var i = 0; i < this.size; i++){
+            this.matrix[i] = [];
+            for (var j = 0; j < this.size; j++)
+                this.matrix[i][j] = {
+                    player: 0,
+                    piece: null
+                }
+        }
 
         //Tile
         this.tile = new Plane(scene, 20, 20);
 
         //Piece
-        this.piece = new Piece(scene);
+        this.pieces = [];
+        for (var i = 0; i < this.size*this.size; i++)
+            this.pieces[i] = new Piece(scene);
+
+        //Positioning player 1
+        for (var i = 0; i < this.size; i++){
+            for (var j = 0; j < this.size/2; j++){
+                //Offset to place center
+                this.pieces[i + this.size * j].x -= 1;
+                this.pieces[i + this.size * j].z -= 1;
+                //Position line
+                this.pieces[i + this.size * j].x -= 2*(5+j);
+                this.pieces[i + this.size * j].z -= 2*3;
+                //Line offset
+                this.pieces[i + this.size * j].z += 2*i;
+            }
+        }
+
+        //Positioning player 2
+        for (var i = 0; i < this.size; i++){
+            for (var j = 0; j < this.size/2; j++){
+                //Offset to place center
+                this.pieces[this.size * this.size/2 + i + this.size * j].x += 1;
+                this.pieces[this.size * this.size/2 + i + this.size * j].z += 1;
+                //Position line
+                this.pieces[this.size * this.size/2 + i + this.size * j].x += 2*(5+j);
+                this.pieces[this.size * this.size/2 + i + this.size * j].z -= 2*4;
+                //Line offset
+                this.pieces[this.size * this.size/2 + i + this.size * j].z += 2*i;
+                //Flip for player 2
+                this.pieces[this.size * this.size/2 + i + this.size * j].player = 1;
+            }
+        }
 
     };
 
@@ -57,7 +96,9 @@ class Board extends CGFobject {
         this.scene.popMatrix();
 
         //TODO Display pieces
-        this.piece.display();
+        for (var i = 0; i < this.size*this.size; i++)
+            this.pieces[i].display();
+        
     }
 
 }

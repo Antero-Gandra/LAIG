@@ -21,6 +21,13 @@ class Piece extends CGFobject {
         this.appearance.setSpecular(0.0, 0.0, 0.0, 1);
         this.appearance.setShininess(120);
 
+        //Player
+        this.player = 0;
+
+        //Position
+        this.x = 0;
+        this.z = 0;
+
     };
 
     display() {
@@ -28,8 +35,13 @@ class Piece extends CGFobject {
         //Display
         this.scene.pushMatrix();
 
+        this.scene.translate(this.x, 0, this.z);
         this.scene.translate(0, this.height, 0);
-        this.scene.rotate(-Math.PI / 2, 1, 0, 0);
+        this.scene.rotate(-Math.PI / 2, 1, 0, 0);        
+
+        //Flip for player
+        if(this.player)
+            this.scene.rotate(Math.PI, 1, 0, 0);
 
         //Use hardcoded player texture
         if (this.scene.graph.loadedTextures.length >= 2)
