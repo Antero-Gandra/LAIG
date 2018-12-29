@@ -226,11 +226,18 @@ class XMLscene extends CGFscene {
         if (this.sceneInited) {
 
             //Things done once
-            if(this.first == true){
+            if(this.firstRun){
+                //Start time
                 this.startTime = new Date().getTime()/1000;
-                //TODO add pieces here
-                this.raycast = new Raycast(null,null,null);
-                this.first = false;
+
+                //Setup board on Interface
+                for (let i = 0; i < this.graph.components.length; i++) {
+                    if(this.graph.components[i].id == "board")
+                        this.interface.boardComponent = this.graph.components[i];
+                }                
+
+                //Disable
+                this.firstRun = false;
             }
 
             // Draw axis
@@ -251,9 +258,6 @@ class XMLscene extends CGFscene {
                     i++;
                 }
             }
-
-            //TODO raycast
-            this.raycast.process(this, this.camera);
 
             // Displays the scene (MySceneGraph function).
             this.graph.displayScene();

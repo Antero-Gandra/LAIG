@@ -63,12 +63,22 @@ class MyInterface extends CGFinterface {
 
     //Process key down
     processKeyDown(event) {
-        if(event.code == "KeyM"){
+        if (event.code == "KeyM") {
             var graph = this.scene.graph;
             for (let i = 0; i < graph.components.length; i++) {
                 graph.components[i].nextMaterial();
             }
         }
+    }
+
+    //Receive board
+    identifyBoard(board){
+        this.board = board;
+    }
+
+    //TODO Process mouse down
+    processMouseDown(event) {
+        
     }
 
 }

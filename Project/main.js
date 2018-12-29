@@ -55,7 +55,7 @@ serialInclude(['../lib/CGF.js',
         // Check console for loading errors
         var myGraph = new MySceneGraph(filename, xmlScene);
 
-        xmlScene.first = true;
+        xmlScene.firstRun = true;
 
         // start
         app.run();
