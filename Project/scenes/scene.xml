@@ -4,7 +4,7 @@
 
     <views default="full_P">
         <perspective id="full_P" near="1" far="1000" angle="30">
-            <from x="20" y="20" z="20" />
+            <from x="30" y="30" z="0" />
             <to x="0" y="0" z="0" />
         </perspective>
     </views>
@@ -33,6 +33,8 @@
 
     <textures>
         <texture id="tile" file="images/tile.png" />
+        <texture id="p1" file="images/player1.png" />
+        <texture id="p2" file="images/player2.png" />
         <texture id="terrain" file="images/terrain.jpg" />
         <texture id="height" file="images/height.jpg" />
         <texture id="water" file="images/water.jpg" />

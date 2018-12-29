@@ -9,7 +9,7 @@ class Board extends CGFobject {
         this.size = 8;
 
         //Setup raycast
-        this.raycast = new Raycast(null,null,null);
+        this.raycast = new Raycast(null, null, null);
 
         //Setup material
         this.appearance = new CGFappearance(this.scene);
@@ -24,7 +24,10 @@ class Board extends CGFobject {
             this.matrix[i] = new Array(this.size);
 
         //Tile
-        this.tile = new Rectangle(scene, -1, -1, 1, 1);
+        this.tile = new Plane(scene, 20, 20);
+
+        //Piece
+        this.piece = new Piece(scene);
 
     };
 
@@ -52,6 +55,9 @@ class Board extends CGFobject {
             this.scene.translate(-2 * this.size, -2, 0);
         }
         this.scene.popMatrix();
+
+        //TODO Display pieces
+        this.piece.display();
     }
 
 }

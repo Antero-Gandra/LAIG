@@ -104,16 +104,15 @@ class Raycast {
         this.dir = vec3.create();
         vec3.subtract(this.dir, this.pos, this.eyePos);
 
-        //TODO intersections
-
-        //console.log(this.pos);
-        //console.log(this.dir);
+        /*TODO intersections
 
         if (this.hitSphere(this.pos, this.dir, vec3.fromValues(0, 0, 0), 5))
             console.log("hit sphere");
 
         if (this.hitPlane(this.pos, this.dir, vec3.fromValues(0, 0, 0)))
             console.log(this.hitPlane(this.pos, this.dir, vec3.fromValues(0, 0, 0)));
+
+        */
 
     }
 
