@@ -5,7 +5,7 @@ class Board extends CGFobject {
         super(scene);
         this.scene = scene;
 
-        //Board size
+        //Board size (Even numbers work, not odd)
         this.size = 8;
 
         //Setup raycast
@@ -45,8 +45,8 @@ class Board extends CGFobject {
                 this.pieces[i + this.size * j].x -= 1;
                 this.pieces[i + this.size * j].z -= 1;
                 //Position line
-                this.pieces[i + this.size * j].x -= 2*(5+j);
-                this.pieces[i + this.size * j].z -= 2*3;
+                this.pieces[i + this.size * j].x -= 2*(this.size/2+1+j);
+                this.pieces[i + this.size * j].z -= 2*(this.size/2-1);
                 //Line offset
                 this.pieces[i + this.size * j].z += 2*i;
             }
@@ -59,8 +59,8 @@ class Board extends CGFobject {
                 this.pieces[this.size * this.size/2 + i + this.size * j].x += 1;
                 this.pieces[this.size * this.size/2 + i + this.size * j].z += 1;
                 //Position line
-                this.pieces[this.size * this.size/2 + i + this.size * j].x += 2*(5+j);
-                this.pieces[this.size * this.size/2 + i + this.size * j].z -= 2*4;
+                this.pieces[this.size * this.size/2 + i + this.size * j].x += 2*(this.size/2+1+j);
+                this.pieces[this.size * this.size/2 + i + this.size * j].z -= 2*this.size/2;
                 //Line offset
                 this.pieces[this.size * this.size/2 + i + this.size * j].z += 2*i;
                 //Flip for player 2
