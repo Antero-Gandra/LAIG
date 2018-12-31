@@ -1,7 +1,7 @@
 :- use_module(library(random)).
 :- use_module(library(system)).
 
-menu:- mostraLogo, mostraOpcoesMenuInicial, leOpcao(1,4,X), opcaoMenuInicial(X), menu.
+menu:- mostraOpcoesMenuInicial, leOpcao(1,4,X), opcaoMenuInicial(X), menu.
 
 menuJogarContraPC:- mostraOpcoesJogarContraPC, leOpcao(1,3,X), opcaoJogarContraPC(X).
 

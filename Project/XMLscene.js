@@ -226,15 +226,15 @@ class XMLscene extends CGFscene {
         if (this.sceneInited) {
 
             //Things done once
-            if(this.firstRun){
+            if (this.firstRun) {
                 //Start time
-                this.startTime = new Date().getTime()/1000;
+                this.startTime = new Date().getTime() / 1000;
 
                 //Setup board on Interface
                 for (let i = 0; i < this.graph.components.length; i++) {
-                    if(this.graph.components[i].id == "board")
+                    if (this.graph.components[i].id == "board")
                         this.interface.boardComponent = this.graph.components[i];
-                }                
+                }
 
                 //Disable
                 this.firstRun = false;
