@@ -200,10 +200,7 @@ alteraPecaColuna([P|T], NColuna, Peca, [P|R]):-Nc is NColuna - 1, alteraPecaColu
 /*FIM DO JOGO*/
 komi(X):- X is 1.
 
-verificaFim(Tabuleiro):-verificaFimDoJogo(Tabuleiro),
-  pecaJogadorUm(PecaJogadorUm),
-  pecaJogadorDois(PecaJogadorDois),
-  verificaVencedor(Tabuleiro, PecaJogadorUm, PecaJogadorDois).
+verificaFim(Tabuleiro):-verificaFimDoJogo(Tabuleiro).
 
 verificaFimDoJogo([]).
 verificaFimDoJogo([Linha|T]):-verificaFimDoJogoLinha(Linha), verificaFimDoJogo(T).
@@ -211,15 +208,16 @@ verificaFimDoJogo([Linha|T]):-verificaFimDoJogoLinha(Linha), verificaFimDoJogo(T
 verificaFimDoJogoLinha([]).
 verificaFimDoJogoLinha([P|T]):- P\='v', verificaFimDoJogoLinha(T).
 
-verificaVencedor(Tabuleiro, PecaJogador1, PecaJogador2):-
+verificaVencedor(Tabuleiro, PecaJogador1, PecaJogador2, Vencedor):-
   contaPecas(Tabuleiro, PecaJogador1, X),
   contaPecas(Tabuleiro, PecaJogador2, Y),
   komi(K),
   Xnovo is X + K,
-  vencedor(Xnovo, Y).
+  vencedor(Xnovo, Y, Vencedor).
 
-vencedor(Xnovo, Y):- Xnovo < Y, jogador2Venceu, imprimePontuacoes(Xnovo,Y).
-vencedor(Xnovo, Y):- Xnovo > Y, jogador1Venceu, imprimePontuacoes(Xnovo,Y).
+vencedor(Xnovo, Y,2):- Xnovo < Y.
+vencedor(Xnovo, Y,1):- Xnovo > Y.
+vencedor(Xnovo, Y, 0):- Xnovo = Y.
 
 contaPecas([],_,0).
 contaPecas([Linha|Resto], Peca, C):-
@@ -236,9 +234,3 @@ validaJogada(Tabuleiro, NColuna, NLinha):- getPeca(NLinha, NColuna, Tabuleiro, '
 tabuleiroTeste(Tab):- Tab = [['v', 'o', 'o', 'o', 'o' ,'o' ,'o','v'] , ['o', 'o', 'o', 'o', 'o' ,'o' ,'o','v'], ['o', 'o', 'o', 'o', 'o' ,'o' ,'o','v'], ['o', 'o', 'o', 'o', 'o' ,'o' ,'o','v'], ['o', 'o', 'o', 'o', 'o' ,'o' ,'o','v'], ['o', 'o', 'o', 'o', 'o' ,'o' ,'o','v'], ['o', 'o', 'o', 'o', 'v' ,'v' ,'v','v'],['o', 'o', 'o', 'o', 'v' ,'v' ,'v','v']].
 tabuleiroVazio(Tab):- Tab = [['v', 'v', 'v', 'v', 'v' ,'v' ,'v','v'] , ['v', 'v', 'v', 'v', 'v' ,'v' ,'v','v'], ['v', 'v', 'v', 'v', 'v' ,'v' ,'v','v'], ['v', 'v', 'v', 'v', 'v' ,'v' ,'v','v'], ['v', 'v', 'v', 'v', 'v' ,'v' ,'v','v'], ['v', 'v', 'v', 'v', 'v' ,'v' ,'v','v'], ['v', 'v', 'v', 'v', 'v' ,'v' ,'v','v'],['v', 'v', 'v', 'v', 'v' ,'v' ,'v','v']].
 tabuleiroCheio(Tab):- Tab = [['x', 'o', 'o', 'o', 'o' ,'o' ,'o','v'] , ['o', 'o', 'o', 'o', 'o' ,'o' ,'o','v'], ['o', 'o', 'o', 'o', 'o' ,'o' ,'o','v'], ['o', 'o', 'o', 'o', 'o' ,'o' ,'o','v'], ['o', 'o', 'o', 'o', 'o' ,'o' ,'o','v'], ['o', 'o', 'o', 'o', 'o' ,'o' ,'o','v'], ['o', 'o', 'o', 'o', 'x' ,'x' ,'x','v'],['o', 'o', 'o', 'o', 'x' ,'x' ,'x','v']].
-
-
-
-
-
-/*lel*/
