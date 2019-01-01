@@ -8,9 +8,6 @@ class Board extends CGFobject {
         //Board size (Even numbers work, not odd)
         this.size = 8;
 
-        //Setup raycast
-        this.raycast = new Raycast(null, null, null);
-
         //Setup material
         this.appearance = new CGFappearance(this.scene);
         this.appearance.setAmbient(0.3, 0.3, 0.3, 1);
@@ -42,8 +39,8 @@ class Board extends CGFobject {
         for (let i = 0; i < this.size; i++) {
             for (let j = 0; j < this.size; j++) {
                 //Offset to place center
-                this.tiles[i + this.size * j].x -= this.pieceSize/2 + this.pieceSize*(this.size/2-1);
-                this.tiles[i + this.size * j].z -= this.pieceSize/2 + this.pieceSize*(this.size/2-1);
+                this.tiles[i + this.size * j].x -= this.pieceSize / 2 + this.pieceSize * (this.size / 2 - 1);
+                this.tiles[i + this.size * j].z -= this.pieceSize / 2 + this.pieceSize * (this.size / 2 - 1);
                 //Offset Matrix
                 this.tiles[i + this.size * j].x += this.pieceSize * i;
                 this.tiles[i + this.size * j].z += this.pieceSize * j;
@@ -63,11 +60,11 @@ class Board extends CGFobject {
         for (var i = 0; i < this.size; i++) {
             for (var j = 0; j < this.size / 2; j++) {
                 //Offset to place center
-                this.pieces[i + this.size * j].x -= this.pieceSize/2;
-                this.pieces[i + this.size * j].z -= this.pieceSize/2;
+                this.pieces[i + this.size * j].x -= this.pieceSize / 2;
+                this.pieces[i + this.size * j].z -= this.pieceSize / 2;
                 //Position line
-                this.pieces[i + this.size * j].x -= this.pieceSize * (this.size / this.pieceSize + this.pieceSize/2 + j);
-                this.pieces[i + this.size * j].z -= this.pieceSize * (this.size / this.pieceSize - this.pieceSize/2);
+                this.pieces[i + this.size * j].x -= this.pieceSize * (this.size / this.pieceSize + this.pieceSize / 2 + j);
+                this.pieces[i + this.size * j].z -= this.pieceSize * (this.size / this.pieceSize - this.pieceSize / 2);
                 //Line offset
                 this.pieces[i + this.size * j].z += this.pieceSize * i;
             }
@@ -77,17 +74,20 @@ class Board extends CGFobject {
         for (var i = 0; i < this.size; i++) {
             for (var j = 0; j < this.size / 2; j++) {
                 //Offset to place center
-                this.pieces[this.size * this.size / 2 + i + this.size * j].x += this.pieceSize/2;
-                this.pieces[this.size * this.size / 2 + i + this.size * j].z += this.pieceSize/2;
+                this.pieces[this.size * this.size / 2 + i + this.size * j].x += this.pieceSize / 2;
+                this.pieces[this.size * this.size / 2 + i + this.size * j].z += this.pieceSize / 2;
                 //Position line
-                this.pieces[this.size * this.size / 2 + i + this.size * j].x += this.pieceSize * (this.size / this.pieceSize + this.pieceSize/2 + j);
+                this.pieces[this.size * this.size / 2 + i + this.size * j].x += this.pieceSize * (this.size / this.pieceSize + this.pieceSize / 2 + j);
                 this.pieces[this.size * this.size / 2 + i + this.size * j].z -= this.pieceSize * this.size / this.pieceSize;
                 //Line offset
                 this.pieces[this.size * this.size / 2 + i + this.size * j].z += this.pieceSize * i;
                 //Flip for player 2
-                this.pieces[this.size * this.size / 2 + i + this.size * j].player = this.pieceSize/2;
+                this.pieces[this.size * this.size / 2 + i + this.size * j].player = this.pieceSize / 2;
             }
         }
+
+        //Setup raycast
+        this.raycast = new Raycast(this.pieces, this.tiles, vec3.fromValues(0, 0, 0));
 
     };
 
@@ -123,7 +123,7 @@ class Board extends CGFobject {
 
     makeRequest() {
         var requestString = "quit";
-        
+
         //Sample messages
 
         //Send piece
@@ -131,7 +131,7 @@ class Board extends CGFobject {
 
         //Board end
         //verificaFimJogo([['v','v','v','v','v','v','v','v'],['v','v','v','v','v','v','v','v'],['v','v','v','v','v','v','v','v'],['v','v','v','v','v','v','v','v'],['v','v','v','v','v','v','v','v'],['v','v','v','v','v','v','v','v'],['v','v','v','v','v','v','v','v'],['v','v','v','v','v','v','v','v']])
-        
+
         //Winner
         //verificaVencedorJogo([['v','v','v','v','v','v','v','v'],['v','v','v','v','v','v','v','v'],['v','v','v','v','v','v','v','v'],['v','v','v','v','v','v','v','v'],['v','v','v','v','v','v','v','v'],['v','v','v','v','v','v','v','v'],['v','v','v','v','v','v','v','v'],['v','v','v','v','v','v','v','v']])
 

@@ -86,7 +86,7 @@ class Raycast {
         switch (type) {
             case "pieces":
                 for (let i = 0; i < this.pieces.length; i++) {
-                    if (this.hitSphere(this.pos, this.dir, this.pieces[i].pos, 5)) {
+                    if (this.hitSphere(this.pos, this.dir, vec3.fromValues(this.pieces[i].x, 0, this.pieces[i].z), 5)) {
                         this.pieces[i].hit();
                         break;
                     }
@@ -96,7 +96,7 @@ class Raycast {
                 return this.hitPlane(this.pos, this.dir, vec3.fromValues(0, 0, 0));
             case "places":
                 for (let i = 0; i < this.places.length; i++) {
-                    if (this.hitSphere(this.pos, this.dir, this.places[i].pos, 5)) {
+                    if (this.hitSphere(this.pos, this.dir, vec3.fromValues(this.pieces[i].x, 0, this.pieces[i].z), 5)) {
                         this.places[i].hit();
                         break;
                     }
