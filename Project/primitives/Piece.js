@@ -1,8 +1,10 @@
 
 class Piece extends CGFobject {
-    constructor(scene) {
+    constructor(scene, board) {
         super(scene);
+        
         this.scene = scene;
+        this.board = board;
 
         //Height
         this.height = 0.25;
@@ -37,10 +39,10 @@ class Piece extends CGFobject {
 
         this.scene.translate(this.x, 0, this.z);
         this.scene.translate(0, this.height, 0);
-        this.scene.rotate(-Math.PI / 2, 1, 0, 0);        
+        this.scene.rotate(-Math.PI / 2, 1, 0, 0);
 
         //Flip for player
-        if(this.player)
+        if (this.player)
             this.scene.rotate(Math.PI, 1, 0, 0);
 
         //Use hardcoded player texture
@@ -57,6 +59,11 @@ class Piece extends CGFobject {
 
         this.scene.popMatrix();
 
+    }
+
+    //Raycast callback
+    hit(){
+        this.board.pieceHit(this);
     }
 
 };

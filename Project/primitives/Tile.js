@@ -1,8 +1,10 @@
 
 class Tile extends CGFobject {
-    constructor(scene) {
+    constructor(scene, board) {
         super(scene);
+
         this.scene = scene;
+        this.board = board;
 
         //Size
         this.size = 1;
@@ -43,6 +45,11 @@ class Tile extends CGFobject {
 
         this.scene.popMatrix();
 
+    }
+
+    //Raycast callback
+    hit(){
+        this.board.tileHit(this);
     }
 
 };

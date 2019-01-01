@@ -33,7 +33,7 @@ class Board extends CGFobject {
         //Tiles
         this.tiles = [];
         for (var i = 0; i < this.size * this.size; i++)
-            this.tiles[i] = new Tile(scene);
+            this.tiles[i] = new Tile(scene, this);
 
         //Position tiles
         for (let i = 0; i < this.size; i++) {
@@ -53,7 +53,7 @@ class Board extends CGFobject {
         //Pieces
         this.pieces = [];
         for (var i = 0; i < this.size * this.size; i++)
-            this.pieces[i] = new Piece(scene);
+            this.pieces[i] = new Piece(scene, this);
 
 
         //Positioning player 1
@@ -105,6 +105,14 @@ class Board extends CGFobject {
         //TODO Requests will be made in callback functions of Board, called from Mouse events
         //this.makeRequest();
 
+    }
+
+    pieceHit(piece){
+
+    }
+
+    tileHit(piece){
+        
     }
 
     //Prolog Server Example

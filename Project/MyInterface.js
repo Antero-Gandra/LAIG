@@ -114,6 +114,45 @@ class MyInterface extends CGFinterface {
 
     }
 
+    //Process mouse down
+    processMouseDown(event) {
+
+        this.mouse[0] = event.pageX;
+        this.mouse[1] = event.pageY;
+        
+        //Click Down
+        var result = this.board.raycast.process(this.scene, this.scene.camera, "pieces");
+        if(result == true){
+            this.held = 1;
+            console.log("Piece selected");
+        }
+        else
+            console.log("No piece selected");
+
+    }
+
+    //Process mouse up
+    processMouseUp(event) {
+
+        this.mouse[0] = event.pageX;
+        this.mouse[1] = event.pageY;
+
+        //Piece was being held
+        if(this.held == 1){
+            var result = this.board.raycast.process(this.scene, this.scene.camera, "places");
+            if (result == true){
+                console.log("Piece released on board");
+                //TODO If a piece was released inside board we can do prolog call on board
+            }
+            else
+                console.log("Piece released outside board");
+        }
+        
+        //Certainly we can reset
+        this.held = 0;        
+
+    }
+
     //Process mouse move
     processMouseMove(event) {
 
@@ -124,33 +163,6 @@ class MyInterface extends CGFinterface {
         if(this.held == 1){            
             console.log(this.board.raycast.process(this.scene, this.scene.camera, "plane"));
         }
-
-    }
-
-    //Process mouse down
-    processMouseDown(event) {
-
-        this.mouse[0] = event.pageX;
-        this.mouse[1] = event.pageY;
-        
-        //Click Down
-        //TODO Need to detect if a piece was clicked successfully(returned != false)
-        this.held = 1;
-
-        console.log(this.board.raycast.process(this.scene, this.scene.camera, "pieces"));
-
-    }
-
-    //Process mouse up
-    processMouseUp(event) {
-
-        this.mouse[0] = event.pageX;
-        this.mouse[1] = event.pageY;
-        
-        //Release
-        this.held = 0;
-
-        console.log(this.board.raycast.process(this.scene, this.scene.camera, "places"));
 
     }
 
