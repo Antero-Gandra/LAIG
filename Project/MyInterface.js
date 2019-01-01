@@ -58,7 +58,7 @@ class MyInterface extends CGFinterface {
     }
 
     //Setup and add UI
-    addUI(){
+    addUI() {
 
         //Group
         var group = this.gui.addFolder("Lear Game Menu");
@@ -119,12 +119,13 @@ class MyInterface extends CGFinterface {
 
         this.mouse[0] = event.pageX;
         this.mouse[1] = event.pageY;
-        
+
         //Click Down
         var result = this.board.raycast.process(this.scene, this.scene.camera, "pieces");
-        if(result == true){
+        if (result != false) {
             this.held = 1;
-            console.log("Piece selected");
+            this.selectedPiece = result;
+            console.log(result);
         }
         else
             console.log("No piece selected");
@@ -138,18 +139,19 @@ class MyInterface extends CGFinterface {
         this.mouse[1] = event.pageY;
 
         //Piece was being held
-        if(this.held == 1){
+        if (this.held == 1) {
             var result = this.board.raycast.process(this.scene, this.scene.camera, "places");
-            if (result == true){
-                console.log("Piece released on board");
+            if (result != false) {
+                console.log(result);
                 //TODO If a piece was released inside board we can do prolog call on board
             }
             else
                 console.log("Piece released outside board");
+            this.selectedPiece.unhover();
         }
-        
+
         //Certainly we can reset
-        this.held = 0;        
+        this.held = 0;
 
     }
 
@@ -158,10 +160,11 @@ class MyInterface extends CGFinterface {
 
         this.mouse[0] = event.pageX;
         this.mouse[1] = event.pageY;
-        
+
         //Held down
-        if(this.held == 1){            
-            console.log(this.board.raycast.process(this.scene, this.scene.camera, "plane"));
+        if (this.held == 1) {
+            var mousePos = this.board.raycast.process(this.scene, this.scene.camera, "plane");
+            this.selectedPiece.hover(mousePos);
         }
 
     }

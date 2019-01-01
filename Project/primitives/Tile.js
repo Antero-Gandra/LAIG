@@ -34,7 +34,10 @@ class Tile extends CGFobject {
         //Display
         this.scene.pushMatrix();
 
+        //Coordinate offset
         this.scene.translate(this.x, 0, this.z);
+
+        //Flip to vertically
         this.scene.rotate(-Math.PI / 2, 1, 0, 0);
 
         //Use hardcoded tile texture
@@ -48,7 +51,7 @@ class Tile extends CGFobject {
     }
 
     //Raycast callback
-    hit(){
+    hit() {
         this.board.tileHit(this);
     }
 

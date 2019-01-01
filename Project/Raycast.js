@@ -89,7 +89,7 @@ class Raycast {
                 for (let i = 0; i < this.pieces.length; i++) {
                     if (this.hitSphere(this.pos, this.dir, vec3.fromValues(this.pieces[i].x, 0, this.pieces[i].z), this.radius)) {
                         this.pieces[i].hit();
-                        return true;
+                        return this.pieces[i];
                     }
                 }
                 return false;
@@ -99,7 +99,7 @@ class Raycast {
                 for (let i = 0; i < this.places.length; i++) {
                     if (this.hitSphere(this.pos, this.dir, vec3.fromValues(this.places[i].x, 0, this.places[i].z), this.radius)) {
                         this.places[i].hit();
-                        return true;
+                        return this.places[i];
                     }
                 }
                 return false;
