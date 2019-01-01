@@ -85,13 +85,13 @@ class Board extends CGFobject {
         //Display Tiles
         this.scene.pushMatrix();
         this.scene.rotate(-Math.PI / 2, 1, 0, 0);
-        this.scene.translate(-2 * this.size / 2 - 1, 2 * this.size / 2 - 1, 0);
+        this.scene.translate(-this.pieceSize * this.size / 2 - this.pieceSize/2, 2 * this.size / this.pieceSize - 1, 0);
         for (let i = 0; i < this.size; i++) {
             for (let j = 0; j < this.size; j++) {
-                this.scene.translate(2, 0, 0);
+                this.scene.translate(this.pieceSize, 0, 0);
                 this.tile.display();
             }
-            this.scene.translate(-2 * this.size, -2, 0);
+            this.scene.translate(-this.pieceSize * this.size, -this.pieceSize, 0);
         }
         this.scene.popMatrix();
 
