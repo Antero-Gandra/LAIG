@@ -30,16 +30,34 @@ class Board extends CGFobject {
                 }
         }
 
-        //Tile
-        this.tile = new Plane(scene, 20, 20);
+        //Piece Size
+        this.pieceSize = 2;
 
-        //Piece
+        //Tiles
+        this.tiles = [];
+        for (var i = 0; i < this.size * this.size; i++)
+            this.tiles[i] = new Tile(scene);
+
+        //Position tiles
+        for (let i = 0; i < this.size; i++) {
+            for (let j = 0; j < this.size; j++) {
+                //Offset to place center
+                this.tiles[i + this.size * j].x -= this.pieceSize/2 + this.pieceSize*(this.size/2-1);
+                this.tiles[i + this.size * j].z -= this.pieceSize/2 + this.pieceSize*(this.size/2-1);
+                //Offset Matrix
+                this.tiles[i + this.size * j].x += this.pieceSize * i;
+                this.tiles[i + this.size * j].z += this.pieceSize * j;
+                //Board Position
+                this.tiles[i + this.size * j].i = i;
+                this.tiles[i + this.size * j].j = j;
+            }
+        }
+
+        //Pieces
         this.pieces = [];
         for (var i = 0; i < this.size * this.size; i++)
             this.pieces[i] = new Piece(scene);
 
-        //Piece Size
-        this.pieceSize = 2;
 
         //Positioning player 1
         for (var i = 0; i < this.size; i++) {
@@ -75,25 +93,10 @@ class Board extends CGFobject {
 
     display() {
 
-        //Use hardcoded tile texture
-        if (this.appearance.texture == null) {
-            if (this.scene.graph.loadedTextures.length >= 2)
-                this.appearance.setTexture(this.scene.graph.loadedTextures[0].tex);
-        }
-        this.appearance.apply();
-
         //Display Tiles
-        this.scene.pushMatrix();
-        this.scene.rotate(-Math.PI / 2, 1, 0, 0);
-        this.scene.translate(-this.pieceSize * this.size / 2 - this.pieceSize/2, 2 * this.size / this.pieceSize - 1, 0);
-        for (let i = 0; i < this.size; i++) {
-            for (let j = 0; j < this.size; j++) {
-                this.scene.translate(this.pieceSize, 0, 0);
-                this.tile.display();
-            }
-            this.scene.translate(-this.pieceSize * this.size, -this.pieceSize, 0);
+        for (let i = 0; i < this.size * this.size; i++) {
+            this.tiles[i].display();
         }
-        this.scene.popMatrix();
 
         //Display pieces
         for (var i = 0; i < this.size * this.size; i++)
