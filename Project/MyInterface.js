@@ -114,24 +114,44 @@ class MyInterface extends CGFinterface {
 
     }
 
-    //Process key down
-    processKeyDown(event) {
-        if (event.code == "KeyM") {
-            var graph = this.scene.graph;
-            for (let i = 0; i < graph.components.length; i++) {
-                graph.components[i].nextMaterial();
-            }
-        }
-    }
+    //Process mouse move
+    processMouseMove(event) {
 
-    //Receive board
-    identifyBoard(board){
-        this.board = board;
-    }
-
-    //TODO Process mouse down
-    processMouseDown(event) {
+        this.mouse[0] = event.pageX;
+        this.mouse[1] = event.pageY;
         
+        //Held down
+        if(this.held == 1){            
+            console.log(this.board.raycast.process(this.scene, this.scene.camera, "plane"));
+        }
+
     }
+
+    //Process mouse down
+    processMouseDown(event) {
+
+        this.mouse[0] = event.pageX;
+        this.mouse[1] = event.pageY;
+        
+        //Click Down
+        this.held = 1;
+
+        console.log(this.board.raycast.process(this.scene, this.scene.camera, "pieces"));
+
+    }
+
+    //Process mouse up
+    processMouseUp(event) {
+
+        this.mouse[0] = event.pageX;
+        this.mouse[1] = event.pageY;
+        
+        //Release
+        this.held = 0;
+
+        console.log(this.board.raycast.process(this.scene, this.scene.camera, "places"));
+
+    }
+
 
 }

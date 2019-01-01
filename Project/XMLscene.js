@@ -233,7 +233,7 @@ class XMLscene extends CGFscene {
                 //Setup board on Interface
                 for (let i = 0; i < this.graph.components.length; i++) {
                     if (this.graph.components[i].id == "board")
-                        this.interface.boardComponent = this.graph.components[i];
+                        this.interface.board = this.graph.components[i].childrenPrimitives[0];
                 }
 
                 //Disable
