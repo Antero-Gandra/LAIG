@@ -31,12 +31,8 @@ class MyInterface extends CGFinterface {
      */
     addLightsGroup(lights) {
 
-        var group = this.gui.addFolder("Lights");
-        group.open();
-
         for (let i = 0; i < lights.length; i++) {
             this.scene.lightValues[i] = lights[i].enabled;
-            group.add(this.scene.lightValues, i).name(this.scene.graph.lights[i].id);
         }
 
     }
@@ -58,6 +54,63 @@ class MyInterface extends CGFinterface {
         //Add reset button
         this.resetView = this.scene.resetView;
         group.add(this, 'resetView').name('Reset current view');
+
+    }
+
+    //Setup and add UI
+    addUI(){
+
+        //Group
+        var group = this.gui.addFolder("Lear Game Menu");
+        group.open();
+
+        //Settings
+        var settingsGroup = group.addFolder("Settings");
+        settingsGroup.open();
+
+        //TODO Difficulty
+        const difficulty = ["Easy", "Hard"];
+        this.difficultySet = "Easy";
+        settingsGroup.add(this, 'difficultySet', difficulty).name('Difficulty').onChange(val => this.scene.selectView(val));
+
+        //TODO Mode
+        const mode = ["Player vs Player", "Player vs CPU", "CPU vs CPU"];
+        this.modeSet = "Player vs Player";
+        settingsGroup.add(this, 'modeSet', mode).name('Mode').onChange(val => this.scene.selectView(val));
+
+        //Play Controls
+        var playGroup = group.addFolder("Play Controls");
+        playGroup.open();
+
+        //TODO Undo
+        this.undo = this.scene.resetView;
+        playGroup.add(this, 'undo').name('Undo');
+
+        //TODO Redo
+        this.redo = this.scene.resetView;
+        playGroup.add(this, 'redo').name('Redo');
+
+        //TODO Movie
+        this.movie = this.scene.resetView;
+        playGroup.add(this, 'movie').name('Movie');
+
+        //View Controls
+        var viewGroup = group.addFolder("View");
+        viewGroup.open();
+
+        //TODO Scenario
+        const scenario = ["Scene1"];
+        this.scenarioSet = "Scene1";
+        viewGroup.add(this, 'scenarioSet', scenario).name('Scenario').onChange(val => this.scene.selectView(val));
+
+        //TODO Camera
+        const camera = ["View1"];
+        this.cameraSet = "View1";
+        viewGroup.add(this, 'cameraSet', camera).name('Camera').onChange(val => this.scene.selectView(val));
+
+        //TODO New Game
+        this.newGame = this.scene.resetView;
+        group.add(this, 'newGame').name('New Game');
 
     }
 

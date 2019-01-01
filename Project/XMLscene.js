@@ -192,11 +192,11 @@ class XMLscene extends CGFscene {
         //Initialize views
         this.initViews();
 
-        //Adds lights group.
+        //Adds lights group (Token, just enables lights)
         this.interface.addLightsGroup(this.graph.lights);
 
-        //Adds views group.
-        this.interface.addViewsGroup();
+        //Add Game UI
+        this.interface.addUI();
 
         //Mark scene as initialized
         this.sceneInited = true;
