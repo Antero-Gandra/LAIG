@@ -19,12 +19,26 @@ class Piece extends CGFobject {
         //Setup hover effect
         this.hoverObj = new Cylinder(scene, 0.1, 0.1, 5, 4, 4);
 
-        //Setup material
-        this.appearance = new CGFappearance(this.scene);
-        this.appearance.setAmbient(0.3, 0.3, 0.3, 1);
-        this.appearance.setDiffuse(0.7, 0.7, 0.7, 1);
-        this.appearance.setSpecular(0.0, 0.0, 0.0, 1);
-        this.appearance.setShininess(120);
+        //Setup player 1 material
+        this.appearanceP1 = new CGFappearance(this.scene);
+        this.appearanceP1.setAmbient(0.3, 0.3, 0.3, 1);
+        this.appearanceP1.setDiffuse(0.7, 0.7, 0.7, 1);
+        this.appearanceP1.setSpecular(0.0, 0.0, 0.0, 1);
+        this.appearanceP1.setShininess(120);
+
+        //Setup player 2 material
+        this.appearanceP2 = new CGFappearance(this.scene);
+        this.appearanceP2.setAmbient(0.3, 0.3, 0.3, 1);
+        this.appearanceP2.setDiffuse(0.7, 0.7, 0.7, 1);
+        this.appearanceP2.setSpecular(0.0, 0.0, 0.0, 1);
+        this.appearanceP2.setShininess(120);
+
+        //Setup hover material
+        this.appearanceH = new CGFappearance(this.scene);
+        this.appearanceH.setAmbient(0.3, 0.3, 0.3, 1);
+        this.appearanceH.setDiffuse(0.7, 0.7, 0.7, 1);
+        this.appearanceH.setSpecular(0.0, 0.0, 0.0, 1);
+        this.appearanceH.setShininess(120);
 
         //Player
         this.player = 0;
@@ -79,15 +93,17 @@ class Piece extends CGFobject {
             this.scene.rotate(Math.PI, 1, 0, 0);
 
         //Use hardcoded player texture
-        if (this.scene.graph.loadedTextures.length >= 2)
-            this.appearance.setTexture(this.scene.graph.loadedTextures[1].tex);
-        this.appearance.apply();
+        if (this.appearanceP1.texture == null)
+            if (this.scene.graph.loadedTextures.length >= 1)
+                this.appearanceP1.setTexture(this.scene.graph.loadedTextures[1].tex);
+        this.appearanceP1.apply();
         this.side1.display();
 
         //Use hardcoded player texture
-        if (this.scene.graph.loadedTextures.length >= 2)
-            this.appearance.setTexture(this.scene.graph.loadedTextures[2].tex);
-        this.appearance.apply();
+        if (this.appearanceP2.texture == null)
+            if (this.scene.graph.loadedTextures.length >= 1)
+                this.appearanceP2.setTexture(this.scene.graph.loadedTextures[2].tex);
+        this.appearanceP2.apply();
         this.side2.display();
 
         //Hover flip for the hover effect
@@ -96,13 +112,14 @@ class Piece extends CGFobject {
             //Flip for player
             if (!this.player)
                 this.scene.rotate(Math.PI, 1, 0, 0);
-            
+
             //Use hardcoded hover texture
-            if (this.scene.graph.loadedTextures.length >= 2)
-                this.appearance.setTexture(this.scene.graph.loadedTextures[3].tex);
+            if (this.appearanceH.texture == null)
+                if (this.scene.graph.loadedTextures.length >= 1)
+                    this.appearanceH.setTexture(this.scene.graph.loadedTextures[3].tex);
 
             //Display hover
-            this.appearance.apply();
+            this.appearanceH.apply();
             this.hoverObj.display();
         }
 

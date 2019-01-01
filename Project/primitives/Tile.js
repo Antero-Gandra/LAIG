@@ -41,8 +41,9 @@ class Tile extends CGFobject {
         this.scene.rotate(-Math.PI / 2, 1, 0, 0);
 
         //Use hardcoded tile texture
-        if (this.scene.graph.loadedTextures.length >= 2)
-            this.appearance.setTexture(this.scene.graph.loadedTextures[0].tex);
+        if (this.appearance.texture == null)
+            if (this.scene.graph.loadedTextures.length >= 2)
+                this.appearance.setTexture(this.scene.graph.loadedTextures[0].tex);
         this.appearance.apply();
         this.tile.display();
 
