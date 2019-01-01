@@ -14,18 +14,6 @@ class Raycast {
     */
 
     /*
-    Piece and Place collider structure
-    collider = {
-        center: {
-            x:
-            y:
-        }
-        radius:
-        object:
-    }
-    */
-
-    /*
         Constructor with all the colliders to be used
         pieces - board pieces
         places - board places
@@ -103,6 +91,7 @@ class Raycast {
                         break;
                     }
                 }
+                return false;
             case "plane":
                 return this.hitPlane(this.pos, this.dir, vec3.fromValues(0, 0, 0));
             case "places":
@@ -112,6 +101,7 @@ class Raycast {
                         break;
                     }
                 }
+                return false;
             default:
                 break;
         }

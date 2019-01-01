@@ -99,6 +99,7 @@ class Board extends CGFobject {
         for (var i = 0; i < this.size * this.size; i++)
             this.pieces[i].display();
 
+        //TODO Requests will be made in callback functions of Board, called from Mouse events
         //this.makeRequest();
 
     }
