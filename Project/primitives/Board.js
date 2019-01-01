@@ -38,17 +38,20 @@ class Board extends CGFobject {
         for (var i = 0; i < this.size * this.size; i++)
             this.pieces[i] = new Piece(scene);
 
+        //Piece Size
+        this.pieceSize = 2;
+
         //Positioning player 1
         for (var i = 0; i < this.size; i++) {
             for (var j = 0; j < this.size / 2; j++) {
                 //Offset to place center
-                this.pieces[i + this.size * j].x -= 1;
-                this.pieces[i + this.size * j].z -= 1;
+                this.pieces[i + this.size * j].x -= this.pieceSize/2;
+                this.pieces[i + this.size * j].z -= this.pieceSize/2;
                 //Position line
-                this.pieces[i + this.size * j].x -= 2 * (this.size / 2 + 1 + j);
-                this.pieces[i + this.size * j].z -= 2 * (this.size / 2 - 1);
+                this.pieces[i + this.size * j].x -= this.pieceSize * (this.size / this.pieceSize + this.pieceSize/2 + j);
+                this.pieces[i + this.size * j].z -= this.pieceSize * (this.size / this.pieceSize - this.pieceSize/2);
                 //Line offset
-                this.pieces[i + this.size * j].z += 2 * i;
+                this.pieces[i + this.size * j].z += this.pieceSize * i;
             }
         }
 
@@ -56,24 +59,21 @@ class Board extends CGFobject {
         for (var i = 0; i < this.size; i++) {
             for (var j = 0; j < this.size / 2; j++) {
                 //Offset to place center
-                this.pieces[this.size * this.size / 2 + i + this.size * j].x += 1;
-                this.pieces[this.size * this.size / 2 + i + this.size * j].z += 1;
+                this.pieces[this.size * this.size / 2 + i + this.size * j].x += this.pieceSize/2;
+                this.pieces[this.size * this.size / 2 + i + this.size * j].z += this.pieceSize/2;
                 //Position line
-                this.pieces[this.size * this.size / 2 + i + this.size * j].x += 2 * (this.size / 2 + 1 + j);
-                this.pieces[this.size * this.size / 2 + i + this.size * j].z -= 2 * this.size / 2;
+                this.pieces[this.size * this.size / 2 + i + this.size * j].x += this.pieceSize * (this.size / this.pieceSize + this.pieceSize/2 + j);
+                this.pieces[this.size * this.size / 2 + i + this.size * j].z -= this.pieceSize * this.size / this.pieceSize;
                 //Line offset
-                this.pieces[this.size * this.size / 2 + i + this.size * j].z += 2 * i;
+                this.pieces[this.size * this.size / 2 + i + this.size * j].z += this.pieceSize * i;
                 //Flip for player 2
-                this.pieces[this.size * this.size / 2 + i + this.size * j].player = 1;
+                this.pieces[this.size * this.size / 2 + i + this.size * j].player = this.pieceSize/2;
             }
         }
 
     };
 
     display() {
-
-        //TODO raycast processing will be called on mouse press/held/released
-        this.raycast.process(this.scene, this.scene.camera);
 
         //Use hardcoded tile texture
         if (this.appearance.texture == null) {
