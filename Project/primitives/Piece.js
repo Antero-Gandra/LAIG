@@ -78,7 +78,7 @@ class Piece extends CGFobject {
             vec3.subtract(hoverOffset, pos, this.hoverPos);
 
             //Apply offse to matrix
-            this.scene.translate(-hoverOffset[0], 5, -hoverOffset[2]);
+            this.scene.translate(-hoverOffset[0], 5, -hoverOffset[2] + this.radius/4);
 
         }
 
@@ -132,11 +132,13 @@ class Piece extends CGFobject {
         this.board.pieceHit(this);
     }
 
+    //Use hovering
     hover(pos) {
         this.hovering = true;
         this.hoverPos = pos;
     }
 
+    //Disable hovering
     unhover() {
         this.hovering = false;
     }
