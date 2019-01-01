@@ -232,8 +232,13 @@ class XMLscene extends CGFscene {
 
                 //Setup board on Interface
                 for (let i = 0; i < this.graph.components.length; i++) {
-                    if (this.graph.components[i].id == "board")
+                    if (this.graph.components[i].id == "board"){
+                        //Identify board for interface
                         this.interface.board = this.graph.components[i].childrenPrimitives[0];
+
+                        //Prepare camera
+                        this.graph.components[i].childrenPrimitives[0].raycast.prepare();
+                    }                        
                 }
 
                 //Disable

@@ -19,33 +19,29 @@ class Raycast {
         places - board places
         plane - horizontal(XZ) plane (just a Y value)
     */
-    constructor(pieces, places, plane, radius = 1) {
+    constructor(scene, pieces, places, plane, radius = 1) {
+
+        this.scene = scene;
+        this.viewport = scene.gl.canvas;
+
         this.pieces = pieces;
         this.places = places;
         this.plane = plane;
+
         this.radius = radius;
+
     }
 
     /*
-        Perform raycast, returns object hit or plane position
-        objectFlag indicates if the raycast is towards pieces or the plane
-        http://schabby.de/picking-opengl-ray-tracing/
-        //TODO some things only need to be calculated when camera is updated
+        Prepare camera
+        Only needs to be called when camera changes
     */
-    process(scene, camera, type) {
+    prepare(){
 
         //Camera info
-        this.eyePos = vec3.fromValues(camera.position[0], camera.position[1], camera.position[2]);
-        this.eyeDir = vec3.fromValues(camera.target[0], camera.target[1], camera.target[2]);
-        this.eyeUp = camera._up;
-
-        //Mouse position
-        this.viewport = scene.gl.canvas;
-        this.mousePos = {
-            x: scene.interface.mouse[0],
-            //Flip Y to increase up
-            y: this.viewport.height - scene.interface.mouse[1]
-        }
+        this.eyePos = vec3.fromValues(this.scene.camera.position[0], this.scene.camera.position[1], this.scene.camera.position[2]);
+        this.eyeDir = vec3.fromValues(this.scene.camera.target[0], this.scene.camera.target[1], this.scene.camera.target[2]);
+        this.eyeUp = this.scene.camera._up;
 
         //View
         this.view = vec3.create();
@@ -61,10 +57,25 @@ class Raycast {
         vec3.normalize(this.v, this.v);
 
         //h & v length
-        this.vLength = Math.tan(camera.fov / 2) * camera.near;
+        this.vLength = Math.tan(this.scene.camera.fov / 2) * this.scene.camera.near;
         this.hLength = this.vLength * (this.viewport.width / this.viewport.height);
         vec3.scale(this.h, this.h, this.hLength);
         vec3.scale(this.v, this.v, this.vLength);
+
+    }
+
+    /*
+        Perform raycast, returns object hit or plane position
+        http://schabby.de/picking-opengl-ray-tracing/
+    */
+    process(type) {
+
+        //Mouse position
+        this.mousePos = {
+            x: this.scene.interface.mouse[0],
+            //Flip Y to increase up
+            y: this.viewport.height - this.scene.interface.mouse[1]
+        }
 
         //Map mouse to view port plane
         this.mousePos.x -= this.viewport.width / 2;
@@ -75,9 +86,9 @@ class Raycast {
 
         //Position
         this.pos = vec3.create();
-        this.pos[0] = this.eyePos[0] + this.view[0] * camera.near + this.h[0] * this.mousePos.x + this.v[0] * this.mousePos.y;
-        this.pos[1] = this.eyePos[1] + this.view[1] * camera.near + this.h[1] * this.mousePos.x + this.v[1] * this.mousePos.y;
-        this.pos[2] = this.eyePos[2] + this.view[2] * camera.near + this.h[2] * this.mousePos.x + this.v[2] * this.mousePos.y;
+        this.pos[0] = this.eyePos[0] + this.view[0] * this.scene.camera.near + this.h[0] * this.mousePos.x + this.v[0] * this.mousePos.y;
+        this.pos[1] = this.eyePos[1] + this.view[1] * this.scene.camera.near + this.h[1] * this.mousePos.x + this.v[1] * this.mousePos.y;
+        this.pos[2] = this.eyePos[2] + this.view[2] * this.scene.camera.near + this.h[2] * this.mousePos.x + this.v[2] * this.mousePos.y;
 
         //Direction
         this.dir = vec3.create();

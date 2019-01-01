@@ -87,7 +87,7 @@ class Board extends CGFobject {
         }
 
         //Setup raycast
-        this.raycast = new Raycast(this.pieces, this.tiles, vec3.fromValues(0, 0, 0), 1);
+        this.raycast = new Raycast(this.scene, this.pieces, this.tiles, vec3.fromValues(0, 0, 0), 1);
 
     };
 

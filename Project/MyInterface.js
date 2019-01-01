@@ -121,7 +121,7 @@ class MyInterface extends CGFinterface {
         this.mouse[1] = event.pageY;
 
         //Click Down
-        var result = this.board.raycast.process(this.scene, this.scene.camera, "pieces");
+        var result = this.board.raycast.process("pieces");
         if (result != false) {
             this.held = 1;
             this.selectedPiece = result;
@@ -140,7 +140,7 @@ class MyInterface extends CGFinterface {
 
         //Piece was being held
         if (this.held == 1) {
-            var result = this.board.raycast.process(this.scene, this.scene.camera, "places");
+            var result = this.board.raycast.process("places");
             if (result != false) {
                 console.log(result);
                 //TODO If a piece was released inside board we can do prolog call on board
@@ -163,7 +163,7 @@ class MyInterface extends CGFinterface {
 
         //Held down
         if (this.held == 1) {
-            var mousePos = this.board.raycast.process(this.scene, this.scene.camera, "plane");
+            var mousePos = this.board.raycast.process("plane");
             this.selectedPiece.hover(mousePos);
         }
 
