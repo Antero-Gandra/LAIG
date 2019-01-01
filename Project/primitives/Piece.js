@@ -14,7 +14,7 @@ class Piece extends CGFobject {
 
         //Setup sides
         this.side1 = new Cylinder(scene, this.radius, this.radius, this.height, 20, 20);
-        this.side2 = new Cylinder(scene, this.radius, this.radius, -this.height, 20, 20);
+        this.side2 = new Cylinder(scene, this.radius, this.radius, this.height, 20, 20);
 
         //Setup hover effect
         this.hoverObj = new Cylinder(scene, 0.1, 0.1, 5, 4, 4);
@@ -89,8 +89,13 @@ class Piece extends CGFobject {
         this.scene.rotate(-Math.PI / 2, 1, 0, 0);
 
         //Flip for player
-        if (this.player)
+        if (this.player){
             this.scene.rotate(Math.PI, 1, 0, 0);
+            this.scene.translate(0, 0, -this.height);
+        }
+        else{
+            this.scene.translate(0, 0, -this.height);
+        }
 
         //Use hardcoded player texture
         if (this.appearanceP1.texture == null)
@@ -104,6 +109,7 @@ class Piece extends CGFobject {
             if (this.scene.graph.loadedTextures.length >= 1)
                 this.appearanceP2.setTexture(this.scene.graph.loadedTextures[2].tex);
         this.appearanceP2.apply();
+        this.scene.translate(0, 0, this.height);
         this.side2.display();
 
         //Hover flip for the hover effect
