@@ -19,10 +19,11 @@ class Raycast {
         places - board places
         plane - horizontal(XZ) plane (just a Y value)
     */
-    constructor(pieces, places, plane) {
+    constructor(pieces, places, plane, radius = 1) {
         this.pieces = pieces;
         this.places = places;
         this.plane = plane;
+        this.radius = radius;
     }
 
     /*
@@ -86,7 +87,7 @@ class Raycast {
         switch (type) {
             case "pieces":
                 for (let i = 0; i < this.pieces.length; i++) {
-                    if (this.hitSphere(this.pos, this.dir, vec3.fromValues(this.pieces[i].x, 0, this.pieces[i].z), 5)) {
+                    if (this.hitSphere(this.pos, this.dir, vec3.fromValues(this.pieces[i].x, 0, this.pieces[i].z), this.radius)) {
                         this.pieces[i].hit();
                         break;
                     }
@@ -96,7 +97,7 @@ class Raycast {
                 return this.hitPlane(this.pos, this.dir, vec3.fromValues(0, 0, 0));
             case "places":
                 for (let i = 0; i < this.places.length; i++) {
-                    if (this.hitSphere(this.pos, this.dir, vec3.fromValues(this.pieces[i].x, 0, this.pieces[i].z), 5)) {
+                    if (this.hitSphere(this.pos, this.dir, vec3.fromValues(this.pieces[i].x, 0, this.pieces[i].z), this.radius)) {
                         this.places[i].hit();
                         break;
                     }
