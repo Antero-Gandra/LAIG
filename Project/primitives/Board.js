@@ -95,11 +95,11 @@ class Board extends CGFobject {
         }
         this.scene.popMatrix();
 
-        //TODO Display pieces
+        //Display pieces
         for (var i = 0; i < this.size * this.size; i++)
             this.pieces[i].display();
 
-        this.makeRequest();
+        //this.makeRequest();
 
     }
 

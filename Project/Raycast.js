@@ -38,22 +38,12 @@ class Raycast {
     }
 
     /*
-        Updates colliders to be raycasted
-        Should be called when board changes position
-        Might not be necessary if the board doesn't change position and the scenario changes around it
-    */
-    updateColliders(pieces, places) {
-        this.pieces = pieces;
-        this.places = places;
-    }
-
-    /*
         Perform raycast, returns object hit or plane position
         objectFlag indicates if the raycast is towards pieces or the plane
         http://schabby.de/picking-opengl-ray-tracing/
         //TODO some things only need to be calculated when camera is updated
     */
-    process(scene, camera, objectFlag = true) {
+    process(scene, camera, type) {
 
         //Camera info
         this.eyePos = vec3.fromValues(camera.position[0], camera.position[1], camera.position[2]);
@@ -104,15 +94,27 @@ class Raycast {
         this.dir = vec3.create();
         vec3.subtract(this.dir, this.pos, this.eyePos);
 
-        /*TODO intersections
-
-        if (this.hitSphere(this.pos, this.dir, vec3.fromValues(0, 0, 0), 5))
-            console.log("hit sphere");
-
-        if (this.hitPlane(this.pos, this.dir, vec3.fromValues(0, 0, 0)))
-            console.log(this.hitPlane(this.pos, this.dir, vec3.fromValues(0, 0, 0)));
-
-        */
+        //Intersections
+        switch (type) {
+            case "pieces":
+                for (let i = 0; i < this.pieces.length; i++) {
+                    if (this.hitSphere(this.pos, this.dir, this.pieces[i].pos, 5)) {
+                        this.pieces[i].hit();
+                    }
+                }
+                break;
+            case "plane":
+                return this.hitPlane(this.pos, this.dir, vec3.fromValues(0, 0, 0));
+            case "places":
+                for (let i = 0; i < this.places.length; i++) {
+                    if (this.hitSphere(this.pos, this.dir, this.places[i].pos, 5)) {
+                        this.places[i].hit();
+                    }
+                }
+                break;
+            default:
+                break;
+        }
 
     }
 
@@ -141,13 +143,13 @@ class Raycast {
     */
     hitPlane(origin, direction, point, normal = vec3.fromValues(0, 1, 0)) {
         var diff = vec3.create();
-        vec3.subtract(diff,origin,point);
+        vec3.subtract(diff, origin, point);
 
-        var prod1 = vec3.dot(diff,normal);
+        var prod1 = vec3.dot(diff, normal);
         var prod2 = vec3.dot(direction, normal);
         var prod3 = prod1 / prod2;
 
-        vec3.scale(direction,direction,prod3);
+        vec3.scale(direction, direction, prod3);
 
         var ret = vec3.create();
 
