@@ -97,7 +97,7 @@ class Raycast {
                 return this.hitPlane(this.pos, this.dir, vec3.fromValues(0, 0, 0));
             case "places":
                 for (let i = 0; i < this.places.length; i++) {
-                    if (this.hitSphere(this.pos, this.dir, vec3.fromValues(this.pieces[i].x, 0, this.pieces[i].z), this.radius)) {
+                    if (this.hitSphere(this.pos, this.dir, vec3.fromValues(this.places[i].x, 0, this.places[i].z), this.radius)) {
                         this.places[i].hit();
                         break;
                     }

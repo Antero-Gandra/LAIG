@@ -134,6 +134,7 @@ class MyInterface extends CGFinterface {
         this.mouse[1] = event.pageY;
         
         //Click Down
+        //TODO Need to detect if a piece was clicked successfully(returned != false)
         this.held = 1;
 
         console.log(this.board.raycast.process(this.scene, this.scene.camera, "pieces"));
