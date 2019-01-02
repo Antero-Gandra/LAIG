@@ -93,7 +93,7 @@ class Board extends CGFobject {
         this.raycast = new Raycast(this.scene, this.pieces, this.tiles, vec3.fromValues(0, 0, 0), 1);
 
         //Setup player order
-        this.nextPlayer = 0;
+        this.nextPlayer = 1;
 
     };
 
