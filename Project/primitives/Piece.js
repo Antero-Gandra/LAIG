@@ -146,6 +146,11 @@ class Piece extends CGFobject {
         }
     }
 
+    //Flip piece
+    flip(){
+        this.player = !this.player;
+    }
+
     //Raycast callback
     hit() {
         this.board.pieceHit(this);

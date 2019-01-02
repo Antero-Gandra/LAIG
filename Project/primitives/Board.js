@@ -163,34 +163,89 @@ class Board extends CGFobject {
     setPiece(i, j, piece, tile) {
 
         //Check if tile is empty
-        if(this.matrix[i-1][j-1].player == 0){
+        if (this.matrix[i - 1][j - 1].player == 0) {
 
             //Send Prolog Request
             this.makeRequest("setPeca(" + i + "," + j + ",'" + piece.getPlayer() + "'," + this.formatBoard() + ")");
-
-            //Update Matrix
-            this.matrix[i-1][j-1].player = this.nextPlayer;
-            this.matrix[i-1][j-1].piece = piece;
 
             //Update Piece Position
             piece.x = tile.x;
             piece.z = tile.z;
 
+            //Set piece on matrix
+            this.matrix[i - 1][j - 1].piece = piece;
+
             //Next player
             this.nextPlayer = !this.nextPlayer;
 
-            //TODO Check for pieces to be flipped
         }
 
         //TODO In Player vs CPU we can do the CPU play here right away
-        
+
+    }
+
+    //Updates Board from Prolog response data
+    updateBoard(string) {
+
+        var i = 0;
+
+        for (let j = 0; j < string.length; j++) {
+            let c = string[j];
+
+            var x = Math.floor(i / this.size);
+            var y = Math.floor(i % this.size);
+
+            switch (c) {
+                //Ignored chars
+                case '[':
+                    break;
+                case ']':
+                    break;
+                case ',':
+                    break;
+                //Chars to use
+                case 'v':
+                    this.matrix[x][y].player = 0;
+                    this.matrix[x][y].piece = null;
+                    i++;
+                    break;
+                case 'x':
+                    //TODO If piece is present then tell it to flip(visually and player)
+                    if (this.matrix[x][y].player == 2) {
+                        console.log("Flip piece");
+                        this.matrix[x][y].piece.flip();
+                    }
+                    //Update matrix
+                    this.matrix[x][y].player = 1;
+                    i++;
+                    break;
+                case 'o':
+                    //TODO If piece is present then tell it to flip(visually and player)
+                    if (this.matrix[x][y].player == 1) {
+                        console.log("Flip piece");
+                        this.matrix[x][y].piece.flip();
+                    }
+                    //Update matrix
+                    this.matrix[x][y].player = 2;
+                    i++;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        console.log(string);
     }
 
     //Prolog Server Example
 
-    getPrologRequest(requestString, onSuccess, onError, port) {
+    getPrologRequest(board, requestString, onSuccess, onError, port) {
         var requestPort = port || 8081
         var request = new XMLHttpRequest();
+
+        //Identify Board
+        request.board = board;
+
         request.open('GET', 'http://localhost:' + requestPort + '/' + requestString, true);
 
         request.onload = onSuccess || function (data) { console.log("Request successful. Reply: " + data.target.response); };
@@ -219,12 +274,17 @@ class Board extends CGFobject {
         //Joga PC Hard
         //jogaPCHard([['v','v','v','v','v','v','v','v'],['v','v','v','v','v','v','v','v'],['v','v','v','v','v','v','v','v'],['v','v','v','v','v','v','v','v'],['v','v','v','v','v','v','v','v'],['v','v','v','v','v','v','v','v'],['v','v','v','v','v','v','v','v'],['v','v','v','v','v','v','v','v']])
 
-        this.getPrologRequest(string, this.onSuccess);
+        this.getPrologRequest(this, string, this.onSuccess);
     }
 
     //TODO Needs to differentiate when it receives boards or a end game check, probably just look at string
     onSuccess(data) {
-        console.log("Reply: " + data.target.response);
+
+        //Response type is board
+        if (data.target.response[0] == '[') {
+            this.board.updateBoard(data.target.response);
+        }
+
     }
 
 }
