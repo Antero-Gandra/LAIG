@@ -41,6 +41,8 @@ class Piece extends CGFobject {
         this.appearanceH.setShininess(120);
 
         //Player
+        // 0 -> Player 1
+        // 1 -> Player 2
         this.player = 0;
 
         //Position
@@ -78,7 +80,7 @@ class Piece extends CGFobject {
             vec3.subtract(hoverOffset, pos, this.hoverPos);
 
             //Apply offse to matrix
-            this.scene.translate(-hoverOffset[0], 5, -hoverOffset[2] + this.radius/4);
+            this.scene.translate(-hoverOffset[0], 5, -hoverOffset[2] + this.radius / 4);
 
         }
 
@@ -89,11 +91,11 @@ class Piece extends CGFobject {
         this.scene.rotate(-Math.PI / 2, 1, 0, 0);
 
         //Flip for player
-        if (this.player){
+        if (this.player) {
             this.scene.rotate(Math.PI, 1, 0, 0);
             this.scene.translate(0, 0, -this.height);
         }
-        else{
+        else {
             this.scene.translate(0, 0, -this.height);
         }
 
@@ -131,6 +133,17 @@ class Piece extends CGFobject {
 
         this.scene.popMatrix();
 
+    }
+
+    getPlayer() {
+        switch (this.player) {
+            case 0:
+                return 'o';
+            case 1:
+                return 'x';
+            default:
+                break;
+        }
     }
 
     //Raycast callback

@@ -143,7 +143,8 @@ class MyInterface extends CGFinterface {
             var result = this.board.raycast.process("places");
             if (result != false) {
                 console.log(result);
-                //TODO If a piece was released inside board we can do prolog call on board
+                //Tell board to send a request
+                this.board.setPiece(result.i, result.j, this.selectedPiece);
             }
             else
                 console.log("Piece released outside board");

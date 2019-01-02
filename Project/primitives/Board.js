@@ -22,6 +22,9 @@ class Board extends CGFobject {
             this.matrix[i] = [];
             for (var j = 0; j < this.size; j++)
                 this.matrix[i][j] = {
+                    // 0 -> Empty
+                    // 1 -> Player 1
+                    // 2 -> Player 2
                     player: 0,
                     piece: null
                 }
@@ -45,8 +48,8 @@ class Board extends CGFobject {
                 this.tiles[i + this.size * j].x += this.pieceSize * i;
                 this.tiles[i + this.size * j].z += this.pieceSize * j;
                 //Board Position
-                this.tiles[i + this.size * j].i = i;
-                this.tiles[i + this.size * j].j = j;
+                this.tiles[i + this.size * j].i = i + 1;
+                this.tiles[i + this.size * j].j = j + 1;
             }
         }
 
@@ -82,7 +85,7 @@ class Board extends CGFobject {
                 //Line offset
                 this.pieces[this.size * this.size / 2 + i + this.size * j].z += this.pieceSize * i;
                 //Flip for player 2
-                this.pieces[this.size * this.size / 2 + i + this.size * j].player = this.pieceSize / 2;
+                this.pieces[this.size * this.size / 2 + i + this.size * j].player = 1;
             }
         }
 
@@ -107,12 +110,59 @@ class Board extends CGFobject {
 
     }
 
-    pieceHit(piece){
+    pieceHit(piece) {
 
     }
 
-    tileHit(piece){
-        
+    tileHit(piece) {
+
+    }
+
+    //Returns the board in a string format to be argument for prolog
+    formatBoard() {
+
+        var string = "[[";
+        for (let i = 0; i < this.matrix.length; i++) {
+            for (let j = 0; j < this.matrix[i].length; j++) {
+
+                //Piece
+                switch (this.matrix[i][j].player) {
+                    case 0:
+                        string += "'v'";
+                        break;
+                    case 1:
+                        string += "'x'";
+                        break;
+                    case 2:
+                        string += "'o'";
+                        break;
+                    default:
+                        break;
+                }
+
+                //Comma between tiles
+                if (j != this.matrix[i].length - 1)
+                    string += ",";
+
+            }
+
+            //Marker between rows
+            if (i != this.matrix.length - 1)
+                string += "],[";
+
+        }
+
+        //Final Marker
+        string += "]]";
+
+        return string;
+
+    }
+
+    //Prepares and sends Prolog Request
+    //TODO will keep track of who is next player, needs to block move from same player somewhere, either here or in the interface(more visually logic)
+    setPiece(i, j, piece) {
+        this.makeRequest("setPeca(" + i + "," + j + ",'" + piece.getPlayer() + "'," + this.formatBoard() + ")");
     }
 
     //Prolog Server Example
@@ -129,8 +179,7 @@ class Board extends CGFobject {
         request.send();
     }
 
-    makeRequest() {
-        var requestString = "quit";
+    makeRequest(string) {
 
         //Sample messages
 
@@ -149,11 +198,12 @@ class Board extends CGFobject {
         //Joga PC Hard
         //jogaPCHard([['v','v','v','v','v','v','v','v'],['v','v','v','v','v','v','v','v'],['v','v','v','v','v','v','v','v'],['v','v','v','v','v','v','v','v'],['v','v','v','v','v','v','v','v'],['v','v','v','v','v','v','v','v'],['v','v','v','v','v','v','v','v'],['v','v','v','v','v','v','v','v']])
 
-        this.getPrologRequest(requestString, this.handleReply);
+        this.getPrologRequest(string, this.handleReply);
     }
 
+    //TODO Needs to differentiate when it receives boards or a end game check, probably just look at string
     handleReply(data) {
-        console.log("Reply: " + data);
+        console.log("Reply: " + data.target.response);
     }
 
 }
