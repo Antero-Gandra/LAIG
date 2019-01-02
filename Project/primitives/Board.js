@@ -16,7 +16,6 @@ class Board extends CGFobject {
         this.appearance.setShininess(120);
 
         //Data
-        //TODO piece must be set when a piece is placed in that location
         this.matrix = [];
         for (var i = 0; i < this.size; i++) {
             this.matrix[i] = [];
@@ -108,6 +107,10 @@ class Board extends CGFobject {
         for (var i = 0; i < this.size * this.size; i++)
             this.pieces[i].display();
 
+        //Rotate Camera
+        if(this.rotatingCamera)
+            this.rotatingAnimation();
+
     }
 
     //Returns the current score
@@ -184,10 +187,10 @@ class Board extends CGFobject {
 
     }
 
-    //Prepares and sends Prolog Request
+    //Prepares and sends Prolog Request to place piece
     setPiece(i, j, piece, tile) {
 
-        //Check if tile is empty
+        //Check if tile is empty(Prolog doesn't)
         if (this.matrix[i - 1][j - 1].player == 0) {
 
             //Send Prolog Request
@@ -206,9 +209,60 @@ class Board extends CGFobject {
             //Next player
             this.nextPlayer = !this.nextPlayer;
 
+            //Rotate Camera
+            //TODO Only call this in Player vs Player Mode
+            this.rotateCamera();
+
         }
 
         //TODO In Player vs CPU we can do the CPU play here right away
+
+    }
+
+    //Rotate camera for other player
+    rotateCamera() {
+        this.rotatingCamera = true;
+        this.rotationStart = new Date().getTime() / 1000;
+    }
+
+    //Rotate camera animation
+    rotatingAnimation() {
+
+        var currentTime = new Date().getTime() / 1000;
+
+        var diff = currentTime - this.rotationStart;
+
+        var animTime = 1;
+
+        if (diff < animTime) {
+
+            //Phase of animation
+            var phase = Math.PI * diff / animTime;
+
+            //Modify phase to player
+            if(this.nextPlayer == 1)
+                phase += Math.PI;
+
+            //Rotate camera around center
+            var x = Math.cos(phase) * this.cameraHorizontalRadius;
+            var y = Math.sin(phase) * this.cameraHorizontalRadius;
+            this.scene.camera.position[0] = x;
+            this.scene.camera.position[2] = y;
+
+        } else {
+            
+            //Latch camera to position
+            if(this.nextPlayer == 0){
+                this.scene.camera.position[0] = -this.cameraHorizontalRadius;
+                this.scene.camera.position[2] = 0;
+            }else{
+                this.scene.camera.position[0] = this.cameraHorizontalRadius;
+                this.scene.camera.position[2] = 0;
+            }
+
+            this.rotatingCamera = false;
+            this.raycast.prepare();
+        }
 
     }
 

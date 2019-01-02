@@ -238,6 +238,9 @@ class XMLscene extends CGFscene {
 
                         //Prepare camera
                         this.graph.components[i].childrenPrimitives[0].raycast.prepare();
+
+                        //Setup Camera Radius on Board
+                        this.graph.components[i].childrenPrimitives[0].cameraHorizontalRadius = this.camera.position[0];
                     }                        
                 }
 
