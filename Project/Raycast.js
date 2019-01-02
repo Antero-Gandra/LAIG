@@ -22,7 +22,6 @@ class Raycast {
     constructor(scene, pieces, places, plane, radius = 1) {
 
         this.scene = scene;
-        this.viewport = scene.gl.canvas;
 
         this.pieces = pieces;
         this.places = places;
@@ -37,6 +36,12 @@ class Raycast {
         Only needs to be called when camera changes
     */
     prepare(){
+
+        //Canvas
+        this.viewport = {
+            width: this.scene.gl.canvas.width,
+            height: this.scene.gl.canvas.height
+        };
 
         //Camera info
         this.eyePos = vec3.fromValues(this.scene.camera.position[0], this.scene.camera.position[1], this.scene.camera.position[2]);
@@ -69,6 +74,11 @@ class Raycast {
         http://schabby.de/picking-opengl-ray-tracing/
     */
     process(type) {
+        
+        //Canvas was resized, need to process camera again
+        if(this.viewport.width != this.scene.gl.canvas.width || this.viewport.height != this.scene.gl.canvas.height){
+            this.prepare();
+        }
 
         //Mouse position
         this.mousePos = {
