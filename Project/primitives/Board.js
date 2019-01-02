@@ -110,6 +110,31 @@ class Board extends CGFobject {
 
     }
 
+    //Returns the current score
+    score() {
+
+        var score = {
+            p1: 0,
+            p2: 0
+        }
+
+        //Check each piece
+        for (let i = 0; i < this.pieces.length; i++) {
+            //If it was blocked then it is placed
+            if (this.pieces[i].blocked) {
+                //Player 1
+                if (this.pieces[i].player == 0)
+                    score.p1++;
+                //Player 2
+                if (this.pieces[i].player == 1)
+                    score.p2++;
+            }
+        }
+
+        return score;
+
+    }
+
     pieceHit(piece) {
 
     }
