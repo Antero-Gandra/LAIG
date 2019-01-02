@@ -123,9 +123,15 @@ class MyInterface extends CGFinterface {
         //Click Down
         var result = this.board.raycast.process("pieces");
         if (result != false) {
-            this.held = 1;
-            this.selectedPiece = result;
-            console.log(result);
+            //Is next player piece
+            if(this.board.nextPlayer == result.player){
+                this.held = 1;
+                this.selectedPiece = result;
+                console.log(result);
+            }
+            else{
+                console.log("Not this player turn");
+            }
         }
         else
             console.log("No piece selected");
@@ -144,7 +150,7 @@ class MyInterface extends CGFinterface {
             if (result != false) {
                 console.log(result);
                 //Tell board to send a request
-                this.board.setPiece(result.i, result.j, this.selectedPiece);
+                this.board.setPiece(result.i, result.j, this.selectedPiece, result);
             }
             else
                 console.log("Piece released outside board");
@@ -169,6 +175,5 @@ class MyInterface extends CGFinterface {
         }
 
     }
-
 
 }

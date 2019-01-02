@@ -92,6 +92,9 @@ class Board extends CGFobject {
         //Setup raycast
         this.raycast = new Raycast(this.scene, this.pieces, this.tiles, vec3.fromValues(0, 0, 0), 1);
 
+        //Setup player order
+        this.nextPlayer = 0;
+
     };
 
     display() {
@@ -104,9 +107,6 @@ class Board extends CGFobject {
         //Display pieces
         for (var i = 0; i < this.size * this.size; i++)
             this.pieces[i].display();
-
-        //TODO Requests will be made in callback functions of Board, called from Mouse events
-        //this.makeRequest();
 
     }
 
@@ -160,9 +160,30 @@ class Board extends CGFobject {
     }
 
     //Prepares and sends Prolog Request
-    //TODO will keep track of who is next player, needs to block move from same player somewhere, either here or in the interface(more visually logic)
-    setPiece(i, j, piece) {
-        this.makeRequest("setPeca(" + i + "," + j + ",'" + piece.getPlayer() + "'," + this.formatBoard() + ")");
+    setPiece(i, j, piece, tile) {
+
+        //Check if tile is empty
+        if(this.matrix[i-1][j-1].player == 0){
+
+            //Send Prolog Request
+            this.makeRequest("setPeca(" + i + "," + j + ",'" + piece.getPlayer() + "'," + this.formatBoard() + ")");
+
+            //Update Matrix
+            this.matrix[i-1][j-1].player = this.nextPlayer;
+            this.matrix[i-1][j-1].piece = piece;
+
+            //Update Piece Position
+            piece.x = tile.x;
+            piece.z = tile.z;
+
+            //Next player
+            this.nextPlayer = !this.nextPlayer;
+
+            //TODO Check for pieces to be flipped
+        }
+
+        //TODO In Player vs CPU we can do the CPU play here right away
+        
     }
 
     //Prolog Server Example
@@ -198,11 +219,11 @@ class Board extends CGFobject {
         //Joga PC Hard
         //jogaPCHard([['v','v','v','v','v','v','v','v'],['v','v','v','v','v','v','v','v'],['v','v','v','v','v','v','v','v'],['v','v','v','v','v','v','v','v'],['v','v','v','v','v','v','v','v'],['v','v','v','v','v','v','v','v'],['v','v','v','v','v','v','v','v'],['v','v','v','v','v','v','v','v']])
 
-        this.getPrologRequest(string, this.handleReply);
+        this.getPrologRequest(string, this.onSuccess);
     }
 
     //TODO Needs to differentiate when it receives boards or a end game check, probably just look at string
-    handleReply(data) {
+    onSuccess(data) {
         console.log("Reply: " + data.target.response);
     }
 
