@@ -70,6 +70,10 @@ class Piece extends CGFobject {
         //Coordinate offset
         this.scene.translate(this.x, 0, this.z);
 
+        //Capture Flip animation
+        if(this.flipping)
+            this.flipAnimation();
+
         //Hover offset
         if (this.hovering) {
 
@@ -89,7 +93,7 @@ class Piece extends CGFobject {
         this.scene.translate(0, this.height, 0);
 
         //Flip to vertically
-        this.scene.rotate(-Math.PI / 2, 1, 0, 0);
+        this.scene.rotate(-Math.PI / 2, 1, 0, 0);        
 
         //Flip for player
         if (this.player) {
@@ -149,7 +153,35 @@ class Piece extends CGFobject {
 
     //Flip piece
     flip(){
-        this.player = !this.player;
+        this.flipping = true;
+        this.flipStart = new Date().getTime() / 1000;
+    }
+
+    //Flip animation
+    flipAnimation(){
+
+        var currentTime = new Date().getTime() / 1000;
+
+        var diff = currentTime - this.flipStart;
+
+        var animTime = 1;
+        var animScale = 10;
+        var flips = 4;
+
+        if(diff < animTime){
+            var trans = diff;
+            if(diff > animTime/2)
+                trans = animTime-diff;
+            this.scene.translate(0,trans*animScale,0);
+            //Compensate height
+            this.scene.translate(0,this.height,0);
+            //Rotation
+            this.scene.rotate(diff*Math.PI*(1+flips)/animTime,1,0,0);
+        }else{
+            this.flipping = false;
+            this.player = !this.player;
+        }
+        
     }
 
     //Raycast callback
