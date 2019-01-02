@@ -125,9 +125,14 @@ class MyInterface extends CGFinterface {
         if (result != false) {
             //Is next player piece
             if(this.board.nextPlayer == result.player){
-                this.held = 1;
-                this.selectedPiece = result;
-                console.log(result);
+                //Check if piece is placed already
+                if(!result.blocked){
+                    this.held = 1;
+                    this.selectedPiece = result;
+                    console.log(result);
+                }else{
+                    console.log("This piece is already placed");
+                }                
             }
             else{
                 console.log("Not this player turn");

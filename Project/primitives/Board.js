@@ -175,6 +175,9 @@ class Board extends CGFobject {
             //Set piece on matrix
             this.matrix[i - 1][j - 1].piece = piece;
 
+            //Piece can't be used anymore
+            piece.blocked = true;
+
             //Next player
             this.nextPlayer = !this.nextPlayer;
 

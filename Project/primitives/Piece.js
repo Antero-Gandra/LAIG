@@ -51,6 +51,7 @@ class Piece extends CGFobject {
 
         //Setup
         this.hovering = false;
+        this.blocked = false;
 
     };
 
