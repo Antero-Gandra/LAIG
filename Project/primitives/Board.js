@@ -276,7 +276,7 @@ class Board extends CGFobject {
         //Get available piece
         var piece;
         for (let i = 0; i < this.pieces.length; i++) {
-            if(!this.pieces[i].blocked && this.pieces[i].player == 0){
+            if(!this.pieces[i].blocked && this.pieces[i].player == this.nextPlayer){
                 piece = this.pieces[i];
                 break;
             }
@@ -288,11 +288,14 @@ class Board extends CGFobject {
         var board = data.substr(1, boardIndex);
 
         //Get piece coordinates
-        var matI = data.substr(boardIndex+2, 1)-1;
-        var matJ = data.substr(boardIndex+4, 1)-1;
+        var matI = data.substr(boardIndex+2, 1);
+        var matJ = data.substr(boardIndex+4, 1);
+        console.log(data);
+        console.log(matI);
+        console.log(matJ);
 
         //Set piece on matrix
-        this.matrix[matI][matJ].piece = piece;
+        this.matrix[matI-1][matJ-1].piece = piece;
 
         //Update Piece Position
         //TODO Needs to be in animation
