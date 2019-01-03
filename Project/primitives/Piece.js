@@ -54,6 +54,7 @@ class Piece extends CGFobject {
         this.blocked = false;
         this.heightAnim = 0;
         this.hoverPos = vec3.create();
+        this.hoverHeight = 5;
 
     };
 
@@ -91,7 +92,7 @@ class Piece extends CGFobject {
             vec3.subtract(hoverOffset, pos, this.hoverPos);
 
             //Apply offse to matrix
-            this.scene.translate(-hoverOffset[0], 5, -hoverOffset[2] + this.radius / 4);
+            this.scene.translate(-hoverOffset[0], this.hoverHeight, -hoverOffset[2] + this.radius / 4);
 
         }
 
@@ -144,7 +145,7 @@ class Piece extends CGFobject {
         //Coordinate offset
         
         if(this.hovering)
-            this.scene.translate(0, -5, 0);
+            this.scene.translate(0, -this.hoverHeight, 0);
         this.scene.translate(0, 0.01-this.heightAnim, 0);
         this.scene.scale(0.75, 1, 0.75);
 
