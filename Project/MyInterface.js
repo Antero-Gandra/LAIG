@@ -68,15 +68,15 @@ class MyInterface extends CGFinterface {
         var settingsGroup = group.addFolder("Settings");
         settingsGroup.open();
 
-        //TODO Difficulty
+        //Difficulty
         const difficulty = ["Easy", "Hard"];
         this.difficultySet = "Easy";
-        settingsGroup.add(this, 'difficultySet', difficulty).name('Difficulty').onChange(val => this.scene.selectView(val));
+        settingsGroup.add(this, 'difficultySet', difficulty).name('Difficulty').onChange(val => this.board.tmpDifficulty = val);
 
-        //TODO Mode
+        //Mode
         const mode = ["Player vs Player", "Player vs CPU", "CPU vs CPU"];
         this.modeSet = "Player vs Player";
-        settingsGroup.add(this, 'modeSet', mode).name('Mode').onChange(val => this.board.mode = val);
+        settingsGroup.add(this, 'modeSet', mode).name('Mode').onChange(val => this.board.tmpMode = val);
 
         //Play Controls
         var playGroup = group.addFolder("Play Controls");
@@ -109,9 +109,13 @@ class MyInterface extends CGFinterface {
         viewGroup.add(this, 'cameraSet', camera).name('Camera').onChange(val => this.scene.selectView(val));
 
         //TODO New Game
-        this.newGame = this.scene.resetView;
+        this.newGame = this.callNewGame;
         group.add(this, 'newGame').name('New Game');
 
+    }
+
+    callNewGame(){
+        this.board.newGame();
     }
 
     //Process mouse down

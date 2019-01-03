@@ -95,10 +95,18 @@ class Board extends CGFobject {
         this.nextPlayer = 1;
 
         //Default Settings
+        this.tmpDifficulty = "Easy";
+        this.tmpMode = "Player vs Player";
         this.difficulty = "Easy";
         this.mode = "Player vs Player";
 
     };
+
+    newGame(){
+        this.difficulty = this.tmpDifficulty;
+        this.mode = this.tmpMode;
+        //TODO Reset Board
+    }
 
     display() {
 
