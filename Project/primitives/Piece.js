@@ -67,6 +67,10 @@ class Piece extends CGFobject {
         //Display
         this.scene.pushMatrix();
 
+        //CPU Throw animation
+        if(this.throwing)
+            this.throwAnimation();
+
         //Coordinate offset
         this.scene.translate(this.x, 0, this.z);
 
@@ -148,6 +152,48 @@ class Piece extends CGFobject {
                 return 'x';
             default:
                 break;
+        }
+    }
+
+    //CPU Throw
+    throw(boardData, tile){
+        this.throwing = true;
+        this.throwStart = new Date().getTime() / 1000;
+
+        //Info to use after animation is done
+        this.throwTarget = tile;
+        this.boardData = boardData;
+    }
+
+    //CPU Throw Animation
+    throwAnimation(){
+        var currentTime = new Date().getTime() / 1000;
+
+        var diff = currentTime - this.throwStart;
+
+        var animTime = 1;
+
+        //Distance
+        var distanceX = this.throwTarget.x-this.x;
+        var distanceZ = this.throwTarget.z-this.z;
+        var height = 5;
+
+        if(diff < animTime){
+            var trans = diff;
+            if(diff > animTime/2)
+                trans = animTime-diff;
+            this.scene.translate(diff*distanceX,trans*height,diff*distanceZ);
+        }else{
+            this.throwing = false;
+            //Position
+            this.x = this.throwTarget.x;
+            this.z = this.throwTarget.z;
+            //Piece can't be used anymore
+            this.blocked = true;
+            //Swap Player
+            this.board.nextPlayer = !this.board.nextPlayer;
+            //Update board
+            this.board.updateBoard(this.boardData);
         }
     }
 

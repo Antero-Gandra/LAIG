@@ -298,9 +298,6 @@ class Board extends CGFobject {
         //Get piece coordinates
         var matI = data.substr(boardIndex+2, 1);
         var matJ = data.substr(boardIndex+4, 1);
-        console.log(data);
-        console.log(matI);
-        console.log(matJ);
 
         //Set piece on matrix
         this.matrix[matI-1][matJ-1].piece = piece;
@@ -309,20 +306,11 @@ class Board extends CGFobject {
         //TODO Needs to be in animation(Animation probably needs to block updateBoard or it will look out of sync)
         for (let i = 0; i < this.tiles.length; i++) {
             if(this.tiles[i].i == matI && this.tiles[i].j == matJ){
-                piece.x = this.tiles[i].x;
-                piece.z = this.tiles[i].z;
+                piece.throw(board, this.tiles[i]);
                 break;
             }
         }
 
-        //Piece can't be used anymore
-        piece.blocked = true;
-
-        //Swap Player
-        this.nextPlayer = !this.nextPlayer;
-
-        //Update board
-        this.updateBoard(board);
     }
 
     //Updates Board from Prolog response data
