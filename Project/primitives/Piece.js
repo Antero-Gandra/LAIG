@@ -97,7 +97,8 @@ class Piece extends CGFobject {
         }
 
         //Display shadow
-        this.displayShadow();
+        if(!this.blocked)
+            this.displayShadow();
 
         //Surface
         this.scene.translate(0, this.height, 0);
