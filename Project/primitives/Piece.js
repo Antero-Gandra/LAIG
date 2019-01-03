@@ -180,10 +180,10 @@ class Piece extends CGFobject {
 
     //CPU Throw Animation
     throwAnimation(){
+
+        //Timings
         var currentTime = new Date().getTime() / 1000;
-
         var diff = currentTime - this.throwStart;
-
         var animTime = 1;
 
         //Distance
@@ -191,12 +191,14 @@ class Piece extends CGFobject {
         var distanceZ = this.throwTarget.z-this.z;
         var height = 10;
 
+        //Animation
         if(diff < animTime){
             var trans = diff;
             if(diff > animTime/2)
                 trans = animTime-diff;
             this.heightAnim = trans*height;
             this.scene.translate(diff*distanceX,trans*height,diff*distanceZ);
+        //Animation Done
         }else{
             this.throwing = false;
             //Position

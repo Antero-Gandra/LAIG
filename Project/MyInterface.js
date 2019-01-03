@@ -22,6 +22,8 @@ class MyInterface extends CGFinterface {
 
         // add a group of controls (and open/expand by defult)
 
+        this.playerBlock = false;
+
         return true;
     }
 
@@ -121,6 +123,9 @@ class MyInterface extends CGFinterface {
     //Process mouse down
     processMouseDown(event) {
 
+        if(this.playerBlock)
+            return;
+
         this.mouse[0] = event.pageX;
         this.mouse[1] = event.pageY;
 
@@ -148,6 +153,9 @@ class MyInterface extends CGFinterface {
     //Process mouse up
     processMouseUp(event) {
 
+        if(this.playerBlock)
+            return;
+
         this.mouse[0] = event.pageX;
         this.mouse[1] = event.pageY;
 
@@ -171,6 +179,9 @@ class MyInterface extends CGFinterface {
 
     //Process mouse move
     processMouseMove(event) {
+
+        if(this.playerBlock)
+            return;
 
         this.mouse[0] = event.pageX;
         this.mouse[1] = event.pageY;

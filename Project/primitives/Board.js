@@ -15,12 +15,15 @@ class Board extends CGFobject {
         this.appearance.setSpecular(0.0, 0.0, 0.0, 1);
         this.appearance.setShininess(120);
 
+        //Stack of boards
+        this.matrixStack = [];
+
         //Data
-        this.matrix = [];
+        this.currentMatrix = [];
         for (var i = 0; i < this.size; i++) {
-            this.matrix[i] = [];
+            this.currentMatrix[i] = [];
             for (var j = 0; j < this.size; j++)
-                this.matrix[i][j] = {
+                this.currentMatrix[i][j] = {
                     // 0 -> Empty
                     // 1 -> Player 1
                     // 2 -> Player 2
@@ -102,10 +105,21 @@ class Board extends CGFobject {
 
     };
 
-    newGame(){
+    newGame() {
         this.difficulty = this.tmpDifficulty;
         this.mode = this.tmpMode;
         //TODO Reset Board
+
+        this.matrixStack = [];
+
+        //If CPU vs CPU
+        if (this.mode == "CPU vs CPU") {
+            this.scene.interface.playerBlock = true;
+            //TODO use difficulty mode
+            this.makeRequest("jogaPCEasy(" + this.formatBoard() + ")");
+        }
+        else
+            this.scene.interface.playerBlock = false;
     }
 
     display() {
@@ -120,7 +134,7 @@ class Board extends CGFobject {
             this.pieces[i].display();
 
         //Rotate Camera
-        if(this.rotatingCamera)
+        if (this.rotatingCamera)
             this.rotatingAnimation();
 
     }
@@ -146,7 +160,7 @@ class Board extends CGFobject {
             var phase = Math.PI * diff / animTime;
 
             //Modify phase to player
-            if(this.nextPlayer == 1)
+            if (this.nextPlayer == 1)
                 phase += Math.PI;
 
             //Rotate camera around center
@@ -156,12 +170,12 @@ class Board extends CGFobject {
             this.scene.camera.position[2] = y;
 
         } else {
-            
+
             //Latch camera to position
-            if(this.nextPlayer == 0){
+            if (this.nextPlayer == 0) {
                 this.scene.camera.position[0] = -this.cameraHorizontalRadius;
                 this.scene.camera.position[2] = 0;
-            }else{
+            } else {
                 this.scene.camera.position[0] = this.cameraHorizontalRadius;
                 this.scene.camera.position[2] = 0;
             }
@@ -209,11 +223,11 @@ class Board extends CGFobject {
     formatBoard() {
 
         var string = "[[";
-        for (let i = 0; i < this.matrix.length; i++) {
-            for (let j = 0; j < this.matrix[i].length; j++) {
+        for (let i = 0; i < this.size; i++) {
+            for (let j = 0; j < this.size; j++) {
 
                 //Piece
-                switch (this.matrix[i][j].player) {
+                switch (this.currentMatrix[i][j].player) {
                     case 0:
                         string += "'v'";
                         break;
@@ -228,13 +242,13 @@ class Board extends CGFobject {
                 }
 
                 //Comma between tiles
-                if (j != this.matrix[i].length - 1)
+                if (j != this.currentMatrix[i].length - 1)
                     string += ",";
 
             }
 
             //Marker between rows
-            if (i != this.matrix.length - 1)
+            if (i != this.currentMatrix.length - 1)
                 string += "],[";
 
         }
@@ -250,7 +264,7 @@ class Board extends CGFobject {
     setPiecePlayer(i, j, piece, tile) {
 
         //Check if tile is empty(Prolog doesn't)
-        if (this.matrix[i - 1][j - 1].player == 0) {
+        if (this.currentMatrix[i - 1][j - 1].player == 0) {
 
             //Send Prolog Request
             this.makeRequest("setPeca(" + i + "," + j + ",'" + piece.getPlayer() + "'," + this.formatBoard() + ")");
@@ -260,7 +274,7 @@ class Board extends CGFobject {
             piece.z = tile.z;
 
             //Set piece on matrix
-            this.matrix[i - 1][j - 1].piece = piece;
+            this.currentMatrix[i - 1][j - 1].piece = piece;
 
             //Piece can't be used anymore
             piece.blocked = true;
@@ -269,22 +283,22 @@ class Board extends CGFobject {
             this.nextPlayer = !this.nextPlayer;
 
             //Check mode
-            if(this.mode == "Player vs Player"){
+            if (this.mode == "Player vs Player") {
                 //Rotate Camera
                 this.rotateCamera();
-            }   
+            }
 
         }
 
     }
 
     //Set CPU piece from Prolog response
-    setPieceCPU(data){
+    setPieceCPU(data) {
 
         //Get available piece
         var piece;
         for (let i = 0; i < this.pieces.length; i++) {
-            if(!this.pieces[i].blocked && this.pieces[i].player == this.nextPlayer){
+            if (!this.pieces[i].blocked && this.pieces[i].player == this.nextPlayer) {
                 piece = this.pieces[i];
                 break;
             }
@@ -296,16 +310,15 @@ class Board extends CGFobject {
         var board = data.substr(1, boardIndex);
 
         //Get piece coordinates
-        var matI = data.substr(boardIndex+2, 1);
-        var matJ = data.substr(boardIndex+4, 1);
+        var matI = data.substr(boardIndex + 2, 1);
+        var matJ = data.substr(boardIndex + 4, 1);
 
         //Set piece on matrix
-        this.matrix[matI-1][matJ-1].piece = piece;
+        this.currentMatrix[matI - 1][matJ - 1].piece = piece;
 
         //Update Piece Position
-        //TODO Needs to be in animation(Animation probably needs to block updateBoard or it will look out of sync)
         for (let i = 0; i < this.tiles.length; i++) {
-            if(this.tiles[i].i == matI && this.tiles[i].j == matJ){
+            if (this.tiles[i].i == matI && this.tiles[i].j == matJ) {
                 piece.throw(board, this.tiles[i]);
                 break;
             }
@@ -316,13 +329,33 @@ class Board extends CGFobject {
     //Updates Board from Prolog response data
     updateBoard(string) {
 
-        var i = 0;
+        //New matrix
+        this.currentMatrix = [];
+        for (let i = 0; i < this.size; i++) {
+            this.currentMatrix[i] = [];
+            for (let j = 0; j < this.size; j++){
+                this.currentMatrix[i][j] = {
+                    // 0 -> Empty
+                    // 1 -> Player 1
+                    // 2 -> Player 2
+                    player: 0,
+                    piece: null
+                }
+                if(this.matrixStack.length > 0){
+                    if(this.matrixStack[this.matrixStack.length - 1][i][j].piece != undefined){
+                        this.currentMatrix[i][j].piece = this.matrixStack[this.matrixStack.length - 1][i][j].piece;
+                    }
+                }
+            }
+        }
 
+        //Write new matrix
+        var i = 0;
         for (let j = 0; j < string.length; j++) {
             let c = string[j];
 
-            var x = Math.floor(i / this.size);
-            var y = Math.floor(i % this.size);
+            let x = Math.floor(i / this.size);
+            let y = Math.floor(i % this.size);
 
             switch (c) {
                 //Ignored chars
@@ -334,28 +367,16 @@ class Board extends CGFobject {
                     break;
                 //Chars to use
                 case 'v':
-                    this.matrix[x][y].player = 0;
-                    this.matrix[x][y].piece = null;
+                    this.currentMatrix[x][y].player = 0;
+                    this.currentMatrix[x][y].piece = null;
                     i++;
                     break;
                 case 'x':
-                    //TODO If piece is present then tell it to flip(visually and player)
-                    if (this.matrix[x][y].player == 2) {
-                        console.log("Flip piece");
-                        this.matrix[x][y].piece.flip();
-                    }
-                    //Update matrix
-                    this.matrix[x][y].player = 1;
+                    this.currentMatrix[x][y].player = 1;
                     i++;
                     break;
                 case 'o':
-                    //TODO If piece is present then tell it to flip(visually and player)
-                    if (this.matrix[x][y].player == 1) {
-                        console.log("Flip piece");
-                        this.matrix[x][y].piece.flip();
-                    }
-                    //Update matrix
-                    this.matrix[x][y].player = 2;
+                    this.currentMatrix[x][y].player = 2;
                     i++;
                     break;
                 default:
@@ -363,8 +384,29 @@ class Board extends CGFobject {
             }
         }
 
+        //Check differences to flip
+        if (this.matrixStack.length > 0) {
+            for (let x = 0; x < this.size; x++) {
+                for (let y = 0; y < this.size; y++) {
+                    if (this.matrixStack[this.matrixStack.length - 1][x][y].player != this.currentMatrix[x][y].player && this.matrixStack[this.matrixStack.length - 1][x][y].player != 0) {
+                        console.log("Flip piece");
+                        this.currentMatrix[x][y].piece.flip();
+                    }
+                }
+            }
+        }
+
+        //Add to stack
+        this.matrixStack.push(this.currentMatrix);
+
         //Ready for a CPU play on "Player vs CPU"
-        if(this.mode == "Player vs CPU" && this.nextPlayer == 0){
+        if (this.mode == "Player vs CPU" && this.nextPlayer == 0) {
+            //TODO use difficulty mode
+            this.makeRequest("jogaPCEasy(" + this.formatBoard() + ")");
+        }
+
+        //Ready for a CPU play on "CPU vs CPU"
+        else if (this.mode == "CPU vs CPU") {
             //TODO use difficulty mode
             this.makeRequest("jogaPCEasy(" + this.formatBoard() + ")");
         }
@@ -416,7 +458,7 @@ class Board extends CGFobject {
     onSuccess(data) {
 
         //Response type is board after CPU play
-        if(data.target.response[data.target.response.length-2] != ']'){
+        if (data.target.response[data.target.response.length - 2] != ']') {
             this.board.setPieceCPU(data.target.response);
         }
         //Response type is board after player play
