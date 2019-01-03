@@ -94,6 +94,10 @@ class Board extends CGFobject {
         //Setup player order
         this.nextPlayer = 1;
 
+        //Default Settings
+        this.difficulty = "Easy";
+        this.mode = "Player vs Player";
+
     };
 
     display() {
@@ -110,6 +114,53 @@ class Board extends CGFobject {
         //Rotate Camera
         if(this.rotatingCamera)
             this.rotatingAnimation();
+
+    }
+
+    //Rotate camera for other player
+    rotateCamera() {
+        this.rotatingCamera = true;
+        this.rotationStart = new Date().getTime() / 1000;
+    }
+
+    //Rotate camera animation
+    rotatingAnimation() {
+
+        var currentTime = new Date().getTime() / 1000;
+
+        var diff = currentTime - this.rotationStart;
+
+        var animTime = 1;
+
+        if (diff < animTime) {
+
+            //Phase of animation
+            var phase = Math.PI * diff / animTime;
+
+            //Modify phase to player
+            if(this.nextPlayer == 1)
+                phase += Math.PI;
+
+            //Rotate camera around center
+            var x = Math.cos(phase) * this.cameraHorizontalRadius;
+            var y = Math.sin(phase) * this.cameraHorizontalRadius;
+            this.scene.camera.position[0] = x;
+            this.scene.camera.position[2] = y;
+
+        } else {
+            
+            //Latch camera to position
+            if(this.nextPlayer == 0){
+                this.scene.camera.position[0] = -this.cameraHorizontalRadius;
+                this.scene.camera.position[2] = 0;
+            }else{
+                this.scene.camera.position[0] = this.cameraHorizontalRadius;
+                this.scene.camera.position[2] = 0;
+            }
+
+            this.rotatingCamera = false;
+            this.raycast.prepare();
+        }
 
     }
 
@@ -188,7 +239,7 @@ class Board extends CGFobject {
     }
 
     //Prepares and sends Prolog Request to place piece
-    setPiece(i, j, piece, tile) {
+    setPiecePlayer(i, j, piece, tile) {
 
         //Check if tile is empty(Prolog doesn't)
         if (this.matrix[i - 1][j - 1].player == 0) {
@@ -209,61 +260,58 @@ class Board extends CGFobject {
             //Next player
             this.nextPlayer = !this.nextPlayer;
 
-            //Rotate Camera
-            //TODO Only call this in Player vs Player Mode
-            this.rotateCamera();
+            //Check mode
+            if(this.mode == "Player vs Player"){
+                //Rotate Camera
+                this.rotateCamera();
+            }   
 
         }
 
-        //TODO In Player vs CPU we can do the CPU play here right away
-
     }
 
-    //Rotate camera for other player
-    rotateCamera() {
-        this.rotatingCamera = true;
-        this.rotationStart = new Date().getTime() / 1000;
-    }
+    //Set CPU piece from Prolog response
+    setPieceCPU(data){
 
-    //Rotate camera animation
-    rotatingAnimation() {
-
-        var currentTime = new Date().getTime() / 1000;
-
-        var diff = currentTime - this.rotationStart;
-
-        var animTime = 1;
-
-        if (diff < animTime) {
-
-            //Phase of animation
-            var phase = Math.PI * diff / animTime;
-
-            //Modify phase to player
-            if(this.nextPlayer == 1)
-                phase += Math.PI;
-
-            //Rotate camera around center
-            var x = Math.cos(phase) * this.cameraHorizontalRadius;
-            var y = Math.sin(phase) * this.cameraHorizontalRadius;
-            this.scene.camera.position[0] = x;
-            this.scene.camera.position[2] = y;
-
-        } else {
-            
-            //Latch camera to position
-            if(this.nextPlayer == 0){
-                this.scene.camera.position[0] = -this.cameraHorizontalRadius;
-                this.scene.camera.position[2] = 0;
-            }else{
-                this.scene.camera.position[0] = this.cameraHorizontalRadius;
-                this.scene.camera.position[2] = 0;
+        //Get available piece
+        var piece;
+        for (let i = 0; i < this.pieces.length; i++) {
+            if(!this.pieces[i].blocked && this.pieces[i].player == 0){
+                piece = this.pieces[i];
+                break;
             }
-
-            this.rotatingCamera = false;
-            this.raycast.prepare();
         }
 
+        var boardIndex = data.indexOf("]-");
+
+        //Get board coordinates
+        var board = data.substr(1, boardIndex);
+
+        //Get piece coordinates
+        var matI = data.substr(boardIndex+2, 1)-1;
+        var matJ = data.substr(boardIndex+4, 1)-1;
+
+        //Set piece on matrix
+        this.matrix[matI][matJ].piece = piece;
+
+        //Update Piece Position
+        //TODO Needs to be in animation
+        for (let i = 0; i < this.tiles.length; i++) {
+            if(this.tiles[i].i == matI && this.tiles[i].j == matJ){
+                piece.x = this.tiles[i].x;
+                piece.z = this.tiles[i].z;
+                break;
+            }
+        }
+
+        //Piece can't be used anymore
+        piece.blocked = true;
+
+        //Swap Player
+        this.nextPlayer = !this.nextPlayer;
+
+        //Update board
+        this.updateBoard(board);
     }
 
     //Updates Board from Prolog response data
@@ -316,6 +364,12 @@ class Board extends CGFobject {
             }
         }
 
+        //Ready for a CPU play on "Player vs CPU"
+        if(this.mode == "Player vs CPU" && this.nextPlayer == 0){
+            //TODO use difficulty mode
+            this.makeRequest("jogaPCEasy(" + this.formatBoard() + ")");
+        }
+
         console.log(string);
     }
 
@@ -362,8 +416,12 @@ class Board extends CGFobject {
     //TODO Needs to differentiate when it receives boards or a end game check, probably just look at string
     onSuccess(data) {
 
-        //Response type is board
-        if (data.target.response[0] == '[') {
+        //Response type is board after CPU play
+        if(data.target.response[data.target.response.length-2] != ']'){
+            this.board.setPieceCPU(data.target.response);
+        }
+        //Response type is board after player play
+        else if (data.target.response[0] == '[') {
             this.board.updateBoard(data.target.response);
         }
 

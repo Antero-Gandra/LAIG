@@ -76,7 +76,7 @@ class MyInterface extends CGFinterface {
         //TODO Mode
         const mode = ["Player vs Player", "Player vs CPU", "CPU vs CPU"];
         this.modeSet = "Player vs Player";
-        settingsGroup.add(this, 'modeSet', mode).name('Mode').onChange(val => this.scene.selectView(val));
+        settingsGroup.add(this, 'modeSet', mode).name('Mode').onChange(val => this.board.mode = val);
 
         //Play Controls
         var playGroup = group.addFolder("Play Controls");
@@ -130,13 +130,11 @@ class MyInterface extends CGFinterface {
                     this.held = 1;
                     this.selectedPiece = result;
                     console.log(result);
-                }else{
-                    console.log("This piece is already placed");
-                }                
+                }else
+                    console.log("This piece is already placed");       
             }
-            else{
+            else
                 console.log("Not this player turn");
-            }
         }
         else
             console.log("No piece selected");
@@ -155,7 +153,7 @@ class MyInterface extends CGFinterface {
             if (result != false) {
                 console.log(result);
                 //Tell board to send a request
-                this.board.setPiece(result.i, result.j, this.selectedPiece, result);
+                this.board.setPiecePlayer(result.i, result.j, this.selectedPiece, result);
             }
             else
                 console.log("Piece released outside board");
