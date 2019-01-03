@@ -16,8 +16,8 @@ class Piece extends CGFobject {
         this.side1 = new Cylinder(scene, this.radius, this.radius, this.height, 20, 20);
         this.side2 = new Cylinder(scene, this.radius, this.radius, this.height, 20, 20);
 
-        //Setup hover effect
-        this.hoverObj = new Cylinder(scene, 0.1, 0.1, 5, 4, 4);
+        //Setup shadow
+        this.shadow = new Circle(scene, 20);
 
         //Setup player 1 material
         this.appearanceP1 = new CGFappearance(this.scene);
@@ -33,12 +33,12 @@ class Piece extends CGFobject {
         this.appearanceP2.setSpecular(0.0, 0.0, 0.0, 1);
         this.appearanceP2.setShininess(120);
 
-        //Setup hover material
-        this.appearanceH = new CGFappearance(this.scene);
-        this.appearanceH.setAmbient(0.3, 0.3, 0.3, 1);
-        this.appearanceH.setDiffuse(0.7, 0.7, 0.7, 1);
-        this.appearanceH.setSpecular(0.0, 0.0, 0.0, 1);
-        this.appearanceH.setShininess(120);
+        //Setup shadow material
+        this.appearanceS = new CGFappearance(this.scene);
+        this.appearanceS.setAmbient(0.3, 0.3, 0.3, 1);
+        this.appearanceS.setDiffuse(0.7, 0.7, 0.7, 1);
+        this.appearanceS.setSpecular(0.0, 0.0, 0.0, 1);
+        this.appearanceS.setShininess(120);
 
         //Player
         // 0 -> Player 1
@@ -52,6 +52,8 @@ class Piece extends CGFobject {
         //Setup
         this.hovering = false;
         this.blocked = false;
+        this.heightAnim = 0;
+        this.hoverPos = vec3.create();
 
     };
 
@@ -93,6 +95,9 @@ class Piece extends CGFobject {
 
         }
 
+        //Display shadow
+        this.displayShadow();
+
         //Surface
         this.scene.translate(0, this.height, 0);
 
@@ -123,25 +128,32 @@ class Piece extends CGFobject {
         this.scene.translate(0, 0, this.height);
         this.side2.display();
 
-        //Hover flip for the hover effect
-        if (this.hovering) {
-
-            //Flip for player
-            if (!this.player)
-                this.scene.rotate(Math.PI, 1, 0, 0);
-
-            //Use hardcoded hover texture
-            if (this.appearanceH.texture == null)
-                if (this.scene.graph.loadedTextures.length >= 1)
-                    this.appearanceH.setTexture(this.scene.graph.loadedTextures[3].tex);
-
-            //Display hover
-            this.appearanceH.apply();
-            this.hoverObj.display();
-        }
-
         this.scene.popMatrix();
 
+    }
+
+    displayShadow(){
+        //Display Shadow
+        this.scene.pushMatrix();    
+
+        if (this.appearanceS.texture == null)
+            if (this.scene.graph.loadedTextures.length >= 1)
+                this.appearanceS.setTexture(this.scene.graph.loadedTextures[3].tex);
+        this.appearanceS.apply();
+
+        //Coordinate offset
+        
+        if(this.hovering)
+            this.scene.translate(0, -5, 0);
+        this.scene.translate(0, 0.01-this.heightAnim, 0);
+        this.scene.scale(0.75, 1, 0.75);
+
+        //Flip to vertically
+        this.scene.rotate(-Math.PI / 2, 1, 0, 0); 
+
+        this.shadow.display();
+
+        this.scene.popMatrix();
     }
 
     getPlayer() {
@@ -176,12 +188,13 @@ class Piece extends CGFobject {
         //Distance
         var distanceX = this.throwTarget.x-this.x;
         var distanceZ = this.throwTarget.z-this.z;
-        var height = 5;
+        var height = 10;
 
         if(diff < animTime){
             var trans = diff;
             if(diff > animTime/2)
                 trans = animTime-diff;
+            this.heightAnim = trans*height;
             this.scene.translate(diff*distanceX,trans*height,diff*distanceZ);
         }else{
             this.throwing = false;

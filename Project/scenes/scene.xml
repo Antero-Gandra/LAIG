@@ -27,7 +27,7 @@
         <texture id="tile" file="images/tile.png" />
         <texture id="p1" file="images/player1.png" />
         <texture id="p2" file="images/player2.png" />
-        <texture id="hover" file="images/hover.png" />
+        <texture id="shadow" file="images/shadow.png" />
         <texture id="terrain" file="images/terrain.jpg" />
         <texture id="height" file="images/height.jpg" />
         <texture id="water" file="images/water.jpg" />
