@@ -105,6 +105,20 @@ class Board extends CGFobject {
 
     };
 
+    getCharPlayer(number) {
+        switch (number) {
+            case 0:
+                return "'v'";
+            case 1:
+                return "'x'";
+            case 2:
+                return "'o'";
+
+            default:
+                break;
+        }
+    }
+
     newGame() {
         this.difficulty = this.tmpDifficulty;
         this.mode = this.tmpMode;
@@ -116,7 +130,7 @@ class Board extends CGFobject {
         if (this.mode == "CPU vs CPU") {
             this.scene.interface.playerBlock = true;
             //TODO use difficulty mode
-            this.makeRequest("jogaPCEasy(" + this.formatBoard() + ")");
+            this.makeRequest("jogaPCEasy(" + this.getCharPlayer(this.nextPlayer + 1) + "," + this.formatBoard() + ")");
         }
         else
             this.scene.interface.playerBlock = false;
@@ -260,11 +274,38 @@ class Board extends CGFobject {
 
     }
 
+    //New matrix for current
+    refreshMatrix(){
+        //New matrix
+        this.currentMatrix = [];
+        for (let i = 0; i < this.size; i++) {
+            this.currentMatrix[i] = [];
+            for (let j = 0; j < this.size; j++) {
+                this.currentMatrix[i][j] = {
+                    // 0 -> Empty
+                    // 1 -> Player 1
+                    // 2 -> Player 2
+                    player: 0,
+                    piece: null
+                }
+                if (this.matrixStack.length > 0) {
+                    this.currentMatrix[i][j].player = this.matrixStack[this.matrixStack.length - 1][i][j].player;
+                    if (this.matrixStack[this.matrixStack.length - 1][i][j].piece != null) {                        
+                        this.currentMatrix[i][j].piece = this.matrixStack[this.matrixStack.length - 1][i][j].piece;
+                    }
+                }
+            }
+        }
+    }
+
     //Prepares and sends Prolog Request to place piece
     setPiecePlayer(i, j, piece, tile) {
 
         //Check if tile is empty(Prolog doesn't)
         if (this.currentMatrix[i - 1][j - 1].player == 0) {
+
+            //New matrix
+            this.refreshMatrix();
 
             //Send Prolog Request
             this.makeRequest("setPeca(" + i + "," + j + ",'" + piece.getPlayer() + "'," + this.formatBoard() + ")");
@@ -313,6 +354,9 @@ class Board extends CGFobject {
         var matI = data.substr(boardIndex + 2, 1);
         var matJ = data.substr(boardIndex + 4, 1);
 
+        //New matrix
+        this.refreshMatrix();
+
         //Set piece on matrix
         this.currentMatrix[matI - 1][matJ - 1].piece = piece;
 
@@ -328,26 +372,6 @@ class Board extends CGFobject {
 
     //Updates Board from Prolog response data
     updateBoard(string) {
-
-        //New matrix
-        this.currentMatrix = [];
-        for (let i = 0; i < this.size; i++) {
-            this.currentMatrix[i] = [];
-            for (let j = 0; j < this.size; j++) {
-                this.currentMatrix[i][j] = {
-                    // 0 -> Empty
-                    // 1 -> Player 1
-                    // 2 -> Player 2
-                    player: 0,
-                    piece: null
-                }
-                if (this.matrixStack.length > 0) {
-                    if (this.matrixStack[this.matrixStack.length - 1][i][j].piece != undefined) {
-                        this.currentMatrix[i][j].piece = this.matrixStack[this.matrixStack.length - 1][i][j].piece;
-                    }
-                }
-            }
-        }
 
         //Write new matrix
         var i = 0;
@@ -367,8 +391,6 @@ class Board extends CGFobject {
                     break;
                 //Chars to use
                 case 'v':
-                    this.currentMatrix[x][y].player = 0;
-                    this.currentMatrix[x][y].piece = null;
                     i++;
                     break;
                 case 'x':
@@ -390,6 +412,11 @@ class Board extends CGFobject {
                 for (let y = 0; y < this.size; y++) {
                     if (this.matrixStack[this.matrixStack.length - 1][x][y].player != this.currentMatrix[x][y].player && this.matrixStack[this.matrixStack.length - 1][x][y].player != 0) {
                         console.log("Flip piece");
+                        if(this.currentMatrix[x][y].piece == null){
+                            console.log(x);
+                            console.log(y);
+                            console.log(this.currentMatrix);
+                        }
                         this.currentMatrix[x][y].piece.flip();
                     }
                 }
@@ -402,13 +429,13 @@ class Board extends CGFobject {
         //Ready for a CPU play on "Player vs CPU"
         if (this.mode == "Player vs CPU" && this.nextPlayer == 0) {
             //TODO use difficulty mode
-            this.makeRequest("jogaPCEasy(" + this.formatBoard() + ")");
+            this.makeRequest("jogaPCEasy(" + this.getCharPlayer(this.nextPlayer + 1) + "," + this.formatBoard() + ")");
         }
 
         //Ready for a CPU play on "CPU vs CPU"
         else if (this.mode == "CPU vs CPU") {
             //TODO use difficulty mode
-            this.makeRequest("jogaPCEasy(" + this.formatBoard() + ")");
+            this.makeRequest("jogaPCEasy(" + this.getCharPlayer(this.nextPlayer + 1) + "," + this.formatBoard() + ")");
         }
 
         console.log(string);

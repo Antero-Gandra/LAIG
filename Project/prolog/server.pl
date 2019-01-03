@@ -116,5 +116,7 @@ parse_input(quit, goodbye).
 parse_input(setPeca(NLinha, NColuna, Peca,TabIn), TabOut) :- setPecaServidor(NLinha, NColuna, Peca,TabIn, TabOut).
 parse_input(verificaFimJogo(Tab), Verf):- verificaFimServer(Tab, Verf).
 parse_input(verificaVencedorJogo(Tab), Vencedor):- verificaVencedor(Tab, 'x', 'o', Vencedor).
-parse_input(jogaPCEasy(Tab), [TabOut-NLinha-NColuna]):- jogaPC('o',Tab,TabOut,NLinha,NColuna).
-parse_input(jogaPCHard(Tab), [TabOut-NLinha-NColuna]):- jogaPCIA('o',Tab,TabOut,NLinha,NColuna).
+parse_input(jogaPCEasy('o',Tab), [TabOut-NLinha-NColuna]):- jogaPC('o',Tab,TabOut,NLinha,NColuna).
+parse_input(jogaPCEasy('x',Tab), [TabOut-NLinha-NColuna]):- jogaPC('x',Tab,TabOut,NLinha,NColuna).
+parse_input(jogaPCHard('o',Tab), [TabOut-NLinha-NColuna]):- jogaPCIA('o',Tab,TabOut,NLinha,NColuna).
+parse_input(jogaPCHard('x',Tab), [TabOut-NLinha-NColuna]):- jogaPCIA('x',Tab,TabOut,NLinha,NColuna).
