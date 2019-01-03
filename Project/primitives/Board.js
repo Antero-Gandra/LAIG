@@ -298,7 +298,7 @@ class Board extends CGFobject {
         this.matrix[matI-1][matJ-1].piece = piece;
 
         //Update Piece Position
-        //TODO Needs to be in animation
+        //TODO Needs to be in animation(Animation probably needs to block updateBoard or it will look out of sync)
         for (let i = 0; i < this.tiles.length; i++) {
             if(this.tiles[i].i == matI && this.tiles[i].j == matJ){
                 piece.x = this.tiles[i].x;
