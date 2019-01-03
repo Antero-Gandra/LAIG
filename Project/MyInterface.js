@@ -116,14 +116,14 @@ class MyInterface extends CGFinterface {
 
     }
 
-    callNewGame(){
+    callNewGame() {
         this.board.newGame();
     }
 
     //Process mouse down
     processMouseDown(event) {
 
-        if(this.playerBlock)
+        if (this.playerBlock)
             return;
 
         this.mouse[0] = event.pageX;
@@ -133,14 +133,14 @@ class MyInterface extends CGFinterface {
         var result = this.board.raycast.process("pieces");
         if (result != false) {
             //Is next player piece
-            if(this.board.nextPlayer == result.player){
+            if (this.board.nextPlayer == result.player) {
                 //Check if piece is placed already
-                if(!result.blocked){
+                if (!result.blocked) {
                     this.held = 1;
                     this.selectedPiece = result;
                     console.log(result);
-                }else
-                    console.log("This piece is already placed");       
+                } else
+                    console.log("This piece is already placed");
             }
             else
                 console.log("Not this player turn");
@@ -153,7 +153,7 @@ class MyInterface extends CGFinterface {
     //Process mouse up
     processMouseUp(event) {
 
-        if(this.playerBlock)
+        if (this.playerBlock)
             return;
 
         this.mouse[0] = event.pageX;
@@ -180,7 +180,7 @@ class MyInterface extends CGFinterface {
     //Process mouse move
     processMouseMove(event) {
 
-        if(this.playerBlock)
+        if (this.playerBlock)
             return;
 
         this.mouse[0] = event.pageX;

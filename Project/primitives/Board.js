@@ -333,7 +333,7 @@ class Board extends CGFobject {
         this.currentMatrix = [];
         for (let i = 0; i < this.size; i++) {
             this.currentMatrix[i] = [];
-            for (let j = 0; j < this.size; j++){
+            for (let j = 0; j < this.size; j++) {
                 this.currentMatrix[i][j] = {
                     // 0 -> Empty
                     // 1 -> Player 1
@@ -341,8 +341,8 @@ class Board extends CGFobject {
                     player: 0,
                     piece: null
                 }
-                if(this.matrixStack.length > 0){
-                    if(this.matrixStack[this.matrixStack.length - 1][i][j].piece != undefined){
+                if (this.matrixStack.length > 0) {
+                    if (this.matrixStack[this.matrixStack.length - 1][i][j].piece != undefined) {
                         this.currentMatrix[i][j].piece = this.matrixStack[this.matrixStack.length - 1][i][j].piece;
                     }
                 }

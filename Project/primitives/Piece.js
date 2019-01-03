@@ -71,14 +71,14 @@ class Piece extends CGFobject {
         this.scene.pushMatrix();
 
         //CPU Throw animation
-        if(this.throwing)
+        if (this.throwing)
             this.throwAnimation();
 
         //Coordinate offset
         this.scene.translate(this.x, 0, this.z);
 
         //Capture Flip animation
-        if(this.flipping)
+        if (this.flipping)
             this.flipAnimation();
 
         //Hover offset
@@ -103,7 +103,7 @@ class Piece extends CGFobject {
         this.scene.translate(0, this.height, 0);
 
         //Flip to vertically
-        this.scene.rotate(-Math.PI / 2, 1, 0, 0);        
+        this.scene.rotate(-Math.PI / 2, 1, 0, 0);
 
         //Flip for player
         if (this.player) {
@@ -133,9 +133,9 @@ class Piece extends CGFobject {
 
     }
 
-    displayShadow(){
+    displayShadow() {
         //Display Shadow
-        this.scene.pushMatrix();    
+        this.scene.pushMatrix();
 
         if (this.appearanceS.texture == null)
             if (this.scene.graph.loadedTextures.length >= 1)
@@ -143,14 +143,14 @@ class Piece extends CGFobject {
         this.appearanceS.apply();
 
         //Coordinate offset
-        
-        if(this.hovering)
+
+        if (this.hovering)
             this.scene.translate(0, -this.hoverHeight, 0);
-        this.scene.translate(0, 0.01-this.heightAnim, 0);
+        this.scene.translate(0, 0.01 - this.heightAnim, 0);
         this.scene.scale(0.75, 1, 0.75);
 
         //Flip to vertically
-        this.scene.rotate(-Math.PI / 2, 1, 0, 0); 
+        this.scene.rotate(-Math.PI / 2, 1, 0, 0);
 
         this.shadow.display();
 
@@ -169,7 +169,7 @@ class Piece extends CGFobject {
     }
 
     //CPU Throw
-    throw(boardData, tile){
+    throw(boardData, tile) {
         this.throwing = true;
         this.throwStart = new Date().getTime() / 1000;
 
@@ -179,7 +179,7 @@ class Piece extends CGFobject {
     }
 
     //CPU Throw Animation
-    throwAnimation(){
+    throwAnimation() {
 
         //Timings
         var currentTime = new Date().getTime() / 1000;
@@ -187,19 +187,19 @@ class Piece extends CGFobject {
         var animTime = 1;
 
         //Distance
-        var distanceX = this.throwTarget.x-this.x;
-        var distanceZ = this.throwTarget.z-this.z;
+        var distanceX = this.throwTarget.x - this.x;
+        var distanceZ = this.throwTarget.z - this.z;
         var height = 10;
 
         //Animation
-        if(diff < animTime){
+        if (diff < animTime) {
             var trans = diff;
-            if(diff > animTime/2)
-                trans = animTime-diff;
-            this.heightAnim = trans*height;
-            this.scene.translate(diff*distanceX,trans*height,diff*distanceZ);
-        //Animation Done
-        }else{
+            if (diff > animTime / 2)
+                trans = animTime - diff;
+            this.heightAnim = trans * height;
+            this.scene.translate(diff * distanceX, trans * height, diff * distanceZ);
+            //Animation Done
+        } else {
             this.throwing = false;
             //Position
             this.x = this.throwTarget.x;
@@ -214,13 +214,13 @@ class Piece extends CGFobject {
     }
 
     //Flip piece
-    flip(){
+    flip() {
         this.flipping = true;
         this.flipStart = new Date().getTime() / 1000;
     }
 
     //Flip animation
-    flipAnimation(){
+    flipAnimation() {
 
         var currentTime = new Date().getTime() / 1000;
 
@@ -230,20 +230,20 @@ class Piece extends CGFobject {
         var animScale = 10;
         var flips = 4;
 
-        if(diff < animTime){
+        if (diff < animTime) {
             var trans = diff;
-            if(diff > animTime/2)
-                trans = animTime-diff;
-            this.scene.translate(0,trans*animScale,0);
+            if (diff > animTime / 2)
+                trans = animTime - diff;
+            this.scene.translate(0, trans * animScale, 0);
             //Compensate height
-            this.scene.translate(0,this.height,0);
+            this.scene.translate(0, this.height, 0);
             //Rotation
-            this.scene.rotate(diff*Math.PI*(1+flips)/animTime,1,0,0);
-        }else{
+            this.scene.rotate(diff * Math.PI * (1 + flips) / animTime, 1, 0, 0);
+        } else {
             this.flipping = false;
             this.player = !this.player;
         }
-        
+
     }
 
     //Raycast callback
