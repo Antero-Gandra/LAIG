@@ -128,9 +128,20 @@ class Board extends CGFobject {
 
         //If CPU vs CPU
         if (this.mode == "CPU vs CPU") {
+
+            //Block interface in CPU vs CPU
             this.scene.interface.playerBlock = true;
-            //TODO use difficulty mode
-            this.makeRequest("jogaPCEasy(" + this.getCharPlayer(this.nextPlayer + 1) + "," + this.formatBoard() + ")");
+
+            //Check difficulty setting and do request
+            let string = "";
+            if (this.difficulty == "Easy")
+                string += "jogaPCEasy(";
+            else
+                string += "jogaPCHard(";
+
+            string += this.getCharPlayer(this.nextPlayer + 1) + "," + this.formatBoard() + ")";
+
+            this.makeRequest(string);
         }
         else
             this.scene.interface.playerBlock = false;
@@ -275,7 +286,7 @@ class Board extends CGFobject {
     }
 
     //New matrix for current
-    refreshMatrix(){
+    refreshMatrix() {
         //New matrix
         this.currentMatrix = [];
         for (let i = 0; i < this.size; i++) {
@@ -290,7 +301,7 @@ class Board extends CGFobject {
                 }
                 if (this.matrixStack.length > 0) {
                     this.currentMatrix[i][j].player = this.matrixStack[this.matrixStack.length - 1][i][j].player;
-                    if (this.matrixStack[this.matrixStack.length - 1][i][j].piece != null) {                        
+                    if (this.matrixStack[this.matrixStack.length - 1][i][j].piece != null) {
                         this.currentMatrix[i][j].piece = this.matrixStack[this.matrixStack.length - 1][i][j].piece;
                     }
                 }
@@ -423,14 +434,30 @@ class Board extends CGFobject {
 
         //Ready for a CPU play on "Player vs CPU"
         if (this.mode == "Player vs CPU" && this.nextPlayer == 0) {
-            //TODO use difficulty mode
-            this.makeRequest("jogaPCEasy(" + this.getCharPlayer(this.nextPlayer + 2) + "," + this.formatBoard() + ")");
+            //Check difficulty setting and do request
+            let string = "";
+            if (this.difficulty == "Easy")
+                string += "jogaPCEasy(";
+            else
+                string += "jogaPCHard(";
+
+            string += this.getCharPlayer(this.nextPlayer + 2) + "," + this.formatBoard() + ")";
+
+            this.makeRequest(string);
         }
 
         //Ready for a CPU play on "CPU vs CPU"
         else if (this.mode == "CPU vs CPU") {
-            //TODO use difficulty mode
-            this.makeRequest("jogaPCEasy(" + this.getCharPlayer(this.nextPlayer + 1) + "," + this.formatBoard() + ")");
+            //Check difficulty setting and do request
+            let string = "";
+            if (this.difficulty == "Easy")
+                string += "jogaPCEasy(";
+            else
+                string += "jogaPCHard(";
+
+            string += this.getCharPlayer(this.nextPlayer + 1) + "," + this.formatBoard() + ")";
+
+            this.makeRequest(string);
         }
 
         console.log(string);
