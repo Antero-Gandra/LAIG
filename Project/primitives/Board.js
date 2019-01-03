@@ -412,11 +412,6 @@ class Board extends CGFobject {
                 for (let y = 0; y < this.size; y++) {
                     if (this.matrixStack[this.matrixStack.length - 1][x][y].player != this.currentMatrix[x][y].player && this.matrixStack[this.matrixStack.length - 1][x][y].player != 0) {
                         console.log("Flip piece");
-                        if(this.currentMatrix[x][y].piece == null){
-                            console.log(x);
-                            console.log(y);
-                            console.log(this.currentMatrix);
-                        }
                         this.currentMatrix[x][y].piece.flip();
                     }
                 }
@@ -429,7 +424,7 @@ class Board extends CGFobject {
         //Ready for a CPU play on "Player vs CPU"
         if (this.mode == "Player vs CPU" && this.nextPlayer == 0) {
             //TODO use difficulty mode
-            this.makeRequest("jogaPCEasy(" + this.getCharPlayer(this.nextPlayer + 1) + "," + this.formatBoard() + ")");
+            this.makeRequest("jogaPCEasy(" + this.getCharPlayer(this.nextPlayer + 2) + "," + this.formatBoard() + ")");
         }
 
         //Ready for a CPU play on "CPU vs CPU"
