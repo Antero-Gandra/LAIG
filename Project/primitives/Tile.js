@@ -51,9 +51,4 @@ class Tile extends CGFobject {
 
     }
 
-    //Raycast callback
-    hit() {
-        this.board.tileHit(this);
-    }
-
 };

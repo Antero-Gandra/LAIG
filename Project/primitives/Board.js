@@ -287,14 +287,6 @@ class Board extends CGFobject {
 
     }
 
-    pieceHit(piece) {
-
-    }
-
-    tileHit(piece) {
-
-    }
-
     //Returns the board in a string format to be argument for prolog
     formatBoard() {
 

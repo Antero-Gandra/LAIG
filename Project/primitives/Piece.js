@@ -305,11 +305,6 @@ class Piece extends CGFobject {
 
     }
 
-    //Raycast callback
-    hit() {
-        this.board.pieceHit(this);
-    }
-
     //Use hovering
     hover(pos) {
         this.hovering = true;

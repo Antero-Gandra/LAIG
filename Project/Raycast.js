@@ -1,16 +1,11 @@
 
-/*
-    Performs raycasts from the eye position to a list of colliders
-*/
-
 class Raycast {
 
     /*
-        Workflow of raycasting, from picking to dragging to dropping
+        Flow of raycasting, from picking to dragging to dropping
         1- Line to collider (sphere) raycasting to every piece to pick the piece we want (Mouse press)
         2- Line to board (plane) raycast to know the position the piece is being dragged at (Mouse held down)
-        3- Line to board (plane) raycast to know the position the piece is dropped (Mouse released)
-        (Alternatively step 3 can be raycast collision to sphere of board places, so wont need to calculate coordinates upon release)
+        3- Line to collider (sphere) raycast to know the tile the piece is dropped (Mouse released)
     */
 
     /*
@@ -109,7 +104,6 @@ class Raycast {
             case "pieces":
                 for (let i = 0; i < this.pieces.length; i++) {
                     if (this.hitSphere(this.pos, this.dir, vec3.fromValues(this.pieces[i].x, 0, this.pieces[i].z), this.radius)) {
-                        this.pieces[i].hit();
                         return this.pieces[i];
                     }
                 }
@@ -119,7 +113,6 @@ class Raycast {
             case "places":
                 for (let i = 0; i < this.places.length; i++) {
                     if (this.hitSphere(this.pos, this.dir, vec3.fromValues(this.places[i].x, 0, this.places[i].z), this.radius)) {
-                        this.places[i].hit();
                         return this.places[i];
                     }
                 }
