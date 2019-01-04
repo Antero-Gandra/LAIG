@@ -27,7 +27,7 @@ class Board extends CGFobject {
                     piece: null
                 }
         }
-        
+
         //Tiles
         this.tiles = [];
         for (var i = 0; i < this.size * this.size; i++)
@@ -128,7 +128,7 @@ class Board extends CGFobject {
     }
 
     //Reset pieces and board data
-    resetBoard(){
+    resetBoard() {
 
         //Stack of boards
         this.matrixStack = [];
@@ -149,11 +149,11 @@ class Board extends CGFobject {
 
         //Reset pieces
         for (let i = 0; i < this.pieces.length; i++) {
-            this.pieces[i].reset();            
+            this.pieces[i].reset();
         }
 
         //Rotate camera for player pieces
-        if(!this.nextPlayer)
+        if (!this.nextPlayer)
             this.rotateCamera();
 
         //Setup player order

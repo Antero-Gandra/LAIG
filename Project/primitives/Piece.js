@@ -101,7 +101,7 @@ class Piece extends CGFobject {
         }
 
         //Display shadow
-        if(!this.blocked)
+        if (!this.blocked)
             this.displayShadow();
 
         //Surface
@@ -149,7 +149,7 @@ class Piece extends CGFobject {
 
         //Coordinate offset
         if (this.hovering)
-            this.scene.translate(0, 0.02-this.hoverHeight, 0);
+            this.scene.translate(0, 0.02 - this.hoverHeight, 0);
         this.scene.translate(0, 0.02 - this.heightAnim, 0);
         this.scene.scale(0.75, 1, 0.75);
 
@@ -175,10 +175,10 @@ class Piece extends CGFobject {
     //Reset
     reset() {
         //If it's not blocked then it wasn't played so doesn't need reset
-        if(!this.blocked){
+        if (!this.blocked) {
             return;
         }
-        
+
         this.reseting = true;
         this.blocked = false;
         this.resetStart = new Date().getTime() / 1000;
@@ -288,7 +288,7 @@ class Piece extends CGFobject {
             this.scene.translate(0, this.height, 0);
             //Rotation
             this.scene.rotate(diff * Math.PI * (1 + flips) / animTime, 1, 0, 0);
-        //Animation Done
+            //Animation Done
         } else {
             this.flipping = false;
             this.player = !this.player;
