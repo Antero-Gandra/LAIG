@@ -157,10 +157,7 @@ class Board extends CGFobject {
 
         //Rotate camera for player pieces
         if (!this.nextPlayer && this.mode == "Player vs Player")
-            this.rotateCamera();  
-
-        //Setup player order
-        this.nextPlayer = 1;              
+            this.rotateCamera();            
 
     }
 
@@ -194,8 +191,11 @@ class Board extends CGFobject {
 
             this.makeRequest(string);
         }
-        else
+        else{
+            this.nextPlayer = 1; 
             this.scene.interface.playerBlock = false;
+        }
+    
     }
 
     display() {

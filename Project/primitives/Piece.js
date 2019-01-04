@@ -181,10 +181,8 @@ class Piece extends CGFobject {
         this.heightAnim = 0;
         this.throwStart = 0;
 
-        //If it's not blocked then it wasn't played so doesn't need reset
-        if (!this.blocked) {
+        if(!this.blocked)
             return;
-        }
 
         this.reseting = true;
         this.blocked = false;
