@@ -80,6 +80,10 @@ class MyInterface extends CGFinterface {
         this.modeSet = "Player vs Player";
         settingsGroup.add(this, 'modeSet', mode).name('Mode').onChange(val => this.board.tmpMode = val);
 
+        //New Game
+        this.newGame = this.callNewGame;
+        settingsGroup.add(this, 'newGame').name('New Game');
+
         //Play Controls
         var playGroup = group.addFolder("Play Controls");
         playGroup.open();
@@ -104,10 +108,6 @@ class MyInterface extends CGFinterface {
         const scenario = ["Scene1"];
         this.scenarioSet = "Scene1";
         viewGroup.add(this, 'scenarioSet', scenario).name('Scenario').onChange(val => this.scene.selectView(val));
-
-        //TODO New Game
-        this.newGame = this.callNewGame;
-        group.add(this, 'newGame').name('New Game');
 
     }
 
