@@ -130,6 +130,15 @@ class Board extends CGFobject {
         }
     }
 
+    undo(){
+        //TODO Probably should work only in PVP and PVC
+        if(this.matrixStack.length > 0){
+            this.currentMatrix = this.matrixStack.pop();
+            //TODO Reset last piece
+            //TODO Reset flip
+        }
+    }
+
     //Reset pieces and board data
     resetBoard() {
 
@@ -174,6 +183,8 @@ class Board extends CGFobject {
         //Clear play stack
         this.matrixStack = [];
 
+        this.nextPlayer = 1; 
+
         //If CPU vs CPU
         if (this.mode == "CPU vs CPU") {
 
@@ -192,7 +203,6 @@ class Board extends CGFobject {
             this.makeRequest(string);
         }
         else{
-            this.nextPlayer = 1; 
             this.scene.interface.playerBlock = false;
         }
     

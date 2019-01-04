@@ -89,7 +89,7 @@ class MyInterface extends CGFinterface {
         playGroup.open();
 
         //TODO Undo
-        this.undo = this.scene.resetView;
+        this.undo = this.callUndo;
         playGroup.add(this, 'undo').name('Undo');
 
         //TODO Redo
@@ -113,6 +113,10 @@ class MyInterface extends CGFinterface {
 
     callNewGame() {
         this.board.newGame();
+    }
+
+    callUndo() {
+        this.board.undo();
     }
 
     //Process mouse down

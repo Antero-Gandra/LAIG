@@ -76,7 +76,7 @@ class Piece extends CGFobject {
             this.resetAnimation();
 
         //CPU Throw animation
-        if (this.throwing)
+        if (this.throwing && !this.reseting)
             this.throwAnimation();
 
         //Coordinate offset
@@ -185,7 +185,6 @@ class Piece extends CGFobject {
             return;
 
         this.reseting = true;
-        this.blocked = false;
         this.resetStart = new Date().getTime() / 1000;
     }
 
@@ -211,6 +210,7 @@ class Piece extends CGFobject {
             this.scene.translate(diff * distanceX, trans * height, diff * distanceZ);
             //Animation Done
         } else {
+            this.blocked = false;
             this.reseting = false;
             //Player
             this.player = this.originalPlayer;
@@ -218,7 +218,7 @@ class Piece extends CGFobject {
             this.heightAnim = 0;
             //Original
             this.x = this.originalX;
-            this.z = this.originalZ;
+            this.z = this.originalZ;          
         }
     }
 
