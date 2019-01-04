@@ -55,6 +55,7 @@ class Piece extends CGFobject {
         this.heightAnim = 0;
         this.hoverPos = vec3.create();
         this.hoverHeight = 5;
+        this.noShadow = false;
 
     };
 
@@ -101,7 +102,7 @@ class Piece extends CGFobject {
         }
 
         //Display shadow
-        if (!this.blocked)
+        if (!this.blocked && !this.noShadow)
             this.displayShadow();
 
         //Surface
@@ -174,6 +175,12 @@ class Piece extends CGFobject {
 
     //Reset
     reset() {
+
+        //All pieces should stop throw
+        this.throwing = false;
+        this.heightAnim = 0;
+        this.throwStart = 0;
+
         //If it's not blocked then it wasn't played so doesn't need reset
         if (!this.blocked) {
             return;
@@ -184,7 +191,7 @@ class Piece extends CGFobject {
         this.resetStart = new Date().getTime() / 1000;
     }
 
-    //CPU Throw Animation
+    //Reset Animation
     resetAnimation() {
 
         //Timings
@@ -209,6 +216,8 @@ class Piece extends CGFobject {
             this.reseting = false;
             //Player
             this.player = this.originalPlayer;
+            //Height of animation reset
+            this.heightAnim = 0;
             //Original
             this.x = this.originalX;
             this.z = this.originalZ;
@@ -261,7 +270,8 @@ class Piece extends CGFobject {
     }
 
     //Flip piece
-    flip() {
+    flip(flips = 4) {
+        this.flips = flips;
         this.flipping = true;
         this.flipStart = new Date().getTime() / 1000;
     }
@@ -276,7 +286,6 @@ class Piece extends CGFobject {
 
         //Settings
         var animScale = 10;
-        var flips = 4;
 
         //Animation
         if (diff < animTime) {
@@ -287,7 +296,7 @@ class Piece extends CGFobject {
             //Compensate height
             this.scene.translate(0, this.height, 0);
             //Rotation
-            this.scene.rotate(diff * Math.PI * (1 + flips) / animTime, 1, 0, 0);
+            this.scene.rotate(diff * Math.PI * (1 + this.flips) / animTime, 1, 0, 0);
             //Animation Done
         } else {
             this.flipping = false;
