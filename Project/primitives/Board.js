@@ -156,11 +156,11 @@ class Board extends CGFobject {
         }
 
         //Rotate camera for player pieces
-        if (!this.nextPlayer)
-            this.rotateCamera();
+        if (!this.nextPlayer && this.mode == "Player vs Player")
+            this.rotateCamera();  
 
         //Setup player order
-        this.nextPlayer = 1;
+        this.nextPlayer = 1;              
 
     }
 
