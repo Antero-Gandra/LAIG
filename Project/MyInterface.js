@@ -93,10 +93,6 @@ class MyInterface extends CGFinterface {
         this.undoBlocked = false;
         playGroup.add(this, 'undo').name('Undo');
 
-        //TODO Movie
-        this.movie = this.scene.resetView;
-        playGroup.add(this, 'movie').name('Movie');
-
         //View Controls
         var viewGroup = group.addFolder("View");
         viewGroup.open();
@@ -106,6 +102,22 @@ class MyInterface extends CGFinterface {
         this.scenarioSet = "Scene1";
         viewGroup.add(this, 'scenarioSet', scenario).name('Scenario').onChange(val => this.scene.selectView(val));
 
+        //Status
+        var statusGroup = group.addFolder("Status");
+        statusGroup.open();
+
+        //TODO Score
+        this.score = "0-0";
+        console.log(statusGroup.add(this,'score').name('Score'));
+
+        //TODO Movie
+        this.movie = this.callMovie;
+        statusGroup.add(this, 'movie').name('Movie');
+
+    }
+
+    callMovie() {
+        this.board.movie();
     }
 
     callNewGame() {

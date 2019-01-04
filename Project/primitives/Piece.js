@@ -106,7 +106,7 @@ class Piece extends CGFobject {
         }
 
         //Display shadow
-        if (!this.blocked && !this.noShadow)
+        if (!this.noShadow)
             this.displayShadow();
 
         //Surface
@@ -184,6 +184,7 @@ class Piece extends CGFobject {
         this.throwing = false;
         this.heightAnim = 0;
         this.throwStart = 0;
+        this.noShadow = false;
 
         if(!this.blocked)
             return;
@@ -217,6 +218,7 @@ class Piece extends CGFobject {
         } else {
             this.blocked = false;
             this.reseting = false;
+            this.noShadow = false;
             //Player
             this.player = this.originalPlayer;
             //Height of animation reset
@@ -232,6 +234,7 @@ class Piece extends CGFobject {
     throw(boardData, tile) {
         this.throwing = true;
         this.throwStart = new Date().getTime() / 1000;
+        this.noShadow = false;
         this.board.scene.interface.undoBlocked = true;
 
         //Info to use after animation is done
@@ -262,6 +265,7 @@ class Piece extends CGFobject {
             //Animation Done
         } else {
             this.throwing = false;
+            this.noShadow = true;
             //Position
             this.x = this.throwTarget.x;
             this.z = this.throwTarget.z;
@@ -279,6 +283,7 @@ class Piece extends CGFobject {
     undo() {
         this.undoing = true;
         this.blocked = false;
+        this.noShadow = false;
         this.board.scene.interface.undoBlocked = true;
         this.undoStart = new Date().getTime() / 1000;
     }
@@ -306,6 +311,7 @@ class Piece extends CGFobject {
             //Animation Done
         } else {
             this.undoing = false;
+            this.noShadow = true;
             //Position
             this.x = this.originalX;
             this.z = this.originalZ;
@@ -319,6 +325,7 @@ class Piece extends CGFobject {
     flip(flips = 4) {
         this.flips = flips;
         this.flipping = true;
+        this.noShadow = true;
         this.flipStart = new Date().getTime() / 1000;
         this.board.scene.interface.undoBlocked = true;
     }
@@ -347,6 +354,7 @@ class Piece extends CGFobject {
             //Animation Done
         } else {
             this.flipping = false;
+            this.noShadow = true;
             this.player = !this.player;
             this.board.scene.interface.undoBlocked = false;
         }
