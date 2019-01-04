@@ -70,6 +70,10 @@ class Piece extends CGFobject {
         //Display
         this.scene.pushMatrix();
 
+        //Reset animation
+        if (this.reseting)
+            this.resetAnimation();
+
         //CPU Throw animation
         if (this.throwing)
             this.throwAnimation();
@@ -144,10 +148,9 @@ class Piece extends CGFobject {
         this.appearanceS.apply();
 
         //Coordinate offset
-
         if (this.hovering)
-            this.scene.translate(0, -this.hoverHeight, 0);
-        this.scene.translate(0, 0.01 - this.heightAnim, 0);
+            this.scene.translate(0, 0.02-this.hoverHeight, 0);
+        this.scene.translate(0, 0.02 - this.heightAnim, 0);
         this.scene.scale(0.75, 1, 0.75);
 
         //Flip to vertically
@@ -166,6 +169,49 @@ class Piece extends CGFobject {
                 return 'x';
             default:
                 break;
+        }
+    }
+
+    //Reset
+    reset() {
+        //If it's not blocked then it wasn't played so doesn't need reset
+        if(!this.blocked){
+            return;
+        }
+        
+        this.reseting = true;
+        this.blocked = false;
+        this.resetStart = new Date().getTime() / 1000;
+    }
+
+    //CPU Throw Animation
+    resetAnimation() {
+
+        //Timings
+        var currentTime = new Date().getTime() / 1000;
+        var diff = currentTime - this.resetStart;
+        var animTime = 1;
+
+        //Distance
+        var distanceX = this.originalX - this.x;
+        var distanceZ = this.originalZ - this.z;
+        var height = 10;
+
+        //Animation
+        if (diff < animTime) {
+            var trans = diff;
+            if (diff > animTime / 2)
+                trans = animTime - diff;
+            this.heightAnim = trans * height;
+            this.scene.translate(diff * distanceX, trans * height, diff * distanceZ);
+            //Animation Done
+        } else {
+            this.reseting = false;
+            //Player
+            this.player = this.originalPlayer;
+            //Original
+            this.x = this.originalX;
+            this.z = this.originalZ;
         }
     }
 
@@ -223,14 +269,16 @@ class Piece extends CGFobject {
     //Flip animation
     flipAnimation() {
 
+        //Timings
         var currentTime = new Date().getTime() / 1000;
-
         var diff = currentTime - this.flipStart;
-
         var animTime = 1;
+
+        //Settings
         var animScale = 10;
         var flips = 4;
 
+        //Animation
         if (diff < animTime) {
             var trans = diff;
             if (diff > animTime / 2)
@@ -240,6 +288,7 @@ class Piece extends CGFobject {
             this.scene.translate(0, this.height, 0);
             //Rotation
             this.scene.rotate(diff * Math.PI * (1 + flips) / animTime, 1, 0, 0);
+        //Animation Done
         } else {
             this.flipping = false;
             this.player = !this.player;

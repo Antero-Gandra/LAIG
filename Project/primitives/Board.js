@@ -8,12 +8,8 @@ class Board extends CGFobject {
         //Board size (Even numbers work, not odd)
         this.size = 8;
 
-        //Setup material
-        this.appearance = new CGFappearance(this.scene);
-        this.appearance.setAmbient(0.3, 0.3, 0.3, 1);
-        this.appearance.setDiffuse(0.7, 0.7, 0.7, 1);
-        this.appearance.setSpecular(0.0, 0.0, 0.0, 1);
-        this.appearance.setShininess(120);
+        //Piece Size
+        this.pieceSize = 2;
 
         //Stack of boards
         this.matrixStack = [];
@@ -31,14 +27,11 @@ class Board extends CGFobject {
                     piece: null
                 }
         }
-
-        //Piece Size
-        this.pieceSize = 2;
-
+        
         //Tiles
         this.tiles = [];
         for (var i = 0; i < this.size * this.size; i++)
-            this.tiles[i] = new Tile(scene, this);
+            this.tiles[i] = new Tile(this.scene, this);
 
         //Position tiles
         for (let i = 0; i < this.size; i++) {
@@ -58,7 +51,7 @@ class Board extends CGFobject {
         //Pieces
         this.pieces = [];
         for (var i = 0; i < this.size * this.size; i++)
-            this.pieces[i] = new Piece(scene, this);
+            this.pieces[i] = new Piece(this.scene, this);
 
 
         //Positioning player 1
@@ -72,6 +65,10 @@ class Board extends CGFobject {
                 this.pieces[i + this.size * j].z -= this.pieceSize * (this.size / this.pieceSize - this.pieceSize / 2);
                 //Line offset
                 this.pieces[i + this.size * j].z += this.pieceSize * i;
+                //Originals
+                this.pieces[i + this.size * j].originalX = this.pieces[i + this.size * j].x;
+                this.pieces[i + this.size * j].originalZ = this.pieces[i + this.size * j].z;
+                this.pieces[i + this.size * j].originalPlayer = 0;
             }
         }
 
@@ -88,14 +85,25 @@ class Board extends CGFobject {
                 this.pieces[this.size * this.size / 2 + i + this.size * j].z += this.pieceSize * i;
                 //Flip for player 2
                 this.pieces[this.size * this.size / 2 + i + this.size * j].player = 1;
+                //Originals
+                this.pieces[this.size * this.size / 2 + i + this.size * j].originalX = this.pieces[this.size * this.size / 2 + i + this.size * j].x;
+                this.pieces[this.size * this.size / 2 + i + this.size * j].originalZ = this.pieces[this.size * this.size / 2 + i + this.size * j].z;
+                this.pieces[this.size * this.size / 2 + i + this.size * j].originalPlayer = 1;
             }
         }
 
-        //Setup raycast
-        this.raycast = new Raycast(this.scene, this.pieces, this.tiles, vec3.fromValues(0, 0, 0), 1);
+        //Setup material
+        this.appearance = new CGFappearance(this.scene);
+        this.appearance.setAmbient(0.3, 0.3, 0.3, 1);
+        this.appearance.setDiffuse(0.7, 0.7, 0.7, 1);
+        this.appearance.setSpecular(0.0, 0.0, 0.0, 1);
+        this.appearance.setShininess(120);
 
         //Setup player order
         this.nextPlayer = 1;
+
+        //Setup raycast
+        this.raycast = new Raycast(this.scene, this.pieces, this.tiles, vec3.fromValues(0, 0, 0), 1);
 
         //Default Settings
         this.tmpDifficulty = "Easy";
@@ -119,11 +127,51 @@ class Board extends CGFobject {
         }
     }
 
+    //Reset pieces and board data
+    resetBoard(){
+
+        //Stack of boards
+        this.matrixStack = [];
+
+        //Data
+        this.currentMatrix = [];
+        for (var i = 0; i < this.size; i++) {
+            this.currentMatrix[i] = [];
+            for (var j = 0; j < this.size; j++)
+                this.currentMatrix[i][j] = {
+                    // 0 -> Empty
+                    // 1 -> Player 1
+                    // 2 -> Player 2
+                    player: 0,
+                    piece: null
+                }
+        }
+
+        //Reset pieces
+        for (let i = 0; i < this.pieces.length; i++) {
+            this.pieces[i].reset();            
+        }
+
+        //Rotate camera for player pieces
+        if(!this.nextPlayer)
+            this.rotateCamera();
+
+        //Setup player order
+        this.nextPlayer = 1;
+
+    }
+
+    //Create a new game
     newGame() {
+
+        //Reset Board
+        this.resetBoard();
+
+        //Activate settings
         this.difficulty = this.tmpDifficulty;
         this.mode = this.tmpMode;
-        //TODO Reset Board
 
+        //Clear play stack
         this.matrixStack = [];
 
         //If CPU vs CPU

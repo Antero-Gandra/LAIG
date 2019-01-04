@@ -105,11 +105,6 @@ class MyInterface extends CGFinterface {
         this.scenarioSet = "Scene1";
         viewGroup.add(this, 'scenarioSet', scenario).name('Scenario').onChange(val => this.scene.selectView(val));
 
-        //TODO Camera
-        const camera = ["View1"];
-        this.cameraSet = "View1";
-        viewGroup.add(this, 'cameraSet', camera).name('Camera').onChange(val => this.scene.selectView(val));
-
         //TODO New Game
         this.newGame = this.callNewGame;
         group.add(this, 'newGame').name('New Game');
