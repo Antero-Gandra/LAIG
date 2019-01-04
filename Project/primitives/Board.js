@@ -36,15 +36,16 @@ class Board extends CGFobject {
         //Position tiles
         for (let i = 0; i < this.size; i++) {
             for (let j = 0; j < this.size; j++) {
+                let index =i + this.size * j;
                 //Offset to place center
-                this.tiles[i + this.size * j].x -= this.pieceSize / 2 + this.pieceSize * (this.size / 2 - 1);
-                this.tiles[i + this.size * j].z -= this.pieceSize / 2 + this.pieceSize * (this.size / 2 - 1);
+                this.tiles[index].x -= this.pieceSize / 2 + this.pieceSize * (this.size / 2 - 1);
+                this.tiles[index].z -= this.pieceSize / 2 + this.pieceSize * (this.size / 2 - 1);
                 //Offset Matrix
-                this.tiles[i + this.size * j].x += this.pieceSize * i;
-                this.tiles[i + this.size * j].z += this.pieceSize * j;
+                this.tiles[index].x += this.pieceSize * i;
+                this.tiles[index].z += this.pieceSize * j;
                 //Board Position
-                this.tiles[i + this.size * j].i = i + 1;
-                this.tiles[i + this.size * j].j = j + 1;
+                this.tiles[index].i = i + 1;
+                this.tiles[index].j = j + 1;
             }
         }
 
@@ -57,38 +58,40 @@ class Board extends CGFobject {
         //Positioning player 1
         for (var i = 0; i < this.size; i++) {
             for (var j = 0; j < this.size / 2; j++) {
+                let index =i + this.size * j;
                 //Offset to place center
-                this.pieces[i + this.size * j].x -= this.pieceSize / 2;
-                this.pieces[i + this.size * j].z -= this.pieceSize / 2;
+                this.pieces[index].x -= this.pieceSize / 2;
+                this.pieces[index].z -= this.pieceSize / 2;
                 //Position line
-                this.pieces[i + this.size * j].x -= this.pieceSize * (this.size / this.pieceSize + this.pieceSize / 2 + j);
-                this.pieces[i + this.size * j].z -= this.pieceSize * (this.size / this.pieceSize - this.pieceSize / 2);
+                this.pieces[index].x -= this.pieceSize * (this.size / this.pieceSize + this.pieceSize / 2 + j);
+                this.pieces[index].z -= this.pieceSize * (this.size / this.pieceSize - this.pieceSize / 2);
                 //Line offset
-                this.pieces[i + this.size * j].z += this.pieceSize * i;
+                this.pieces[index].z += this.pieceSize * i;
                 //Originals
-                this.pieces[i + this.size * j].originalX = this.pieces[i + this.size * j].x;
-                this.pieces[i + this.size * j].originalZ = this.pieces[i + this.size * j].z;
-                this.pieces[i + this.size * j].originalPlayer = 0;
+                this.pieces[index].originalX = this.pieces[index].x;
+                this.pieces[index].originalZ = this.pieces[index].z;
+                this.pieces[index].originalPlayer = 0;
             }
         }
 
         //Positioning player 2
         for (var i = 0; i < this.size; i++) {
             for (var j = 0; j < this.size / 2; j++) {
+                let index =this.size * this.size / 2 + i + this.size * j;
                 //Offset to place center
-                this.pieces[this.size * this.size / 2 + i + this.size * j].x += this.pieceSize / 2;
-                this.pieces[this.size * this.size / 2 + i + this.size * j].z += this.pieceSize / 2;
+                this.pieces[index].x += this.pieceSize / 2;
+                this.pieces[index].z += this.pieceSize / 2;
                 //Position line
-                this.pieces[this.size * this.size / 2 + i + this.size * j].x += this.pieceSize * (this.size / this.pieceSize + this.pieceSize / 2 + j);
-                this.pieces[this.size * this.size / 2 + i + this.size * j].z -= this.pieceSize * this.size / this.pieceSize;
+                this.pieces[index].x += this.pieceSize * (this.size / this.pieceSize + this.pieceSize / 2 + j);
+                this.pieces[index].z -= this.pieceSize * this.size / this.pieceSize;
                 //Line offset
-                this.pieces[this.size * this.size / 2 + i + this.size * j].z += this.pieceSize * i;
+                this.pieces[index].z += this.pieceSize * i;
                 //Flip for player 2
-                this.pieces[this.size * this.size / 2 + i + this.size * j].player = 1;
+                this.pieces[index].player = 1;
                 //Originals
-                this.pieces[this.size * this.size / 2 + i + this.size * j].originalX = this.pieces[this.size * this.size / 2 + i + this.size * j].x;
-                this.pieces[this.size * this.size / 2 + i + this.size * j].originalZ = this.pieces[this.size * this.size / 2 + i + this.size * j].z;
-                this.pieces[this.size * this.size / 2 + i + this.size * j].originalPlayer = 1;
+                this.pieces[index].originalX = this.pieces[index].x;
+                this.pieces[index].originalZ = this.pieces[index].z;
+                this.pieces[index].originalPlayer = 1;
             }
         }
 
