@@ -14,6 +14,12 @@ class Board extends CGFobject {
         //Stack of boards
         this.matrixStack = [];
 
+        //Stack of flipped
+        this.flipped = [];
+
+        //Stack of movements
+        this.movements = [];
+
         //Data
         this.currentMatrix = [];
         for (var i = 0; i < this.size; i++) {
@@ -36,7 +42,7 @@ class Board extends CGFobject {
         //Position tiles
         for (let i = 0; i < this.size; i++) {
             for (let j = 0; j < this.size; j++) {
-                let index =i + this.size * j;
+                let index = i + this.size * j;
                 //Offset to place center
                 this.tiles[index].x -= this.pieceSize / 2 + this.pieceSize * (this.size / 2 - 1);
                 this.tiles[index].z -= this.pieceSize / 2 + this.pieceSize * (this.size / 2 - 1);
@@ -58,7 +64,7 @@ class Board extends CGFobject {
         //Positioning player 1
         for (var i = 0; i < this.size; i++) {
             for (var j = 0; j < this.size / 2; j++) {
-                let index =i + this.size * j;
+                let index = i + this.size * j;
                 //Offset to place center
                 this.pieces[index].x -= this.pieceSize / 2;
                 this.pieces[index].z -= this.pieceSize / 2;
@@ -77,7 +83,7 @@ class Board extends CGFobject {
         //Positioning player 2
         for (var i = 0; i < this.size; i++) {
             for (var j = 0; j < this.size / 2; j++) {
-                let index =this.size * this.size / 2 + i + this.size * j;
+                let index = this.size * this.size / 2 + i + this.size * j;
                 //Offset to place center
                 this.pieces[index].x += this.pieceSize / 2;
                 this.pieces[index].z += this.pieceSize / 2;
@@ -108,6 +114,8 @@ class Board extends CGFobject {
         //Setup raycast
         this.raycast = new Raycast(this.scene, this.pieces, this.tiles, vec3.fromValues(0, 0, 0), 1);
 
+        this.lastUndone = false;
+
         //Default Settings
         this.tmpDifficulty = "Easy";
         this.tmpMode = "Player vs Player";
@@ -130,12 +138,66 @@ class Board extends CGFobject {
         }
     }
 
-    undo(){
-        //TODO Probably should work only in PVP and PVC
-        if(this.matrixStack.length > 0){
-            this.currentMatrix = this.matrixStack.pop();
-            //TODO Reset last piece
-            //TODO Reset flip
+    //TODO in PvC it should undo 2 plays?
+    undo() {
+
+        //Can only undo once
+        if (this.lastUndone) {
+            return;
+        }
+        this.lastUndone = true;
+
+        //Wont work in CPU vs CPU
+        if (this.mode == "CPU vs CPU")
+            return;
+
+        //Only undo if available
+        if (this.matrixStack.length > 0) {
+
+            //Special reset for Player vs CPU
+            if (this.mode == "Player vs CPU") {
+                
+                //Undo matrix
+                this.matrixStack.pop();
+                if (this.matrixStack.length != 0) {
+                    this.currentMatrix = this.matrixStack[this.matrixStack.length - 1];
+                }
+
+                //Undo flipped
+                let flipped = this.flipped.pop();
+                for (let i = 0; i < flipped.length; i++) {
+                    flipped[i].flip();
+                }
+
+                //Undo player
+                this.nextPlayer = !this.nextPlayer
+
+                //Reset last piece movement
+                this.movements.pop().undo();
+            }
+
+            //Undo matrix
+            this.matrixStack.pop();
+            if (this.matrixStack.length != 0) {
+                this.currentMatrix = this.matrixStack[this.matrixStack.length - 1];
+            }
+
+            //Undo flipped
+            let flipped = this.flipped.pop();
+            for (let i = 0; i < flipped.length; i++) {
+                flipped[i].flip();
+            }
+
+            //Undo player
+            this.nextPlayer = !this.nextPlayer
+
+            //Rotate camera back in PvP
+            if (this.mode == "Player vs Player")
+                this.rotateCamera();
+
+            //Reset last piece movement
+            this.movements.pop().undo();
+
         }
     }
 
@@ -166,7 +228,7 @@ class Board extends CGFobject {
 
         //Rotate camera for player pieces
         if (!this.nextPlayer && this.mode == "Player vs Player")
-            this.rotateCamera();            
+            this.rotateCamera();
 
     }
 
@@ -183,7 +245,9 @@ class Board extends CGFobject {
         //Clear play stack
         this.matrixStack = [];
 
-        this.nextPlayer = 1; 
+        this.nextPlayer = 1;
+
+        this.lastUndone = false;
 
         //If CPU vs CPU
         if (this.mode == "CPU vs CPU") {
@@ -202,10 +266,10 @@ class Board extends CGFobject {
 
             this.makeRequest(string);
         }
-        else{
+        else {
             this.scene.interface.playerBlock = false;
         }
-    
+
     }
 
     display() {
@@ -365,8 +429,18 @@ class Board extends CGFobject {
     //Prepares and sends Prolog Request to place piece
     setPiecePlayer(i, j, piece, tile) {
 
+        if (this.matrixStack.length > 0) {
+            console.log(this.matrixStack[this.matrixStack.length - 1][7]);
+            console.log(this.currentMatrix[7]);
+        }
+
         //Check if tile is empty(Prolog doesn't)
         if (this.currentMatrix[i - 1][j - 1].player == 0) {
+
+            this.lastUndone = false;
+
+            //Register piece moved
+            this.movements.push(piece);
 
             //New matrix
             this.refreshMatrix();
@@ -408,6 +482,8 @@ class Board extends CGFobject {
                 break;
             }
         }
+
+        this.movements.push(piece);
 
         var boardIndex = data.indexOf("]-");
 
@@ -470,6 +546,9 @@ class Board extends CGFobject {
             }
         }
 
+        //Register of flips
+        let flipped = [];
+
         //Check differences to flip
         if (this.matrixStack.length > 0) {
             for (let x = 0; x < this.size; x++) {
@@ -477,10 +556,14 @@ class Board extends CGFobject {
                     if (this.matrixStack[this.matrixStack.length - 1][x][y].player != this.currentMatrix[x][y].player && this.matrixStack[this.matrixStack.length - 1][x][y].player != 0) {
                         console.log("Flip piece");
                         this.currentMatrix[x][y].piece.flip();
+                        flipped.push(this.currentMatrix[x][y].piece);
                     }
                 }
             }
         }
+
+        //Add to flipped register
+        this.flipped.push(flipped);
 
         //Add to stack
         this.matrixStack.push(this.currentMatrix);

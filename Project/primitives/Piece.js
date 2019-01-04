@@ -79,6 +79,10 @@ class Piece extends CGFobject {
         if (this.throwing && !this.reseting)
             this.throwAnimation();
 
+        //Undo Animation
+        if(this.undoing)
+            this.undoAnimation();
+
         //Coordinate offset
         this.scene.translate(this.x, 0, this.z);
 
@@ -186,6 +190,7 @@ class Piece extends CGFobject {
 
         this.reseting = true;
         this.resetStart = new Date().getTime() / 1000;
+        this.board.scene.interface.undoBlocked = true;
     }
 
     //Reset Animation
@@ -218,7 +223,8 @@ class Piece extends CGFobject {
             this.heightAnim = 0;
             //Original
             this.x = this.originalX;
-            this.z = this.originalZ;          
+            this.z = this.originalZ;   
+            this.board.scene.interface.undoBlocked = false;       
         }
     }
 
@@ -226,6 +232,7 @@ class Piece extends CGFobject {
     throw(boardData, tile) {
         this.throwing = true;
         this.throwStart = new Date().getTime() / 1000;
+        this.board.scene.interface.undoBlocked = true;
 
         //Info to use after animation is done
         this.throwTarget = tile;
@@ -264,6 +271,47 @@ class Piece extends CGFobject {
             this.board.nextPlayer = !this.board.nextPlayer;
             //Update board
             this.board.updateBoard(this.boardData);
+            this.board.scene.interface.undoBlocked = false;
+        }
+    }
+
+    //Undo Throw
+    undo() {
+        this.undoing = true;
+        this.blocked = false;
+        this.board.scene.interface.undoBlocked = true;
+        this.undoStart = new Date().getTime() / 1000;
+    }
+
+    //Undo Animation
+    undoAnimation() {
+
+        //Timings
+        var currentTime = new Date().getTime() / 1000;
+        var diff = currentTime - this.undoStart;
+        var animTime = 1;
+
+        //Distance
+        var distanceX = this.originalX - this.x;
+        var distanceZ = this.originalZ - this.z;
+        var height = 10;
+
+        //Animation
+        if (diff < animTime) {
+            var trans = diff;
+            if (diff > animTime / 2)
+                trans = animTime - diff;
+            this.heightAnim = trans * height;
+            this.scene.translate(diff * distanceX, trans * height, diff * distanceZ);
+            //Animation Done
+        } else {
+            this.undoing = false;
+            //Position
+            this.x = this.originalX;
+            this.z = this.originalZ;
+            //Piece can't be used anymore
+            this.heightAnim = 0;
+            this.board.scene.interface.undoBlocked = false;
         }
     }
 
@@ -272,6 +320,7 @@ class Piece extends CGFobject {
         this.flips = flips;
         this.flipping = true;
         this.flipStart = new Date().getTime() / 1000;
+        this.board.scene.interface.undoBlocked = true;
     }
 
     //Flip animation
@@ -299,6 +348,7 @@ class Piece extends CGFobject {
         } else {
             this.flipping = false;
             this.player = !this.player;
+            this.board.scene.interface.undoBlocked = false;
         }
 
     }

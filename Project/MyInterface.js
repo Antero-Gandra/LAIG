@@ -88,13 +88,10 @@ class MyInterface extends CGFinterface {
         var playGroup = group.addFolder("Play Controls");
         playGroup.open();
 
-        //TODO Undo
+        //Undo
         this.undo = this.callUndo;
+        this.undoBlocked = false;
         playGroup.add(this, 'undo').name('Undo');
-
-        //TODO Redo
-        this.redo = this.scene.resetView;
-        playGroup.add(this, 'redo').name('Redo');
 
         //TODO Movie
         this.movie = this.scene.resetView;
@@ -116,7 +113,8 @@ class MyInterface extends CGFinterface {
     }
 
     callUndo() {
-        this.board.undo();
+        if(!this.undoBlocked)
+            this.board.undo();
     }
 
     //Process mouse down
