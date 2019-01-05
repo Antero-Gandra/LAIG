@@ -80,7 +80,7 @@ class Piece extends CGFobject {
             this.throwAnimation();
 
         //Undo Animation
-        if(this.undoing)
+        if (this.undoing)
             this.undoAnimation();
 
         //Coordinate offset
@@ -186,10 +186,10 @@ class Piece extends CGFobject {
         this.throwStart = 0;
         this.noShadow = false;
 
-        if(!this.blocked){
+        if (!this.blocked) {
             this.board.ready();
             return;
-        }            
+        }
 
         this.blocked = false;
         this.reseting = true;
@@ -228,11 +228,11 @@ class Piece extends CGFobject {
             this.heightAnim = 0;
             //Original
             this.x = this.originalX;
-            this.z = this.originalZ;   
+            this.z = this.originalZ;
             //Unblock undo
-            this.board.scene.interface.undoBlocked = false; 
+            this.board.scene.interface.undoBlocked = false;
             //Tell board we are ready
-            this.board.ready();   
+            this.board.ready();
         }
     }
 

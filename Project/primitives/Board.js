@@ -143,12 +143,12 @@ class Board extends CGFobject {
             this.rotatingAnimation();
 
         //Game time
-        if(!this.ended){
+        if (!this.ended) {
             let diff = new Date().getTime() / 1000 - this.startTime;
             diff = diff.toFixed(2);
             this.scene.interface.time = diff.toString() + "s";
         }
-        
+
 
     }
 
@@ -297,17 +297,17 @@ class Board extends CGFobject {
         //Reset pieces
         for (let i = 0; i < this.pieces.length; i++) {
             this.pieces[i].reset();
-        }        
+        }
 
     }
 
     //Callback used by pieces to say they are ready
-    ready(){
+    ready() {
 
         this.readies++;
 
         //When all ready do full reset
-        if(this.readies == this.pieces.length){
+        if (this.readies == this.pieces.length) {
             this.readies = 0;
             this.fullReset();
         }
@@ -315,7 +315,7 @@ class Board extends CGFobject {
     }
 
     //Full reset once all pieces are ready
-    fullReset(){
+    fullReset() {
 
         //Rotate camera for player pieces
         if (!this.nextPlayer && this.mode == "Player vs Player")

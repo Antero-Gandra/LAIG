@@ -116,15 +116,15 @@ class MyInterface extends CGFinterface {
 
         //Time Change this.time directly
         this.time = "0s";
-        statusGroup.add(this,'time').name('Game Time').listen();
+        statusGroup.add(this, 'time').name('Game Time').listen();
 
         //Score Change this.score directly
         this.score = "Red 0 - 0 Blue";
-        statusGroup.add(this,'score').name('Score').listen();
+        statusGroup.add(this, 'score').name('Score').listen();
 
         //TODO Winner Change this.winner directly
         this.winner = "Playing...";
-        statusGroup.add(this,'winner').name('Winner').listen();
+        statusGroup.add(this, 'winner').name('Winner').listen();
 
         //TODO Movie will only be available at game end
         this.movie = this.callMovie;
@@ -132,11 +132,11 @@ class MyInterface extends CGFinterface {
 
     }
 
-    callZoomIn(){
+    callZoomIn() {
         this.board.zoom(-5);
     }
 
-    callZoomOut(){
+    callZoomOut() {
         this.board.zoom(5);
     }
 
@@ -149,7 +149,7 @@ class MyInterface extends CGFinterface {
     }
 
     callUndo() {
-        if(!this.undoBlocked)
+        if (!this.undoBlocked)
             this.board.undo();
     }
 
