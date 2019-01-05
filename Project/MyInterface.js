@@ -129,7 +129,7 @@ class MyInterface extends CGFinterface {
 
     }
 
-    setScenes(){
+    setScenes() {
         //Scene
         const scene = this.scenes;
         this.sceneSet = "Empty Scene";

@@ -252,10 +252,10 @@ class XMLscene extends CGFscene {
                     }
 
                     //Find scenes to add reference on UI
-                    if(this.graph.tmpComponents[i].scene){
+                    if (this.graph.tmpComponents[i].scene) {
                         this.interface.scenes.push(this.graph.tmpComponents[i].id);
                         this.scenes.push(this.graph.components[i]);
-                    }                    
+                    }
 
                 }
 
@@ -263,7 +263,7 @@ class XMLscene extends CGFscene {
 
                 //Disable
                 this.firstRun = false;
-                
+
             }
 
             // Draw axis
@@ -297,10 +297,10 @@ class XMLscene extends CGFscene {
         // ---- END Background, camera and axis setup
     }
 
-    setScene(id){
+    setScene(id) {
         for (let i = 0; i < this.scenes.length; i++) {
             this.scenes[i].activated = false;
-            if(this.scenes[i].id == id)
+            if (this.scenes[i].id == id)
                 this.scenes[i].activated = true;
         }
     }

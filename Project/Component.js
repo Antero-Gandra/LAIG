@@ -155,7 +155,7 @@ class Component {
     display(callerMaterial, elapsedTime) {
 
         //If not activated just return
-        if(!this.activated)
+        if (!this.activated)
             return;
 
         //Get previous texture

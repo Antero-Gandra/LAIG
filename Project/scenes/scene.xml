@@ -174,7 +174,6 @@
                 <scale x="3" y="3" z="3" />
                 <rotate axis="y" angle="-90" />
                 <translate x="0" y="-5.1" z="0" />
-
             </transformation>
             <materials>
                 <material id="defMat"/>
