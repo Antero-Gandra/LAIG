@@ -274,7 +274,7 @@ class Board extends CGFobject {
     }
 
     //Update winner UI
-    updateWinner(){
+    updateWinner() {
         //Get final score
         let score = this.score();
 
@@ -292,7 +292,7 @@ class Board extends CGFobject {
 
         //If one piece available then still playing
         for (let index = 0; index < this.pieces.length; index++) {
-            if(!this.pieces[index].blocked){
+            if (!this.pieces[index].blocked) {
                 this.scene.interface.winner = "Playing...";
                 return;
             }
