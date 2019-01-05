@@ -243,11 +243,11 @@ class Board extends CGFobject {
     movie() {
 
         //No multi movie
-        if(this.playingMovie)
+        if (this.playingMovie)
             return;
 
         //CPU vs CPU movie at end
-        if(this.mode == "CPU vs CPU" && !this.ended){
+        if (this.mode == "CPU vs CPU" && !this.ended) {
             return;
         }
 

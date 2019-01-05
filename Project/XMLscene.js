@@ -232,7 +232,7 @@ class XMLscene extends CGFscene {
 
                 //Setup board on Interface
                 for (let i = 0; i < this.graph.components.length; i++) {
-                    if (this.graph.components[i].id == "board"){
+                    if (this.graph.components[i].id == "board") {
                         //Identify board for interface
                         this.interface.board = this.graph.components[i].childrenPrimitives[0];
 
@@ -241,7 +241,7 @@ class XMLscene extends CGFscene {
 
                         //Setup Camera Radius on Board
                         this.graph.components[i].childrenPrimitives[0].cameraHorizontalRadius = this.camera.position[0];
-                    }                        
+                    }
                 }
 
                 //Disable
