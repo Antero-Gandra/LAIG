@@ -28,10 +28,15 @@
         <texture id="p1" file="images/player1.png" />
         <texture id="p2" file="images/player2.png" />
         <texture id="shadow" file="images/shadow.png" />
+        <texture id="seagull" file="images/seagull.jpg" />
         <texture id="terrain" file="images/terrain.jpg" />
         <texture id="height" file="images/height.jpg" />
+        <texture id="wood" file="images/wood.jpg" />
+        <texture id="ball" file="images/ball.jpg" />
         <texture id="water" file="images/water.jpg" />
         <texture id="waterheight" file="images/heightwater.jpg" />
+        <texture id="umbrella" file="images/parasol.jpg" />
+        <texture id="towel" file="images/towel.jpg" />
     </textures>
 
     <materials>
@@ -85,7 +90,19 @@
         </primitive>
 
         <primitive id="cylinder">
-            <cylinder base="1" top="1" height="1" slices="20" stacks="1" />
+            <cylinder2 base="1" top="1" height="1" slices="20" stacks="1" />
+        </primitive>
+       
+        <primitive id="cone">
+            <cylinder2 base="5" top="0" height="1" slices="20" stacks="1" />
+        </primitive>
+
+        <primitive id="towel">
+            <rectangle x1="-7" y1="-4" x2="7" y2="4" />
+        </primitive>
+
+        <primitive id="base">
+            <cylinder2 base="0.2" top="0.2" height="7" slices="20" stacks="1" />
         </primitive>
 
         <primitive id="sphere">
@@ -120,11 +137,11 @@
         </primitive>
 
         <primitive id="terrain">
-            <terrain idtexture="terrain" idheightmap="height" parts="100" heightscale="20"/>
+            <terrain idtexture="terrain" idheightmap="height" parts="100" heightscale="10"/>
         </primitive>
 
         <primitive id="water">
-            <water idtexture="water" idwavemap="waterheight" parts="100" heightscale="1" texscale="0.5" />
+            <water idtexture="water" idwavemap="waterheight" parts="100" heightscale="3" texscale="0.4" />
         </primitive>
 
         <primitive id="board">
@@ -147,7 +164,8 @@
 
             <texture id="none" length_s="1" length_t="1" />
 
-            <children>    
+            <children>
+                <componentref id="Scene1"/>
                 <componentref id="board"/>
             </children>
             
@@ -168,6 +186,138 @@
                 <primitiveref id="board"/>
             </children>
 
+        </component>
+
+        <component id="Scene1">
+            <transformation>
+                <scale x="3" y="3" z="3" />
+                <rotate axis="y" angle="-90" />
+                <translate x="0" y="-5.1" z="0" />
+                
+            </transformation>
+            <materials>
+                <material id="defMat"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <componentref id="ball"/>
+                <componentref id="vehicle"/>
+                <componentref id="terrain"/>
+                <componentref id="water"/>
+                <componentref id="umbrella"/>
+                <componentref id="base"/>
+                <componentref id="towel"/>
+            </children>
+        </component>
+
+        <component id="vehicle">
+            <transformation>
+                <translate x="0" y="30" z="-10" />
+                <scale x="0.1" y="0.1" z="0.1" />                
+            </transformation>
+            <animations>
+                <animationref id="l1" />
+                <animationref id="c1" />
+                <animationref id="l2" />
+                <animationref id="c2" />
+            </animations>
+            <materials>
+                <material id="defMat"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="vehicle" />
+            </children>
+        </component>
+
+        <component id="terrain">
+            <transformation>
+                <translate x="0" y="-5" z="0" />
+                <rotate axis="x" angle="-90" />
+                <scale x="40" y="40" z="1" />
+            </transformation>
+            <materials>
+                <material id="defMat"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="terrain" />
+            </children>
+        </component>
+
+        <component id="water">
+            <transformation>
+                <translate x="0" y="-4" z="0" />
+                <rotate axis="x" angle="-90" />
+                <scale x="40" y="40" z="1" />
+            </transformation>
+            <materials>
+                <material id="defMat"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="water" />
+            </children>
+        </component>
+
+        <component id="towel">
+            <transformation>
+                <translate x="0" y="5.01" z="0" />
+                <rotate axis="y" angle="90" />
+                <rotate axis="x" angle="270" />
+                </transformation>
+            <texture id="towel" length_s="1" length_t="1" />
+            <materials>
+                <material id="defMat"/>
+            </materials>
+            <children>
+                <primitiveref id="towel" />
+            </children>
+        </component>
+
+        <!-- Ball -->
+        <component id="ball">
+            <transformation>
+                <translate x="-8" y="7" z="2" />
+                <rotate axis="y" angle="180" />
+                <scale x="1.5" y="1.5" z="1.5" />
+            </transformation>
+            <materials>
+                <material id="defMat" />
+            </materials>
+            <texture id="ball" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+        </component>
+
+        <component id="umbrella">
+            <transformation>
+                <translate x="-7" y="15" z="0" />
+                <rotate axis="y" angle="90" />
+            </transformation>
+            <materials>
+                <material id="defMat"/>
+            </materials>
+            <texture id="umbrella" length_s="1" length_t="1"/>
+            <children>
+                <primitiveref id="cone" />
+            </children>
+        </component>
+
+           <component id="base">
+            <transformation>                
+                <translate x="-7" y="5" z="0" />
+                <rotate axis="y" angle="90" />
+                <scale x="1" y="1" z="2" />
+            </transformation>
+            <materials>
+                <material id="defMat"/>
+            </materials>
+            <texture id="wood" length_s="0.5" length_t="0.5"/>
+            <children>
+                <primitiveref id="base" />
+            </children>
         </component>
 
     </components>

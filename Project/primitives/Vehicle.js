@@ -54,7 +54,7 @@ class Vehicle extends CGFobject {
         //Use hardcoded texture
         if(this.appearance.texture == null){
             if(this.scene.graph.loadedTextures.length >= 2)
-                this.appearance.setTexture(this.scene.graph.loadedTextures[1].tex);
+                this.appearance.setTexture(this.scene.graph.loadedTextures[4].tex);
         }        
         this.appearance.apply();
 
