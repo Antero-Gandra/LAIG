@@ -242,6 +242,15 @@ class Board extends CGFobject {
     //Play movie of game
     movie() {
 
+        //No multi movie
+        if(this.playingMovie)
+            return;
+
+        //CPU vs CPU movie at end
+        if(this.mode == "CPU vs CPU" && !this.ended){
+            return;
+        }
+
         //Block input while playing movie
         this.scene.interface.playerBlock = true;
 
