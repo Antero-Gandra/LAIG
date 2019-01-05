@@ -186,9 +186,12 @@ class Piece extends CGFobject {
         this.throwStart = 0;
         this.noShadow = false;
 
-        if(!this.blocked)
+        if(!this.blocked){
+            this.board.ready();
             return;
+        }            
 
+        this.blocked = false;
         this.reseting = true;
         this.resetStart = new Date().getTime() / 1000;
         this.board.scene.interface.undoBlocked = true;
@@ -226,7 +229,10 @@ class Piece extends CGFobject {
             //Original
             this.x = this.originalX;
             this.z = this.originalZ;   
-            this.board.scene.interface.undoBlocked = false;       
+            //Unblock undo
+            this.board.scene.interface.undoBlocked = false; 
+            //Tell board we are ready
+            this.board.ready();   
         }
     }
 

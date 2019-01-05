@@ -122,6 +122,8 @@ class Board extends CGFobject {
         this.difficulty = "Easy";
         this.mode = "Player vs Player";
         this.startTime = new Date().getTime() / 1000;
+        this.ended = false;
+        this.readies = 0;
 
     };
 
@@ -141,25 +143,28 @@ class Board extends CGFobject {
             this.rotatingAnimation();
 
         //Game time
-        let diff = new Date().getTime() / 1000 - this.startTime;
-        diff = diff.toFixed(2);
-        this.scene.interface.time = diff.toString() + "s" ;
+        if(!this.ended){
+            let diff = new Date().getTime() / 1000 - this.startTime;
+            diff = diff.toFixed(2);
+            this.scene.interface.time = diff.toString() + "s";
+        }
+        
 
     }
 
     //Zoom camera
-    zoom(scale){
+    zoom(scale) {
 
         //Zoom
         var dir = this.scene.camera.calculateDirection();
 
         var reverse = vec4.create();
-        vec4.negate(reverse,dir);
+        vec4.negate(reverse, dir);
 
         var zoomVec = vec4.create();
         vec4.scale(zoomVec, reverse, scale);
 
-        vec4.add(this.scene.camera.position,zoomVec,this.scene.camera.position);
+        vec4.add(this.scene.camera.position, zoomVec, this.scene.camera.position);
 
         //Update camera radius for animation
         this.cameraHorizontalRadius = Math.abs(this.scene.camera.position[0]);
@@ -182,7 +187,31 @@ class Board extends CGFobject {
         }
     }
 
-    //TODO in PvC it should undo 2 plays?
+    //End game, check winner and stop everything
+    end() {
+
+        this.ended = true;
+
+        console.log("Game End");
+
+        //Get final score
+        let score = this.score();
+
+        //Update UI with winner
+        if (this.mode == "CPU vs CPU")
+            if (score.p1 > score.p2)
+                this.scene.interface.winner = "Blue";
+            else
+                this.scene.interface.winner = "Red";
+        else
+            if (score.p1 > score.p2)
+                this.scene.interface.winner = "Red";
+            else
+                this.scene.interface.winner = "Blue";
+
+    }
+
+    //Undo last play or last 2 in case of Player vs CPU
     undo() {
 
         //Can only undo once
@@ -198,7 +227,7 @@ class Board extends CGFobject {
         //Only undo if available
         if (this.matrixStack.length > 0) {
 
-            //Special reset for Player vs CPU
+            //Double undo for Player vs CPU
             if (this.mode == "Player vs CPU") {
 
                 //Undo matrix
@@ -268,19 +297,31 @@ class Board extends CGFobject {
         //Reset pieces
         for (let i = 0; i < this.pieces.length; i++) {
             this.pieces[i].reset();
+        }        
+
+    }
+
+    //Callback used by pieces to say they are ready
+    ready(){
+
+        this.readies++;
+
+        //When all ready do full reset
+        if(this.readies == this.pieces.length){
+            this.readies = 0;
+            this.fullReset();
         }
+
+    }
+
+    //Full reset once all pieces are ready
+    fullReset(){
 
         //Rotate camera for player pieces
         if (!this.nextPlayer && this.mode == "Player vs Player")
             this.rotateCamera();
 
-    }
-
-    //Create a new game
-    newGame() {
-
-        //Reset Board
-        this.resetBoard();
+        this.scene.interface.winner = "Playing...";
 
         //Activate settings
         this.difficulty = this.tmpDifficulty;
@@ -292,6 +333,8 @@ class Board extends CGFobject {
         this.nextPlayer = 1;
 
         this.lastUndone = false;
+
+        this.ended = false;
 
         //UI related updates
         this.score();
@@ -317,6 +360,13 @@ class Board extends CGFobject {
         else {
             this.scene.interface.playerBlock = false;
         }
+    }
+
+    //Create a new game
+    newGame() {
+
+        //Reset Board
+        this.resetBoard();
 
     }
 
@@ -389,7 +439,12 @@ class Board extends CGFobject {
         }
 
         //Update UI
-        this.scene.interface.score = "Red " + score.p1.toString() + " - " + score.p2.toString() + " Blue";
+        if (this.mode == "CPU vs CPU")
+            this.scene.interface.score = "Red " + score.p2.toString() + " - " + score.p1.toString() + " Blue";
+        else
+            this.scene.interface.score = "Red " + score.p1.toString() + " - " + score.p2.toString() + " Blue";
+
+        return score;
 
     }
 
@@ -603,6 +658,22 @@ class Board extends CGFobject {
         //Update Score
         this.score();
 
+        //Check game end
+        let vacant = false;
+        for (let i = 0; i < this.currentMatrix.length; i++) {
+            for (let j = 0; j < this.currentMatrix[i].length; j++) {
+                if (this.currentMatrix[i][j].player == 0) {
+                    vacant = true;
+                    break;
+                }
+            }
+        }
+        if (!vacant) {
+            this.end();
+            return;
+        }
+
+
         //Ready for a CPU play on "Player vs CPU"
         if (this.mode == "Player vs CPU" && this.nextPlayer == 0) {
             //Check difficulty setting and do request
@@ -674,7 +745,7 @@ class Board extends CGFobject {
         this.getPrologRequest(this, string, this.onSuccess);
     }
 
-    //TODO Needs to differentiate when it receives boards or a end game check, probably just look at string
+    //Success responses
     onSuccess(data) {
 
         //Response type is board after CPU play
