@@ -152,7 +152,6 @@ class Board extends CGFobject {
             this.scene.interface.time = diff.toString() + "s";
         }
 
-
     }
 
     //Zoom camera
@@ -218,21 +217,21 @@ class Board extends CGFobject {
     //Next play of movie, called in end of animation of play
     nextPlay() {
 
+        //Flips
+        for (let i = 0; i < this.flipped[this.movieSlide - 1].length; i++) {
+            this.flipped[this.movieSlide - 1][i].flip();
+        }
+
         //Check end of movie
         if (this.movieSlide > this.movieMovements.length - 1) {
             this.playingMovie = false;
             this.scene.interface.playerBlock = false;
-            this.end();
+            this.updateWinner();
             console.log("Movie Ended");
             return;
         }
 
         console.log("Play " + (this.movieSlide + 1));
-
-        //Flips
-        for (let i = 0; i < this.flipped[this.movieSlide - 1].length; i++) {
-            this.flipped[this.movieSlide - 1][i].flip();
-        }
 
         //Next play
         this.movieMovements[this.movieSlide].piece.play(this.movieMovements[this.movieSlide].x, this.movieMovements[this.movieSlide].z);
@@ -274,13 +273,8 @@ class Board extends CGFobject {
 
     }
 
-    //End game, check winner and stop everything
-    end() {
-
-        this.ended = true;
-
-        console.log("Game End");
-
+    //Update winner UI
+    updateWinner(){
         //Get final score
         let score = this.score();
 
@@ -296,6 +290,24 @@ class Board extends CGFobject {
             else
                 this.scene.interface.winner = "Blue";
 
+        //If one piece available then still playing
+        for (let index = 0; index < this.pieces.length; index++) {
+            if(!this.pieces[index].blocked){
+                this.scene.interface.winner = "Playing...";
+                return;
+            }
+        }
+
+    }
+
+    //End game, check winner and stop everything
+    end() {
+
+        this.ended = true;
+
+        console.log("Game End");
+
+        this.updateWinner();
 
     }
 
