@@ -156,7 +156,7 @@ class Board extends CGFobject {
 
             //Special reset for Player vs CPU
             if (this.mode == "Player vs CPU") {
-                
+
                 //Undo matrix
                 this.matrixStack.pop();
                 if (this.matrixStack.length != 0) {
@@ -249,6 +249,8 @@ class Board extends CGFobject {
 
         this.lastUndone = false;
 
+        this.score();
+
         //If CPU vs CPU
         if (this.mode == "CPU vs CPU") {
 
@@ -336,7 +338,7 @@ class Board extends CGFobject {
 
     }
 
-    //Returns the current score
+    //Writes the score in the interface
     score() {
 
         var score = {
@@ -344,20 +346,20 @@ class Board extends CGFobject {
             p2: 0
         }
 
-        //Check each piece
-        for (let i = 0; i < this.pieces.length; i++) {
-            //If it was blocked then it is placed
-            if (this.pieces[i].blocked) {
+        //Check matrix
+        for (let i = 0; i < this.currentMatrix.length; i++) {
+            for (let j = 0; j < this.currentMatrix[i].length; j++) {
                 //Player 1
-                if (this.pieces[i].player == 0)
+                if (this.currentMatrix[i][j].player == 1)
                     score.p1++;
                 //Player 2
-                if (this.pieces[i].player == 1)
+                if (this.currentMatrix[i][j].player == 2)
                     score.p2++;
             }
         }
 
-        return score;
+        //Update UI
+        this.scene.interface.score = "Red " + score.p1.toString() + " - " + score.p2.toString() + " Blue";
 
     }
 
@@ -567,6 +569,9 @@ class Board extends CGFobject {
 
         //Add to stack
         this.matrixStack.push(this.currentMatrix);
+
+        //Update Score
+        this.score();
 
         //Ready for a CPU play on "Player vs CPU"
         if (this.mode == "Player vs CPU" && this.nextPlayer == 0) {

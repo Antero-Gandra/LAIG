@@ -106,11 +106,19 @@ class MyInterface extends CGFinterface {
         var statusGroup = group.addFolder("Status");
         statusGroup.open();
 
-        //TODO Score
-        this.score = "0-0";
-        console.log(statusGroup.add(this,'score').name('Score'));
+        //TODO Time Change this.time directly
+        this.time = "0s";
+        statusGroup.add(this,'time').name('Time').listen();
 
-        //TODO Movie
+        //TODO Score Change this.score directly
+        this.score = "Red 0 - 0 Blue";
+        statusGroup.add(this,'score').name('Score').listen();
+
+        //TODO Winner Change this.winner directly
+        this.winner = "---";
+        statusGroup.add(this,'winner').name('Winner').listen();
+
+        //TODO Movie will only be available at game end
         this.movie = this.callMovie;
         statusGroup.add(this, 'movie').name('Movie');
 
