@@ -24,6 +24,8 @@ class MyInterface extends CGFinterface {
 
         this.playerBlock = false;
 
+        this.scenes = [];
+
         return true;
     }
 
@@ -94,21 +96,16 @@ class MyInterface extends CGFinterface {
         playGroup.add(this, 'undo').name('Undo');
 
         //View Controls
-        var viewGroup = group.addFolder("View");
-        viewGroup.open();
-
-        //TODO Scenario
-        const scenario = ["Scene1"];
-        this.scenarioSet = "Scene1";
-        viewGroup.add(this, 'scenarioSet', scenario).name('Scenario').onChange(val => this.scene.selectView(val));
+        this.viewGroup = group.addFolder("View");
+        this.viewGroup.open();
 
         //Camera Zoom In
         this.zoomIn = this.callZoomIn;
-        viewGroup.add(this, 'zoomIn').name('Zoom In');
+        this.viewGroup.add(this, 'zoomIn').name('Zoom In');
 
         //Camera Zoom Out
         this.zoomOut = this.callZoomOut;
-        viewGroup.add(this, 'zoomOut').name('Zoom Out');
+        this.viewGroup.add(this, 'zoomOut').name('Zoom Out');
 
         //Status
         var statusGroup = group.addFolder("Status");
@@ -126,10 +123,18 @@ class MyInterface extends CGFinterface {
         this.winner = "Playing...";
         statusGroup.add(this, 'winner').name('Winner').listen();
 
-        //TODO Movie will only be available at game end
+        //Movie will only be available at game end
         this.movie = this.callMovie;
         statusGroup.add(this, 'movie').name('Movie');
 
+    }
+
+    setScenes(){
+        //Scene
+        const scene = this.scenes;
+        this.sceneSet = "Empty Scene";
+        this.viewGroup.add(this, 'sceneSet', scene).name('Scene').onChange(val => this.scene.setScene(val));
+        this.scene.setScene("Empty Scene");
     }
 
     callZoomIn() {

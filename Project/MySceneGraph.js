@@ -1937,6 +1937,7 @@ class MySceneGraph {
 
                 var component = {
                     id: "",
+                    scene: false,
                     transformations_ref: null,
                     transformations_list: [],
                     animations: [],
@@ -2231,6 +2232,10 @@ class MySceneGraph {
                             }
 
                         }
+                    }
+                    //Check if scenario
+                    else if (grandChildren[j].nodeName == "scene") {
+                        component.scene = true;
                     }
                 }
             }

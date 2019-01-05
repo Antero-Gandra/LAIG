@@ -15,6 +15,8 @@ class Component {
         this.childrenComponentsIDs = childrenComponentsIDs;
         this.childrenPrimitivesIDs = childrenPrimitivesIDs;
 
+        this.activated = true;
+
         this.currentMaterial = 0;
 
         this.childrenPrimitives = [];
@@ -151,6 +153,10 @@ class Component {
      * Displays children primitives and tells children components to do the same
      */
     display(callerMaterial, elapsedTime) {
+
+        //If not activated just return
+        if(!this.activated)
+            return;
 
         //Get previous texture
         var tmpTex = null;

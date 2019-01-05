@@ -81,17 +81,6 @@
     </animations>
 
     <primitives>
-        <primitive id="rectangle">
-            <rectangle x1="-1" y1="-1" x2="1" y2="1" />
-        </primitive>
-
-        <primitive id="triangle">
-            <triangle x1="-1" y1="0" z1="0" x2="0" y2="1" z2="0" x3="1" y3="0" z3="0" />
-        </primitive>
-
-        <primitive id="cylinder">
-            <cylinder2 base="1" top="1" height="1" slices="20" stacks="1" />
-        </primitive>
 
         <primitive id="cone">
             <cylinder2 base="5" top="0" height="1" slices="20" stacks="1" />
@@ -107,25 +96,6 @@
 
         <primitive id="sphere">
             <sphere radius="1" slices="20" stacks="20" />
-        </primitive>
-
-        <primitive id="torus">
-            <torus inner="0.1" outer="1" slices="20" loops="20" />
-        </primitive>
-
-        <primitive id="plane">
-            <plane npartsU="5" npartsV="5" />
-        </primitive>
-
-        <primitive id="patch">
-            <patch npointsU="3" npointsV="2" npartsU="20" npartsV="20">
-                <controlpoint xx="-1" yy="-1" zz="0"/>
-                <controlpoint xx="-1" yy="1" zz="0"/>
-                <controlpoint xx="0" yy="-1" zz="3"/>
-                <controlpoint xx="0" yy="1" zz="3"/>
-                <controlpoint xx="1" yy="-1" zz="0"/>
-                <controlpoint xx="1" yy="1" zz="0"/>
-            </patch>
         </primitive>
 
         <primitive id="vehicle">
@@ -152,7 +122,6 @@
 
     <components>
 
-        <!-- Root -->
         <component id="root">
 
             <transformation>
@@ -165,7 +134,8 @@
             <texture id="none" length_s="1" length_t="1" />
 
             <children>
-                <componentref id="Scene1"/>
+                <componentref id="Empty Scene"/>
+                <componentref id="Beach Scene"/>
                 <componentref id="board"/>
             </children>
 
@@ -188,7 +158,18 @@
 
         </component>
 
-        <component id="Scene1">
+        <component id="Empty Scene">
+            <scene></scene>
+            <transformation></transformation>
+            <materials>
+                <material id="defMat"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children></children>
+        </component>
+
+        <component id="Beach Scene">
+            <scene></scene>
             <transformation>
                 <scale x="3" y="3" z="3" />
                 <rotate axis="y" angle="-90" />

@@ -23,6 +23,8 @@ class XMLscene extends CGFscene {
     init(application) {
         super.init(application);
 
+        this.scenes = [];
+
         this.sceneInited = false;
 
         this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
@@ -227,11 +229,17 @@ class XMLscene extends CGFscene {
 
             //Things done once
             if (this.firstRun) {
+
                 //Start time
                 this.startTime = new Date().getTime() / 1000;
 
+                //Reset interface scenes
+                this.interface.scenes = [];
+
                 //Setup board on Interface
                 for (let i = 0; i < this.graph.components.length; i++) {
+
+                    //Find board
                     if (this.graph.components[i].id == "board") {
                         //Identify board for interface
                         this.interface.board = this.graph.components[i].childrenPrimitives[0];
@@ -242,10 +250,20 @@ class XMLscene extends CGFscene {
                         //Setup Camera Radius on Board
                         this.graph.components[i].childrenPrimitives[0].cameraHorizontalRadius = this.camera.position[0];
                     }
+
+                    //Find scenes to add reference on UI
+                    if(this.graph.tmpComponents[i].scene){
+                        this.interface.scenes.push(this.graph.tmpComponents[i].id);
+                        this.scenes.push(this.graph.components[i]);
+                    }                    
+
                 }
+
+                this.interface.setScenes();
 
                 //Disable
                 this.firstRun = false;
+                
             }
 
             // Draw axis
@@ -278,4 +296,13 @@ class XMLscene extends CGFscene {
         this.popMatrix();
         // ---- END Background, camera and axis setup
     }
+
+    setScene(id){
+        for (let i = 0; i < this.scenes.length; i++) {
+            this.scenes[i].activated = false;
+            if(this.scenes[i].id == id)
+                this.scenes[i].activated = true;
+        }
+    }
+
 }
