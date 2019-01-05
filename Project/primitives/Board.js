@@ -125,7 +125,6 @@ class Board extends CGFobject {
         this.ended = false;
         this.readies = 0;
         this.movieReadies = 0;
-        this.movieAble = false;
         this.movieSlide = 0;
         this.playingMovie = false;
 
@@ -221,7 +220,6 @@ class Board extends CGFobject {
 
         //Check end of movie
         if (this.movieSlide > this.movieMovements.length - 1) {
-            this.movieAble = true;
             this.playingMovie = false;
             this.scene.interface.playerBlock = false;
             this.end();
@@ -245,10 +243,6 @@ class Board extends CGFobject {
     //Play movie of game
     movie() {
 
-        //Not ready for movie(probably not game end yet)
-        if (!this.movieAble)
-            return;
-
         //Block input while playing movie
         this.scene.interface.playerBlock = true;
 
@@ -257,9 +251,6 @@ class Board extends CGFobject {
 
         //Playing movie
         this.playingMovie = true;
-
-        //Dont multi click movie
-        this.movieAble = false;
 
         //Movie slide restart
         this.movieSlide = 0;
@@ -305,8 +296,6 @@ class Board extends CGFobject {
             else
                 this.scene.interface.winner = "Blue";
 
-        //Enable movie
-        this.movieAble = true;
 
     }
 

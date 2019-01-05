@@ -196,7 +196,10 @@ class Piece extends CGFobject {
         this.noShadow = false;
 
         if (!this.blocked) {
-            this.board.ready();
+            if (this.board.playingMovie)
+                this.board.movieReady();
+            else
+                this.board.ready();
             return;
         }
 
