@@ -125,6 +125,49 @@ class Board extends CGFobject {
 
     };
 
+    display() {
+
+        //Display Tiles
+        for (let i = 0; i < this.size * this.size; i++) {
+            this.tiles[i].display();
+        }
+
+        //Display pieces
+        for (var i = 0; i < this.size * this.size; i++)
+            this.pieces[i].display();
+
+        //Rotate Camera
+        if (this.rotatingCamera)
+            this.rotatingAnimation();
+
+        //Game time
+        let diff = new Date().getTime() / 1000 - this.startTime;
+        diff = diff.toFixed(2);
+        this.scene.interface.time = diff.toString() + "s" ;
+
+    }
+
+    //Zoom camera
+    zoom(scale){
+
+        //Zoom
+        var dir = this.scene.camera.calculateDirection();
+
+        var reverse = vec4.create();
+        vec4.negate(reverse,dir);
+
+        var zoomVec = vec4.create();
+        vec4.scale(zoomVec, reverse, scale);
+
+        vec4.add(this.scene.camera.position,zoomVec,this.scene.camera.position);
+
+        //Update camera radius for animation
+        this.cameraHorizontalRadius = Math.abs(this.scene.camera.position[0]);
+
+        //Update Raycast
+        this.raycast.prepare();
+    }
+
     getCharPlayer(number) {
         switch (number) {
             case 0:
@@ -277,28 +320,6 @@ class Board extends CGFobject {
 
     }
 
-    display() {
-
-        //Display Tiles
-        for (let i = 0; i < this.size * this.size; i++) {
-            this.tiles[i].display();
-        }
-
-        //Display pieces
-        for (var i = 0; i < this.size * this.size; i++)
-            this.pieces[i].display();
-
-        //Rotate Camera
-        if (this.rotatingCamera)
-            this.rotatingAnimation();
-
-        //Game time
-        let diff = new Date().getTime() / 1000 - this.startTime;
-        diff = diff.toFixed(2);
-        this.scene.interface.time = diff.toString() + "s" ;
-
-    }
-
     //Rotate camera for other player
     rotateCamera() {
         this.rotatingCamera = true;
@@ -339,8 +360,9 @@ class Board extends CGFobject {
                 this.scene.camera.position[0] = this.cameraHorizontalRadius;
                 this.scene.camera.position[2] = 0;
             }
-
             this.rotatingCamera = false;
+
+            //Reset Raycast
             this.raycast.prepare();
         }
 

@@ -102,15 +102,23 @@ class MyInterface extends CGFinterface {
         this.scenarioSet = "Scene1";
         viewGroup.add(this, 'scenarioSet', scenario).name('Scenario').onChange(val => this.scene.selectView(val));
 
+        //Camera Zoom In
+        this.zoomIn = this.callZoomIn;
+        viewGroup.add(this, 'zoomIn').name('Zoom In');
+
+        //Camera Zoom Out
+        this.zoomOut = this.callZoomOut;
+        viewGroup.add(this, 'zoomOut').name('Zoom Out');
+
         //Status
         var statusGroup = group.addFolder("Status");
         statusGroup.open();
 
-        //TODO Time Change this.time directly
+        //Time Change this.time directly
         this.time = "0s";
         statusGroup.add(this,'time').name('Game Time').listen();
 
-        //TODO Score Change this.score directly
+        //Score Change this.score directly
         this.score = "Red 0 - 0 Blue";
         statusGroup.add(this,'score').name('Score').listen();
 
@@ -122,6 +130,14 @@ class MyInterface extends CGFinterface {
         this.movie = this.callMovie;
         statusGroup.add(this, 'movie').name('Movie');
 
+    }
+
+    callZoomIn(){
+        this.board.zoom(-5);
+    }
+
+    callZoomOut(){
+        this.board.zoom(5);
     }
 
     callMovie() {
