@@ -108,14 +108,14 @@ class MyInterface extends CGFinterface {
 
         //TODO Time Change this.time directly
         this.time = "0s";
-        statusGroup.add(this,'time').name('Time').listen();
+        statusGroup.add(this,'time').name('Game Time').listen();
 
         //TODO Score Change this.score directly
         this.score = "Red 0 - 0 Blue";
         statusGroup.add(this,'score').name('Score').listen();
 
         //TODO Winner Change this.winner directly
-        this.winner = "---";
+        this.winner = "Playing...";
         statusGroup.add(this,'winner').name('Winner').listen();
 
         //TODO Movie will only be available at game end

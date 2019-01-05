@@ -121,6 +121,7 @@ class Board extends CGFobject {
         this.tmpMode = "Player vs Player";
         this.difficulty = "Easy";
         this.mode = "Player vs Player";
+        this.startTime = new Date().getTime() / 1000;
 
     };
 
@@ -249,7 +250,9 @@ class Board extends CGFobject {
 
         this.lastUndone = false;
 
+        //UI related updates
         this.score();
+        this.startTime = new Date().getTime() / 1000;
 
         //If CPU vs CPU
         if (this.mode == "CPU vs CPU") {
@@ -288,6 +291,11 @@ class Board extends CGFobject {
         //Rotate Camera
         if (this.rotatingCamera)
             this.rotatingAnimation();
+
+        //Game time
+        let diff = new Date().getTime() / 1000 - this.startTime;
+        diff = diff.toFixed(2);
+        this.scene.interface.time = diff.toString() + "s" ;
 
     }
 
