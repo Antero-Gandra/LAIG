@@ -124,6 +124,10 @@ class Board extends CGFobject {
         this.startTime = new Date().getTime() / 1000;
         this.ended = false;
         this.readies = 0;
+        this.movieReadies = 0;
+        this.movieAble = false;
+        this.movieSlide = 0;
+        this.playingMovie = false;
 
     };
 
@@ -187,6 +191,98 @@ class Board extends CGFobject {
         }
     }
 
+    //Called by each piece to signal they are ready, once all ready we can call movie chain
+    movieReady() {
+
+        this.movieReadies++;
+
+        //When all ready start movie
+        if (this.movieReadies == this.pieces.length) {
+            this.movieReadies = 0;
+            this.startMovie();
+        }
+
+    }
+
+    //Start movie chain, called once all pieces are in original position and ready
+    startMovie() {
+
+        console.log("Start Movie");
+        console.log("Play " + (this.movieSlide + 1));
+
+        //First play
+        this.movieMovements[this.movieSlide].piece.play(this.movieMovements[this.movieSlide].x, this.movieMovements[this.movieSlide].z);
+        this.movieSlide++;
+
+    }
+
+    //Next play of movie, called in end of animation of play
+    nextPlay() {
+
+        //Check end of movie
+        if (this.movieSlide > this.movieMovements.length - 1) {
+            this.movieAble = true;
+            this.playingMovie = false;
+            this.scene.interface.playerBlock = false;
+            this.end();
+            console.log("Movie Ended");
+            return;
+        }
+
+        console.log("Play " + (this.movieSlide + 1));
+
+        //Flips
+        for (let i = 0; i < this.flipped[this.movieSlide - 1].length; i++) {
+            this.flipped[this.movieSlide - 1][i].flip();
+        }
+
+        //Next play
+        this.movieMovements[this.movieSlide].piece.play(this.movieMovements[this.movieSlide].x, this.movieMovements[this.movieSlide].z);
+        this.movieSlide++;
+
+    }
+
+    //Play movie of game
+    movie() {
+
+        //Not ready for movie(probably not game end yet)
+        if (!this.movieAble)
+            return;
+
+        //Block input while playing movie
+        this.scene.interface.playerBlock = true;
+
+        //Signal playing movie
+        this.scene.interface.winner = "Playing Movie...";
+
+        //Playing movie
+        this.playingMovie = true;
+
+        //Dont multi click movie
+        this.movieAble = false;
+
+        //Movie slide restart
+        this.movieSlide = 0;
+
+        //Store movements
+        this.movieMovements = [];
+
+        for (let i = 0; i < this.movements.length; i++) {
+            let movieMov = {
+                x: this.movements[i].x,
+                z: this.movements[i].z,
+                piece: this.movements[i]
+            }
+            this.movieMovements.push(movieMov);
+        }
+
+        //Position all pieces at start
+        for (let i = 0; i < this.pieces.length; i++) {
+            this.pieces[i].reset();
+        }
+
+    }
+
     //End game, check winner and stop everything
     end() {
 
@@ -208,6 +304,9 @@ class Board extends CGFobject {
                 this.scene.interface.winner = "Red";
             else
                 this.scene.interface.winner = "Blue";
+
+        //Enable movie
+        this.movieAble = true;
 
     }
 
@@ -253,6 +352,8 @@ class Board extends CGFobject {
             this.matrixStack.pop();
             if (this.matrixStack.length != 0) {
                 this.currentMatrix = this.matrixStack[this.matrixStack.length - 1];
+            } else {
+                this.refreshMatrix();
             }
 
             //Undo flipped
@@ -270,6 +371,9 @@ class Board extends CGFobject {
 
             //Reset last piece movement
             this.movements.pop().undo();
+
+            //Update score after Undo
+            this.score();
 
         }
     }
@@ -329,12 +433,18 @@ class Board extends CGFobject {
 
         //Clear play stack
         this.matrixStack = [];
+        this.movements = [];
+        this.flipped = [];
 
         this.nextPlayer = 1;
 
         this.lastUndone = false;
 
         this.ended = false;
+
+        this.movieAble = false;
+
+        this.playingMovie = false;
 
         //UI related updates
         this.score();
@@ -364,6 +474,10 @@ class Board extends CGFobject {
 
     //Create a new game
     newGame() {
+
+        //Dont reset while playing movie
+        if (this.playingMovie)
+            return;
 
         //Reset Board
         this.resetBoard();

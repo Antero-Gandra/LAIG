@@ -122,7 +122,7 @@ class MyInterface extends CGFinterface {
         this.score = "Red 0 - 0 Blue";
         statusGroup.add(this, 'score').name('Score').listen();
 
-        //TODO Winner Change this.winner directly
+        //Wiinner Change this.winner directly
         this.winner = "Playing...";
         statusGroup.add(this, 'winner').name('Winner').listen();
 

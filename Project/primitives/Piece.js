@@ -56,6 +56,11 @@ class Piece extends CGFobject {
         this.hoverPos = vec3.create();
         this.hoverHeight = 5;
         this.noShadow = false;
+        this.reseting = false;
+        this.throwing = false;
+        this.undoing = false;
+        this.flipping = false;
+        this.playing = false;
 
     };
 
@@ -70,6 +75,10 @@ class Piece extends CGFobject {
 
         //Display
         this.scene.pushMatrix();
+
+        //Movie animation
+        if (this.playing)
+            this.playAnimation();
 
         //Reset animation
         if (this.reseting)
@@ -232,7 +241,11 @@ class Piece extends CGFobject {
             //Unblock undo
             this.board.scene.interface.undoBlocked = false;
             //Tell board we are ready
-            this.board.ready();
+            if (this.board.playingMovie)
+                this.board.movieReady();
+            else
+                this.board.ready();
+
         }
     }
 
@@ -285,11 +298,56 @@ class Piece extends CGFobject {
         }
     }
 
+    //Movie Play
+    play(targetX, targetZ) {
+        this.playing = true;
+        this.playStart = new Date().getTime() / 1000;
+        this.board.scene.interface.undoBlocked = true;
+
+        this.targetX = targetX;
+        this.targetZ = targetZ;
+    }
+
+    //Movie Play Animation
+    playAnimation() {
+
+        //Timings
+        var currentTime = new Date().getTime() / 1000;
+        var diff = currentTime - this.playStart;
+        var animTime = 1;
+
+        //Distance
+        var distanceX = this.targetX - this.x;
+        var distanceZ = this.targetZ - this.z;
+        var height = 10;
+
+        //Animation
+        if (diff < animTime) {
+            var trans = diff;
+            if (diff > animTime / 2)
+                trans = animTime - diff;
+            this.heightAnim = trans * height;
+            this.scene.translate(diff * distanceX, trans * height, diff * distanceZ);
+            //Animation Done
+        } else {
+            this.playing = false;
+            this.noShadow = true;
+            //Position
+            this.x = this.targetX;
+            this.z = this.targetZ;
+            //Piece can't be used anymore
+            this.blocked = true;
+            this.board.scene.interface.undoBlocked = false;
+            this.board.nextPlay();
+        }
+    }
+
     //Undo Throw
     undo() {
         this.undoing = true;
         this.blocked = false;
         this.noShadow = false;
+        this.heightAnim = 0;
         this.board.scene.interface.undoBlocked = true;
         this.undoStart = new Date().getTime() / 1000;
     }
@@ -317,7 +375,7 @@ class Piece extends CGFobject {
             //Animation Done
         } else {
             this.undoing = false;
-            this.noShadow = true;
+            this.noShadow = false;
             //Position
             this.x = this.originalX;
             this.z = this.originalZ;

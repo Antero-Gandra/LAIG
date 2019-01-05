@@ -25,8 +25,6 @@ class Sphere extends CGFobject {
         this.scene.popMatrix();
     }
 
-    //TODO function to update texCoords if needed
-
 };
 
 class Semisphere extends CGFobject {
