@@ -42,6 +42,9 @@
         <texture id="lava" file="images/lava.jpg" />
         <texture id="lavaheight" file="images/lavaheight.jpg" />
         <texture id="bridge" file="images/bridge.jpg" />
+        <texture id="metal" file="images/metal.jpg" />
+        <texture id="casino" file="images/casino.jpg" />
+        <texture id="casinoheight" file="images/casinoheight.jpg" />
     </textures>
 
     <materials>
@@ -136,6 +139,10 @@
             <water idtexture="lava" idwavemap="lavaheight" parts="100" heightscale="0.5" texscale="0.3" />
         </primitive>
 
+        <primitive id="casino">
+            <terrain idtexture="casino" idheightmap="casinoheight" parts="100" heightscale="10"/>
+        </primitive>
+
     </primitives>
 
     <components>
@@ -155,6 +162,7 @@
                 <componentref id="Empty Scene"/>
                 <componentref id="Beach Scene"/>
                 <componentref id="Volcano Scene"/>
+                <componentref id="Casino Scene"/>
                 <componentref id="board"/>
             </children>
 
@@ -378,6 +386,52 @@
             </materials>
             <children>
                 <primitiveref id="bridge" />
+            </children>
+        </component>
+
+        <component id="Casino Scene">
+            <scene></scene>
+            <transformation>
+                <scale x="1.6" y="1.6" z="1.6" />
+                <rotate axis="y" angle="-90" />
+                <translate x="0" y="-5.1" z="0" />
+            </transformation>
+            <materials>
+                <material id="defMat"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <componentref id="casino"/>
+                <componentref id="casinoball"/>
+            </children>
+        </component>
+
+        <component id="casino">
+            <transformation>
+                <translate x="0" y="-5" z="0" />
+                <rotate axis="x" angle="-90" />
+                <scale x="40" y="40" z="1" />
+            </transformation>
+            <materials>
+                <material id="defMat"/>
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="casino" />
+            </children>
+        </component>
+
+        <component id="casinoball">
+            <transformation>
+                <translate x="11.25" y="-3" z="-11.25" />
+                <scale x="2" y="2" z="2" />
+            </transformation>
+            <materials>
+                <material id="defMat" />
+            </materials>
+            <texture id="metal" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="sphere" />
             </children>
         </component>
 
