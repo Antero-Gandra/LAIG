@@ -300,6 +300,7 @@ class XMLscene extends CGFscene {
     setScene(id) {
         for (let i = 0; i < this.scenes.length; i++) {
             this.scenes[i].activated = false;
+            console.log(this.scenes[i].id);
             if (this.scenes[i].id == id)
                 this.scenes[i].activated = true;
         }
