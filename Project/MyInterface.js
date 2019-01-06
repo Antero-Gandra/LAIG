@@ -107,6 +107,9 @@ class MyInterface extends CGFinterface {
         this.zoomOut = this.callZoomOut;
         this.viewGroup.add(this, 'zoomOut').name('Zoom Out');
 
+        this.color = [ 0, 128, 255 ];
+        this.viewGroup.addColor(this, 'color').name('Background').onChange(val => this.scene.changeBG(val));
+
         //Status
         var statusGroup = group.addFolder("Status");
         statusGroup.open();
@@ -138,11 +141,11 @@ class MyInterface extends CGFinterface {
     }
 
     callZoomIn() {
-        this.board.zoom(-5);
+        this.board.zoom(-10);
     }
 
     callZoomOut() {
-        this.board.zoom(5);
+        this.board.zoom(10);
     }
 
     callMovie() {

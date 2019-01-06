@@ -306,4 +306,8 @@ class XMLscene extends CGFscene {
         }
     }
 
+    changeBG(color){
+        this.gl.clearColor(color[0]/255, color[1]/255, color[2]/255, 1);
+    }
+
 }
