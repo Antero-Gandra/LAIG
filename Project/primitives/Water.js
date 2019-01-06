@@ -11,7 +11,7 @@ class Water extends Plane {
         this.shader = new CGFshader(this.scene.gl, "shaders/water.vert", "shaders/texture.frag");
 
         //Textures binded to 1 and 2
-        this.shader.setUniformsValues({ colormap: 1, heightmap: 2, factor: this.heightscale});
+        this.shader.setUniformsValues({ colormap: 1, heightmap: 2, factor: this.heightscale });
 
         //Setup material
         this.appearance = new CGFappearance(this.scene);
@@ -45,16 +45,16 @@ class Water extends Plane {
 
             //Set texture
             this.appearance.setTexture(this.waterTex);
-            this.appearance.setTextureWrap ('REPEAT', 'REPEAT');
-            
+            this.appearance.setTextureWrap('REPEAT', 'REPEAT');
+
             //Set size
-            this.shader.setUniformsValues({size: this.waterTex.image.width});
+            this.shader.setUniformsValues({ size: this.waterTex.image.width });
         } else {
             //Appy material
             this.appearance.apply();
 
             //Pass time to shader
-            this.shader.setUniformsValues({ delta: elapsedTime/30});
+            this.shader.setUniformsValues({ delta: elapsedTime / 30 });
 
             //Activate shader
             this.scene.setActiveShader(this.shader);
@@ -66,7 +66,7 @@ class Water extends Plane {
             this.heightTex.bind(2);
 
             super.display();
-            
+
             this.scene.popMatrix();
 
             //Reset to default shader

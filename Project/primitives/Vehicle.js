@@ -52,32 +52,32 @@ class Vehicle extends CGFobject {
     display() {
 
         //Use hardcoded texture
-        if(this.appearance.texture == null){
-            if(this.scene.graph.loadedTextures.length >= 2)
+        if (this.appearance.texture == null) {
+            if (this.scene.graph.loadedTextures.length >= 2)
                 this.appearance.setTexture(this.scene.graph.loadedTextures[4].tex);
-        }        
+        }
         this.appearance.apply();
 
         this.scene.pushMatrix();
 
-            this.scene.rotate(-Math.PI / 2, 1, 0, 0);
-            this.scene.rotate(Math.PI, 0, 0, 1);
-            this.scene.scale(1, 1, .4);
+        this.scene.rotate(-Math.PI / 2, 1, 0, 0);
+        this.scene.rotate(Math.PI, 0, 0, 1);
+        this.scene.scale(1, 1, .4);
 
-            this.center.display();
+        this.center.display();
 
-            this.scene.pushMatrix();
-                this.scene.rotate(Math.PI, 1, 0, 0);
-                this.wingObjUp.display();
-                this.wingObjDown.display();
-            this.scene.popMatrix();
+        this.scene.pushMatrix();
+        this.scene.rotate(Math.PI, 1, 0, 0);
+        this.wingObjUp.display();
+        this.wingObjDown.display();
+        this.scene.popMatrix();
 
-            this.scene.pushMatrix();
-                this.scene.translate(0, -3, 0);
-                this.scene.rotate(Math.PI / 2, 1, 0, 0);
-                this.scene.scale(2.0, 2.0, 1);
-                this.back.display();
-            this.scene.popMatrix();
+        this.scene.pushMatrix();
+        this.scene.translate(0, -3, 0);
+        this.scene.rotate(Math.PI / 2, 1, 0, 0);
+        this.scene.scale(2.0, 2.0, 1);
+        this.back.display();
+        this.scene.popMatrix();
 
         this.scene.popMatrix();
     }

@@ -10,7 +10,7 @@ class Animation {
         this.time = 0;
     }
 
-    apply(){
+    apply() {
         this.scene.multMatrix(this.transformationMat);
     }
 

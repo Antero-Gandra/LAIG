@@ -105,17 +105,13 @@ print_header_line(_).
 % Require your Prolog Files here
 :-ensure_loaded('lear.pl').
 
-verificaFimServer(Tab, 'yes'):-verificaFim(Tab).
-verificaFimServer(_,'no').
+parse_input(quit, goodbye).
 
 setPecaServidor(NLinha,NColuna,Peca,Tabuleiro,TabOut):-
 	setPeca(NLinha, NColuna, Peca,Tabuleiro, TabOut2),
 	verificaJogada(TabOut2, NLinha, NColuna, Peca,  TabOut).
-
-parse_input(quit, goodbye).
 parse_input(setPeca(NLinha, NColuna, Peca,TabIn), TabOut) :- setPecaServidor(NLinha, NColuna, Peca,TabIn, TabOut).
-parse_input(verificaFimJogo(Tab), Verf):- verificaFimServer(Tab, Verf).
-parse_input(verificaVencedorJogo(Tab), Vencedor):- verificaVencedor(Tab, 'x', 'o', Vencedor).
+
 parse_input(jogaPCEasy('o',Tab), [TabOut-NLinha-NColuna]):- jogaPC('o',Tab,TabOut,NLinha,NColuna).
 parse_input(jogaPCEasy('x',Tab), [TabOut-NLinha-NColuna]):- jogaPC('x',Tab,TabOut,NLinha,NColuna).
 parse_input(jogaPCHard('o',Tab), [TabOut-NLinha-NColuna]):- jogaPCIA('o',Tab,TabOut,NLinha,NColuna).

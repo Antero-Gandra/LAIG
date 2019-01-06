@@ -30,7 +30,7 @@ class Raycast {
         Prepare camera
         Only needs to be called when camera changes
     */
-    prepare(){
+    prepare() {
 
         //Canvas
         this.viewport = {
@@ -69,9 +69,9 @@ class Raycast {
         http://schabby.de/picking-opengl-ray-tracing/
     */
     process(type) {
-        
+
         //Canvas was resized, need to process camera again
-        if(this.viewport.width != this.scene.gl.canvas.width || this.viewport.height != this.scene.gl.canvas.height){
+        if (this.viewport.width != this.scene.gl.canvas.width || this.viewport.height != this.scene.gl.canvas.height) {
             this.prepare();
         }
 

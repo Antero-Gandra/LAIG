@@ -49,7 +49,7 @@ class CircularAnimation extends Animation {
         rotation -= Math.PI / 2;
 
         //Face forward in inverse rotations
-        if(this.angleRot < 0){
+        if (this.angleRot < 0) {
             rotation += Math.PI;
         }
 

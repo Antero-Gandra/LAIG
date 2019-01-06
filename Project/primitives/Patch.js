@@ -4,7 +4,7 @@ class Patch extends CGFobject {
     constructor(scene, degree1, degree2, pointsRAW, divX, divY) {
         super(scene);
         this.scene = scene;
-        
+
         //Format points
         var control = [];
         var pointId = 0;
@@ -26,7 +26,7 @@ class Patch extends CGFobject {
 
     };
 
-    display(){
+    display() {
         this.obj.display();
     }
 

@@ -107,7 +107,7 @@ class MyInterface extends CGFinterface {
         this.zoomOut = this.callZoomOut;
         this.viewGroup.add(this, 'zoomOut').name('Zoom Out');
 
-        this.color = [ 0, 128, 255 ];
+        this.color = [0, 128, 255];
         this.viewGroup.addColor(this, 'color').name('Background').onChange(val => this.scene.changeBG(val));
 
         //Status
