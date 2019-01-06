@@ -37,7 +37,6 @@
         <texture id="waterheight" file="images/heightwater.jpg" />
         <texture id="umbrella" file="images/parasol.jpg" />
         <texture id="towel" file="images/towel.jpg" />
-        <texture id="gps" file="images/gps.jpg" />
         <texture id="volcano" file="images/volcano.jpg" />
         <texture id="volcanoheight" file="images/volcanoheight.jpg" />
         <texture id="lava" file="images/lava.jpg" />
@@ -88,10 +87,6 @@
     </animations>
 
     <primitives>
-
-        <primitive id="triangle">
-            <triangle x1="-1" y1="0" z1="0" x2="0" y2="1" z2="0" x3="1" y3="0" z3="0" />
-        </primitive>
 
         <primitive id="cone">
             <cylinder2 base="5" top="0" height="1" slices="20" stacks="1" />
@@ -337,8 +332,6 @@
             <children>
                 <componentref id="volcano"/>
                 <componentref id="bridge"/>
-                <componentref id="gps"/>
-                <componentref id="poll"/>
                 <componentref id="lava"/>
             </children>
         </component>
@@ -378,39 +371,13 @@
                 <translate x="0" y="2.2" z="0" />
                 <rotate axis="y" angle="90" />
                 <rotate axis="x" angle="270" />
-                </transformation>
+            </transformation>
             <texture id="bridge" length_s="1" length_t="1" />
             <materials>
                 <material id="defMat"/>
             </materials>
             <children>
                 <primitiveref id="bridge" />
-            </children>
-        </component>
-
-        <component id="poll">
-            <transformation>
-            </transformation>
-            <materials>
-                <material id="baseMat" />
-            </materials>
-            <texture id="inherit" length_s="1" length_t="1" />
-            <children>
-                <primitiveref id="triangle" />
-            </children>
-        </component>
-
-        <component id="gps">
-            <transformation>
-                <translate x="30" y="20" z="-25" />
-                <scale x="3" y="3" z="3" />
-            </transformation>
-            <materials>
-                <material id="defMat" />
-            </materials>
-            <texture id="gps" length_s="1" length_t="1" />
-            <children>
-                <primitiveref id="sphere" />
             </children>
         </component>
 
